@@ -50,7 +50,7 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        type: "asset/inline",
+        type: "asset",
       },
       {
         test: /\.(woff(2)?|eot|ttf|otf)$/,
