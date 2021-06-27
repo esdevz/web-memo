@@ -1,9 +1,7 @@
+import Note from "./components/note/Note";
+
 const App = () => {
-  return (
-    <div>
-      <h1>hello</h1>
-    </div>
-  );
+  return <Note />;
 };
 
 export default App;
