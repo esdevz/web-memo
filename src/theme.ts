@@ -9,7 +9,7 @@ const breakpoints = createBreakpoints({
 });
 
 const config: ThemeConfig = {
-  initialColorMode: "dark",
+  initialColorMode: "light",
   useSystemColorMode: false,
 };
 
@@ -29,6 +29,17 @@ const theme = extendTheme<Theme>({
   },
   breakpoints,
   config,
+  styles: {
+    global: {
+      h3: {
+        fontSize: "1.3em",
+        fontWeight: "600",
+      },
+      em: {
+        fontSize: "xs",
+      },
+    },
+  },
 });
 
 export default theme;
