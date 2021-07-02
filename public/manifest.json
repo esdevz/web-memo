@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "description": "save highlighted text on the web",
   "icons": {
+    "16": "favicon.svg",
+    "32": "favicon.svg",
     "48": "favicon.svg",
     "96": "favicon.svg"
   },
@@ -14,12 +16,5 @@
   "background": {
     "scripts": ["background.js"]
   },
-
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["contentScript.js"]
-    }
-  ],
-  "permissions": ["storage"]
+  "permissions": ["storage", "menus", "contextMenus", "tabs"]
 }
