@@ -29,6 +29,19 @@ module.exports = {
   resolve: {
     extensions: [".js", ".tsx", ".ts"],
   },
+  optimization: {
+    runtimeChunk: "single",
+    moduleIds: "deterministic",
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors",
+          chunks: "all",
+        },
+      },
+    },
+  },
   module: {
     rules: [
       {
