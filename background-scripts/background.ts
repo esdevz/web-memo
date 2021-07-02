@@ -1,3 +1,10 @@
+import Dexie from "dexie";
+
+const db = new Dexie("notes");
+db.version(1).stores({
+  notes: "++id ,title , website ,favicon ,content,createdAt",
+});
+
 const SAVE_NOTE_ID = "save-as-note";
 
 browser.browserAction.onClicked.addListener(() => {
@@ -16,12 +23,16 @@ browser.menus.create({
 browser.menus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === SAVE_NOTE_ID) {
     let note = {
-      title: tab?.title,
-      website: tab?.url,
+      title: tab?.title || "",
+      website: tab?.url || "",
       favicon: tab?.favIconUrl || "",
-      content: info.selectionText,
+      content: info.selectionText || "",
       createdAt: Date.now(),
     };
     console.log(note);
+    db.table("notes")
+      .put(note)
+      .then(() => console.log("added to notes"))
+      .catch((err) => console.log(err));
   }
 });
