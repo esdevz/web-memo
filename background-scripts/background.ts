@@ -1,17 +1,9 @@
 import Dexie from "dexie";
 
-const db = new Dexie("notes");
+const SAVE_NOTE_ID = "save-as-note";
+const db = new Dexie("web-memo");
 db.version(1).stores({
   notes: "++id ,title , website ,favicon ,content,createdAt",
-});
-
-const SAVE_NOTE_ID = "save-as-note";
-
-browser.browserAction.onClicked.addListener(() => {
-  browser.tabs.create({
-    url: "index.html",
-    active: true,
-  });
 });
 
 browser.menus.create({
@@ -30,9 +22,17 @@ browser.menus.onClicked.addListener((info, tab) => {
       createdAt: Date.now(),
     };
     console.log(note);
+    window.bgNote = note;
+    browser.browserAction.openPopup();
     db.table("notes")
       .put(note)
       .then(() => console.log("added to notes"))
       .catch((err) => console.log(err));
   }
 });
+
+interface BackgroundWindow extends Window {
+  bgNote: any;
+}
+
+declare const window: BackgroundWindow;
