@@ -1,31 +1,39 @@
-import { Box, VStack, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import {
+  Box,
+  VStack,
+  Button,
+  FormControl,
+  FormLabel,
+  Switch,
+} from "@chakra-ui/react";
+import { ChangeEvent, FormEvent } from "react";
 
-interface INote {
-  id?: number;
-  title: string;
-  website: string;
-  favicon: string;
-  content: string;
-  createdAt: number;
-}
-declare global {
-  interface Window {
-    bgNote: INote;
-  }
-}
-
-const getBgNote = () => {
-  let bgWindow = browser.extension.getBackgroundPage();
-
-  if (bgWindow) {
-    return bgWindow.bgNote;
-  }
-  return null;
-};
+import FormInput from "./FormInput";
+import { initialNoteState, useBackgroundNote } from "./useBackgroundNotes";
 
 const Popup = () => {
-  const [note] = useState<null | INote>(getBgNote);
+  const { note, setNote, saveNote, loading } = useBackgroundNote();
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setNote({
+      ...note,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const switchHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setNote({
+      ...note,
+      [e.target.name]: e.target.checked,
+    });
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    await saveNote();
+    setNote(initialNoteState);
+  };
 
   const openNotes = () => {
     browser.tabs.create({
@@ -34,26 +42,92 @@ const Popup = () => {
     });
   };
   return (
-    <Box as="main" w="400px" h="400px">
-      <VStack
-        _hover={{
-          backgroundColor: "goldenrod",
-        }}
-        backgroundColor="gold"
-        h="100%"
-        w="100%"
-        justifyContent="center"
-        align="center"
-        spacing="5"
-      >
-        <Button onClick={openNotes}>Open Notes</Button>
-        {note ? (
-          <pre>{JSON.stringify(note, null, 2)}</pre>
-        ) : (
-          <h1> note is {typeof note} </h1>
-        )}
+    <Box as="main" w="380px" h="400px">
+      <VStack h="100%" w="100%" spacing="10px">
+        <Button w="full" colorScheme="teal" onClick={openNotes}>
+          Open Notes
+        </Button>
+
+        <VStack
+          as="form"
+          onSubmit={handleSubmit}
+          mt="8px"
+          w="full"
+          h="full"
+          spacing="8px"
+          p="3"
+        >
+          <FormInput
+            w="85%"
+            id="Title :"
+            inputProps={{
+              w: "full",
+              type: "text",
+              name: "title",
+              value: note.title,
+              onChange: handleChange,
+              placeholder: "Title",
+            }}
+          />
+          <FormInput
+            w="85%"
+            id="Content :"
+            textField
+            textAreaProps={{
+              w: "full",
+              name: "content",
+              value: note.content,
+              onChange: handleChange,
+              placeholder: "Content",
+              h: "11em",
+            }}
+          />
+          <FormControl w="85%" display="flex" alignItems="center">
+            <FormLabel
+              fontWeight="medium"
+              fontFamily="Montserrat"
+              htmlFor="is-pinned"
+            >
+              Pin :
+            </FormLabel>
+            <Switch
+              size="lg"
+              colorScheme="teal"
+              name="isPinned"
+              onChange={switchHandler}
+              isChecked={note.isPinned}
+              id="is-pinned"
+            />
+          </FormControl>
+          <pre>
+            {JSON.stringify(localStorage.getItem("chakra-ui-color-mode"))}
+          </pre>
+          <Button
+            isLoading={loading}
+            isDisabled={loading}
+            type="submit"
+            colorScheme="teal"
+            w="full"
+          >
+            Save
+          </Button>
+        </VStack>
       </VStack>
     </Box>
   );
 };
 export default Popup;
+
+interface INote {
+  title: string;
+  website: string;
+  favicon: string;
+  content: string;
+  createdAt: number;
+  isPinned: boolean;
+}
+declare global {
+  interface Window {
+    bgNote: INote;
+  }
+}
