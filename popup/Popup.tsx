@@ -83,13 +83,7 @@ const Popup = () => {
             }}
           />
           <FormControl w="85%" display="flex" alignItems="center">
-            <FormLabel
-              fontWeight="medium"
-              fontFamily="Montserrat"
-              htmlFor="is-pinned"
-            >
-              Pin :
-            </FormLabel>
+            <FormLabel htmlFor="is-pinned">Pin :</FormLabel>
             <Switch
               size="lg"
               colorScheme="teal"
@@ -99,9 +93,6 @@ const Popup = () => {
               id="is-pinned"
             />
           </FormControl>
-          <pre>
-            {JSON.stringify(localStorage.getItem("chakra-ui-color-mode"))}
-          </pre>
           <Button
             isLoading={loading}
             isDisabled={loading}

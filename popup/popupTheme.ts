@@ -7,9 +7,18 @@ const breakpoints = createBreakpoints({
   lg: "64em",
   xl: "80em",
 });
-
+const FormLabel = {
+  baseStyle: {
+    fontWeight: "500",
+    fontFamily: "Raleway",
+  },
+};
 const theme = extendTheme<Theme>({
   breakpoints,
+  components: {
+    FormLabel,
+    Button: FormLabel,
+  },
 });
 
 export default theme;

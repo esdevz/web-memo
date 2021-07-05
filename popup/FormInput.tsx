@@ -17,9 +17,7 @@ const FormInput = ({
 }: FormInputProps) => {
   return (
     <FormControl {...rest}>
-      <FormLabel fontWeight="medium" fontFamily="Montserrat">
-        {id}
-      </FormLabel>
+      <FormLabel>{id}</FormLabel>
       {textField ? <Textarea {...textAreaProps} /> : <Input {...inputProps} />}
     </FormControl>
   );
