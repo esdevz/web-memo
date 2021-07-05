@@ -16,19 +16,6 @@ module.exports = {
       template: path.resolve(__dirname, "..", "popup/index.html"),
     }),
   ],
-  optimization: {
-    runtimeChunk: "single",
-    moduleIds: "deterministic",
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendors",
-          chunks: "all",
-        },
-      },
-    },
-  },
   module: {
     rules: [
       {
