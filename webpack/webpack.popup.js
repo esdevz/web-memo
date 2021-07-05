@@ -7,6 +7,7 @@ module.exports = {
   output: {
     filename: "popup.js",
     path: path.resolve(__dirname, "..", "build/popup"),
+    assetModuleFilename: "assets/[name][ext]",
   },
   resolve: {
     extensions: [".js", ".ts", ".tsx"],
