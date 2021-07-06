@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import Dexie from "dexie";
 
 export interface INote {
+  id?: number;
   title: string;
   website: string;
   favicon: string;
@@ -44,9 +45,9 @@ export function useBackgroundNote() {
   }, []);
 
   const saveNote = useCallback(async () => {
-    const db = new Dexie("web-memo");
+    const db = new Dexie("web-notes");
     db.version(1).stores({
-      notes: "++id ,title , website ,favicon ,content,createdAt",
+      notes: "++id ,title , website ,content,createdAt",
     });
     setLoading(true);
     try {
