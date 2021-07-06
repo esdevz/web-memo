@@ -9,6 +9,15 @@ export const initialNoteState = {
   isPinned: false,
 };
 
+function getHostName(url: string) {
+  try {
+    let hostName = new URL(url).hostname;
+    return hostName;
+  } catch {
+    return "notes";
+  }
+}
+
 interface BackgroundWindow extends Window {
   bgNote: any;
 }
@@ -27,7 +36,7 @@ browser.menus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === SAVE_NOTE_ID) {
     let note = {
       title: tab?.title || "",
-      website: tab?.url || "",
+      website: getHostName(tab?.url || ""),
       favicon: tab?.favIconUrl || "",
       content: info.selectionText || "",
       isPinned: false,
