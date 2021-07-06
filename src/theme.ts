@@ -31,9 +31,15 @@ const theme = extendTheme<Theme>({
   config,
   styles: {
     global: {
-      h3: {
+      h2: {
         fontSize: "1.3em",
         fontWeight: "600",
+        fontFamily: "Montserrat",
+      },
+      h3: {
+        fontSize: "1em",
+        fontWeight: "500",
+        fontFamily: "Raleway",
       },
       em: {
         fontSize: "xs",
