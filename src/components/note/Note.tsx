@@ -1,8 +1,12 @@
 import { Heading, Text, Grid, GridItem } from "@chakra-ui/react";
 import NoteOptions from "./NoteOptions";
 import styled from "@emotion/styled";
+import { INote } from "../../store/types";
 
-const Note = () => {
+const Note = ({ note }: NoteProps) => {
+  if (note.createdAt === 0) {
+    return null;
+  }
   return (
     <StyledNote
       as="article"
@@ -10,10 +14,11 @@ const Note = () => {
       templateRows="repeat(4, 1fr)"
       templateColumns="repeat(1, 1fr)"
       gap={2}
+      m="1"
     >
-      <GridItem rowSpan={1}>
+      <GridItem rowSpan={1} maxW="315px">
         <Heading as="h1" size="md" isTruncated>
-          Lorem ipsum dolor sit amet.
+          {note.title}
         </Heading>
       </GridItem>
 
@@ -22,17 +27,12 @@ const Note = () => {
           fontSize="smaller"
           sx={{
             display: "-webkit-box",
-            WebkitLineClamp: "3",
+            WebkitLineClamp: "6",
             WebkitBoxOrient: "vertical",
           }}
           overflow="hidden"
         >
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis,
-          id. Cupiditate delectus aperiam doloribus nulla consequuntur
-          temporibus aut quidem tempora, voluptatum unde animi aliquam eveniet
-          ducimus assumenda, perspiciatis doloremque magnam quos facere. Sit
-          iure id consequuntur voluptates illo quo quis optio adipisci quas a
-          alias officiis, placeat, natus vitae? Id!
+          {note.content}
         </Text>
       </GridItem>
 
@@ -43,7 +43,7 @@ const Note = () => {
         rowSpan={1}
       >
         <Text as="em" fontSize="xs">
-          Lorem ipsum dolor sit.
+          {note.createdAt}
         </Text>
         <NoteOptions />
       </GridItem>
@@ -53,15 +53,12 @@ const Note = () => {
 
 export default Note;
 
-// interface NoteProps {
-//   title: string;
-//   created_at: string;
-//   body: string;
-//   isPinned: boolean;
-// }
+interface NoteProps {
+  note: INote;
+}
 
 const StyledNote = styled(Grid)`
-  width: 310px;
-  height: 180px;
+  width: 340px;
+  height: 250px;
   padding: 10px;
 `;

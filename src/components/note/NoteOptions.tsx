@@ -5,7 +5,7 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { BiDotsVerticalRounded, BiPalette, BiPin, BiX } from "react-icons/bi";
+import { BiDotsVerticalRounded, BiPin, BiX } from "react-icons/bi";
 import { FiEdit } from "react-icons/fi";
 
 const NoteOptions = () => {
@@ -18,18 +18,9 @@ const NoteOptions = () => {
         variant="outline"
       />
       <MenuList>
-        <MenuItem icon={<BiPin />} command="⌘T">
-          Pin
-        </MenuItem>
-        <MenuItem icon={<FiEdit />} command="⌘O">
-          Edit
-        </MenuItem>
-        <MenuItem icon={<BiPalette />} command="⌘⇧N">
-          Change Color
-        </MenuItem>
-        <MenuItem icon={<BiX />} command="⌘N">
-          Delete
-        </MenuItem>
+        <MenuItem icon={<BiPin />}>Pin</MenuItem>
+        <MenuItem icon={<FiEdit />}>Edit</MenuItem>
+        <MenuItem icon={<BiX />}>Delete</MenuItem>
       </MenuList>
     </Menu>
   );
