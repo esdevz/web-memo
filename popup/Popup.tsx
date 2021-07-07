@@ -1,6 +1,8 @@
 import {
   Box,
   VStack,
+  HStack,
+  Text,
   Button,
   FormControl,
   FormLabel,
@@ -32,6 +34,7 @@ const Popup = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await saveNote();
+
     setNote(initialNoteState);
   };
 
@@ -82,6 +85,20 @@ const Popup = () => {
               h: "11em",
             }}
           />
+          <HStack w="85%" justifyContent="space-between">
+            <Text as="h3" colorScheme="messenger">
+              Collection : {note.website}
+            </Text>
+            <Button
+              onClick={() => setNote(initialNoteState)}
+              ml="auto"
+              colorScheme="teal"
+              w="7ch"
+              type="button"
+            >
+              Clear
+            </Button>
+          </HStack>
           <FormControl w="85%" display="flex" alignItems="center">
             <FormLabel htmlFor="is-pinned">Pin :</FormLabel>
             <Switch
@@ -108,17 +125,3 @@ const Popup = () => {
   );
 };
 export default Popup;
-
-interface INote {
-  title: string;
-  website: string;
-  favicon: string;
-  content: string;
-  createdAt: number;
-  isPinned: boolean;
-}
-declare global {
-  interface Window {
-    bgNote: INote;
-  }
-}
