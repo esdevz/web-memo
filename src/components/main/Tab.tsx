@@ -4,7 +4,10 @@ import useNoteStore from "../../store/noteStore";
 import { INote } from "../../store/types";
 
 const Tab = (props: SidebarProps) => {
-  const setActiveTab = useNoteStore((state) => state.setActiveTab);
+  const [setActiveTab, activeTab] = useNoteStore((state) => [
+    state.setActiveTab,
+    state.activeTab,
+  ]);
 
   const toggleActiveTab = () => {
     setActiveTab(props.note.website);
@@ -20,6 +23,7 @@ const Tab = (props: SidebarProps) => {
       tabIndex={0}
       w="full"
       h="2.7em"
+      colorScheme={activeTab === props.note.website ? "yellow" : "gray"}
     >
       {props.note.favicon && (
         <Image mr="2ch" borderRadius="50%" w="2rem" src={props.note.favicon} />

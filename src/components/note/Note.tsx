@@ -1,4 +1,4 @@
-import { Heading, Text, Grid, GridItem } from "@chakra-ui/react";
+import { Text, Grid, GridItem } from "@chakra-ui/react";
 import NoteOptions from "./NoteOptions";
 import styled from "@emotion/styled";
 import { INote } from "../../store/types";
@@ -15,22 +15,23 @@ const Note = ({ note }: NoteProps) => {
       templateColumns="repeat(1, 1fr)"
       gap={2}
       m="1"
+      border="1px solid rgba(128, 128, 128, 0.34)"
     >
       <GridItem rowSpan={1} maxW="315px">
-        <Heading as="h1" size="md" isTruncated>
+        <Text as="h2" isTruncated>
           {note.title}
-        </Heading>
+        </Text>
       </GridItem>
 
       <GridItem rowSpan={2}>
         <Text
-          fontSize="smaller"
           sx={{
             display: "-webkit-box",
             WebkitLineClamp: "6",
             WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            whiteSpace: "pre-wrap",
           }}
-          overflow="hidden"
         >
           {note.content}
         </Text>
@@ -43,7 +44,11 @@ const Note = ({ note }: NoteProps) => {
         rowSpan={1}
       >
         <Text as="em" fontSize="xs">
-          {note.createdAt}
+          {new Date(note.createdAt).toLocaleString(navigator.language, {
+            weekday: "short",
+            month: "short",
+            hour: "numeric",
+          })}
         </Text>
         <NoteOptions />
       </GridItem>
