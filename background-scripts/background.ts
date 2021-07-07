@@ -1,13 +1,15 @@
 const SAVE_NOTE_ID = "save-as-note";
 
-export const initialNoteState = {
+const initialNoteState = {
   title: "",
-  website: "",
+  website: "notes",
   favicon: "",
   content: "",
   createdAt: 0,
   isPinned: false,
 };
+
+let backgroundNote = initialNoteState;
 
 function getHostName(url: string) {
   try {
@@ -17,14 +19,6 @@ function getHostName(url: string) {
     return "notes";
   }
 }
-
-interface BackgroundWindow extends Window {
-  bgNote: any;
-}
-
-declare const window: BackgroundWindow;
-
-window.bgNote = initialNoteState;
 
 browser.menus.create({
   id: SAVE_NOTE_ID,
@@ -42,7 +36,14 @@ browser.menus.onClicked.addListener(async (info, tab) => {
       isPinned: false,
       createdAt: Date.now(),
     };
-    window.bgNote = note;
+    backgroundNote = note;
     await browser.browserAction.openPopup();
   }
 });
+
+browser.runtime.onMessage.addListener((_, __, sendResponse) => {
+  sendResponse(backgroundNote);
+  backgroundNote = initialNoteState;
+});
+
+export {};

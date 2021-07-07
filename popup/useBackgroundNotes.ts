@@ -11,15 +11,9 @@ export interface INote {
   isPinned: boolean;
 }
 
-declare global {
-  interface Window {
-    bgNote: INote;
-  }
-}
-
 export const initialNoteState: INote = {
   title: "",
-  website: "",
+  website: "notes",
   favicon: "",
   content: "",
   createdAt: 0,
@@ -31,17 +25,17 @@ export function useBackgroundNote() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    browser.runtime
-      .getBackgroundPage()
-      .then((window) => {
-        if (window.bgNote) {
-          setNote(window.bgNote);
-        }
-      })
-      .catch((err) => {
+    const sending = browser.runtime.sendMessage({
+      note: "getting note...",
+    });
+    sending.then(
+      (backgroundNote: INote) => {
+        setNote(backgroundNote);
+      },
+      (err) => {
         console.log(err);
-        return;
-      });
+      }
+    );
   }, []);
 
   const saveNote = useCallback(async () => {
@@ -51,7 +45,7 @@ export function useBackgroundNote() {
     });
     setLoading(true);
     try {
-      await db.table("notes").put(note);
+      await db.table("notes").put({ ...note, createdAt: Date.now() });
       setLoading(false);
       return {
         msg: "note saved",
