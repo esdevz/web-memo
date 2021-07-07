@@ -14,7 +14,7 @@ const InitApp: FC = (props) => {
 
   useEffect(() => {
     getNotesCallback().then(() => setLoading(false));
-  });
+  }, [getNotesCallback]);
   if (loading) {
     return <div> loading... </div>;
   }
