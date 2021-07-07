@@ -19,6 +19,18 @@ const theme = extendTheme<Theme>({
     FormLabel,
     Button: FormLabel,
   },
+  styles: {
+    global: {
+      h3: {
+        fontSize: "1em",
+        fontWeight: "500",
+        fontFamily: "Raleway",
+      },
+      em: {
+        fontSize: "xs",
+      },
+    },
+  },
 });
 
 export default theme;
