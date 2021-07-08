@@ -2,6 +2,7 @@ import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { DarkModeSwitch } from "./components/main/DarkModeSwitch";
 import Tab from "./components/main/Tab";
 import Note from "./components/note/Note";
+
 import useNoteStore from "./store/noteStore";
 
 const App = () => {
@@ -41,6 +42,7 @@ const App = () => {
           ))}
         </GridItem>
         <GridItem
+          pos="relative"
           role="tabpanel"
           tabIndex={0}
           as="section"
