@@ -23,7 +23,7 @@ const Tab = (props: SidebarProps) => {
       tabIndex={0}
       w="full"
       h="2.7em"
-      colorScheme={activeTab === props.note.website ? "yellow" : "gray"}
+      colorScheme={activeTab === props.note.website ? "facebook" : "gray"}
     >
       {props.note.favicon && (
         <Image mr="2ch" borderRadius="50%" w="2rem" src={props.note.favicon} />
