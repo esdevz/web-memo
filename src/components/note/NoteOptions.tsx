@@ -1,29 +1,25 @@
-import {
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
-import { BiDotsVerticalRounded, BiPin, BiX } from "react-icons/bi";
-import { FiEdit } from "react-icons/fi";
+import { HStack, Button } from "@chakra-ui/react";
+import { BiPin, BiX } from "react-icons/bi";
+import { FiSave } from "react-icons/fi";
 
-const NoteOptions = () => {
+const NoteOptions = ({ save }: NoteOptionProps) => {
   return (
-    <Menu>
-      <MenuButton
-        as={IconButton}
-        aria-label="Options"
-        icon={<BiDotsVerticalRounded />}
-        variant="outline"
-      />
-      <MenuList>
-        <MenuItem icon={<BiPin />}>Pin</MenuItem>
-        <MenuItem icon={<FiEdit />}>Edit</MenuItem>
-        <MenuItem icon={<BiX />}>Delete</MenuItem>
-      </MenuList>
-    </Menu>
+    <HStack spacing="1">
+      <Button colorScheme="teal" size="sm" onClick={save} leftIcon={<FiSave />}>
+        Save
+      </Button>
+      <Button colorScheme="yellow" size="sm" leftIcon={<BiPin />}>
+        Pin
+      </Button>
+      <Button colorScheme="darkpink" size="sm" leftIcon={<BiX />}>
+        Delete
+      </Button>
+    </HStack>
   );
 };
 
 export default NoteOptions;
+
+interface NoteOptionProps {
+  save: () => void;
+}
