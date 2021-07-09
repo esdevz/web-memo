@@ -1,16 +1,27 @@
-import { HStack, Button } from "@chakra-ui/react";
-import { BiPin, BiX } from "react-icons/bi";
+import { HStack, Button, IconButton } from "@chakra-ui/react";
+import { BiX } from "react-icons/bi";
 import { FiSave } from "react-icons/fi";
+import { RiPushpinLine } from "react-icons/ri";
 
-const NoteOptions = ({ save }: NoteOptionProps) => {
+const NoteOptions = (props: NoteOptionProps) => {
   return (
     <HStack spacing="1">
-      <Button colorScheme="teal" size="sm" onClick={save} leftIcon={<FiSave />}>
+      <Button
+        isLoading={props.savingState}
+        colorScheme="teal"
+        size="sm"
+        onClick={props.save}
+        leftIcon={<FiSave />}
+      >
         Save
       </Button>
-      <Button colorScheme="yellow" size="sm" leftIcon={<BiPin />}>
-        Pin
-      </Button>
+      <IconButton
+        size="sm"
+        colorScheme={props.isPinned ? "yellow" : "gray"}
+        icon={<RiPushpinLine />}
+        aria-label="pin"
+        onClick={props.pin}
+      />
       <Button colorScheme="darkpink" size="sm" leftIcon={<BiX />}>
         Delete
       </Button>
@@ -21,5 +32,8 @@ const NoteOptions = ({ save }: NoteOptionProps) => {
 export default NoteOptions;
 
 interface NoteOptionProps {
-  save: () => void;
+  save: () => Promise<void>;
+  savingState: boolean;
+  pin: () => Promise<void>;
+  isPinned: boolean;
 }
