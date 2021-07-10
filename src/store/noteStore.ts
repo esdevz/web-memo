@@ -79,20 +79,18 @@ const useNoteStore = create<NoteStore>((set) => ({
     }));
   },
   async pin(note) {
-    const updates = await db
+    set((state) => ({
+      ...state,
+      notes: {
+        ...state.notes,
+        [note.website]: state.notes[note.website].map((n) =>
+          n.id === note.id ? { ...n, isPinned: !n.isPinned } : n
+        ),
+      },
+    }));
+    await db
       .table(DB_NAME)
       .update(note.id, { ...note, isPinned: !note.isPinned });
-    if (updates) {
-      set((state) => ({
-        ...state,
-        notes: {
-          ...state.notes,
-          [note.website]: state.notes[note.website].map((n) =>
-            n.id === note.id ? { ...n, isPinned: !n.isPinned } : n
-          ),
-        },
-      }));
-    }
   },
 }));
 
