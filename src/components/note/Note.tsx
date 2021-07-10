@@ -6,9 +6,11 @@ import {
   useBoolean,
   useColorMode,
   IconButton,
+  HStack,
 } from "@chakra-ui/react";
 import NoteOptions from "./NoteOptions";
 import { IoOpen, IoArrowBack } from "react-icons/io5";
+import { RiPushpinLine } from "react-icons/ri";
 import { INote } from "../../store/types";
 
 import { useRef } from "react";
@@ -16,21 +18,28 @@ import useNoteStore from "../../store/noteStore";
 
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
-  const [open, setOpen] = useBoolean();
-  const [editNote] = useNoteStore((state) => [state.edit]);
+  const [open, setOpen] = useBoolean(false);
+  const [editNote, pin] = useNoteStore((state) => [state.edit, state.pin]);
+  const [loading, setLoading] = useBoolean(false);
 
   const contentRef = useRef<HTMLParagraphElement>(null);
   const TitleRef = useRef<HTMLHeadingElement>(null);
   const { colorMode } = useColorMode();
 
-  const saveNote = () => {
+  const saveNote = async () => {
     let editedNote = {
       ...note,
       createdAt: Date.now(),
       content: contentRef.current?.innerText || "...",
       title: TitleRef.current?.innerText || "Empty note",
     };
-    editNote(editedNote);
+    setLoading.on();
+    await editNote(editedNote);
+    setLoading.off();
+  };
+
+  const pinNote = async () => {
+    await pin(note);
   };
 
   if (note.createdAt === 0) {
@@ -38,9 +47,10 @@ const Note = ({ note }: NoteProps) => {
   }
   return (
     <Grid
-      pos={open ? "absolute" : "static"}
-      w={open ? "88%" : "340px"}
+      pos={open ? "fixed" : "static"}
+      w={open ? "69%" : "340px"}
       h={open ? "95%" : "255px"}
+      top={open ? 0 : undefined}
       p="2.5"
       as="article"
       shadow="md"
@@ -52,9 +62,6 @@ const Note = ({ note }: NoteProps) => {
       transition="all 0.2s ease-in-out"
       zIndex={open ? 2 : undefined}
       bgColor={colorMode === "dark" ? "gray.800" : "white"}
-      contentEditable={open}
-      spellCheck="false"
-      outline="0px solid transparent"
     >
       <GridItem
         display="flex"
@@ -73,7 +80,14 @@ const Note = ({ note }: NoteProps) => {
             mr="1"
           />
         )}
-        <Text ref={TitleRef} as="h2" isTruncated>
+        <Text
+          contentEditable={open}
+          spellCheck="false"
+          outline="0px solid transparent"
+          ref={TitleRef}
+          as="h2"
+          isTruncated
+        >
           {note.title}
         </Text>
       </GridItem>
@@ -85,7 +99,13 @@ const Note = ({ note }: NoteProps) => {
         whiteSpace="pre-wrap"
         rowSpan={open ? 8 : 2}
       >
-        <Text ref={contentRef} maxW="75ch">
+        <Text
+          contentEditable={open}
+          spellCheck="false"
+          outline="0px solid transparent"
+          ref={contentRef}
+          maxW="75ch"
+        >
           {note.content}
         </Text>
       </GridItem>
@@ -106,15 +126,24 @@ const Note = ({ note }: NoteProps) => {
           })}
         </Text>
         {open ? (
-          <NoteOptions save={saveNote} />
+          <NoteOptions savingState={loading} save={saveNote} />
         ) : (
-          <IconButton
-            size="sm"
-            colorScheme="messenger"
-            icon={<IoOpen />}
-            aria-label="open"
-            onClick={() => setOpen.on()}
-          />
+          <HStack spacing="0.5">
+            <IconButton
+              size="sm"
+              colorScheme={note.isPinned ? "yellow" : "gray"}
+              icon={<RiPushpinLine />}
+              aria-label="pin"
+              onClick={pinNote}
+            />
+            <IconButton
+              size="sm"
+              colorScheme="messenger"
+              icon={<IoOpen />}
+              aria-label="open"
+              onClick={() => setOpen.on()}
+            />
+          </HStack>
         )}
       </GridItem>
     </Grid>
