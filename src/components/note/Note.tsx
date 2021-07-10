@@ -19,7 +19,11 @@ import useNoteStore from "../../store/noteStore";
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
   const [open, setOpen] = useBoolean(false);
-  const [editNote, pin] = useNoteStore((state) => [state.edit, state.pin]);
+  const [editNote, pin, del] = useNoteStore((state) => [
+    state.edit,
+    state.pin,
+    state.delete,
+  ]);
   const [loading, setLoading] = useBoolean(false);
 
   const contentRef = useRef<HTMLParagraphElement>(null);
@@ -40,6 +44,10 @@ const Note = ({ note }: NoteProps) => {
 
   const pinNote = async () => {
     await pin(note);
+  };
+
+  const deleteNote = async () => {
+    await del(note);
   };
 
   if (note.createdAt === 0) {
@@ -126,7 +134,11 @@ const Note = ({ note }: NoteProps) => {
           })}
         </Text>
         {open ? (
-          <NoteOptions savingState={loading} save={saveNote} />
+          <NoteOptions
+            delete={deleteNote}
+            savingState={loading}
+            save={saveNote}
+          />
         ) : (
           <HStack spacing="0.5">
             <IconButton

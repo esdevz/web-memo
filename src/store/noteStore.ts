@@ -67,16 +67,27 @@ const useNoteStore = create<NoteStore>((set) => ({
     }
   },
   async delete(note) {
+    set((state) => {
+      let newCollection = state.notes[note.website].filter(
+        (n) => n.id !== note.id
+      );
+      if (newCollection.length === 0) {
+        delete state.notes[note.website];
+        return {
+          ...state,
+          activeTab: "notes",
+        };
+      } else {
+        return {
+          ...state,
+          notes: {
+            ...state.notes,
+            [note.website]: newCollection,
+          },
+        };
+      }
+    });
     await db.table(DB_NAME).delete(note.id!);
-    set((state) => ({
-      ...state,
-      notes: {
-        ...state.notes,
-        [note.website]: state.notes[note.website].filter(
-          (n) => n.id !== note.id
-        ),
-      },
-    }));
   },
   async pin(note) {
     set((state) => ({
