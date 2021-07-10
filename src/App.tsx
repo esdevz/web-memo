@@ -1,8 +1,11 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { useMemo } from "react";
 import { DarkModeSwitch } from "./components/main/DarkModeSwitch";
 import Tab from "./components/main/Tab";
 import Note from "./components/note/Note";
-
+import NotesContainer from "./components/note/NotesContainer";
+import NoteSection from "./components/note/NoteSection";
+import Separator from "./components/note/NoteSeparator";
 import useNoteStore from "./store/noteStore";
 
 const App = () => {
@@ -10,6 +13,15 @@ const App = () => {
     state.notes,
     state.activeTab,
   ]);
+
+  const pinnedNote = useMemo(() => {
+    return notes[activeTab].filter((note) => note.isPinned);
+  }, [activeTab, notes]);
+
+  const otherNotes = useMemo(() => {
+    return notes[activeTab].filter((note) => !note.isPinned);
+  }, [activeTab, notes]);
+
   if (Object.keys(notes).length === 0) {
     return <div>You didn't save any notes yet </div>;
   }
@@ -41,26 +53,28 @@ const App = () => {
             <Tab key={url} note={notes[url][0]} />
           ))}
         </GridItem>
-        <GridItem
-          pos="relative"
-          role="tabpanel"
-          tabIndex={0}
-          as="section"
-          rowSpan={1}
-          colSpan={6}
-          display="grid"
-          gridGap="1"
-          gridTemplateColumns="repeat(auto-fill, 345px)"
-          gridTemplateRows="repeat(auto-fill,265px)"
-          overflow="auto"
-          sx={{
-            scrollbarWidth: "thin",
-          }}
-        >
-          {notes[activeTab].map((note) => (
-            <Note key={note.id} note={note} />
-          ))}
-        </GridItem>
+        <NotesContainer>
+          {pinnedNote.length > 0 && (
+            <>
+              <Separator as="h3" colSpan={1}>
+                Pinned
+              </Separator>
+              <NoteSection>
+                {pinnedNote.map((note) => (
+                  <Note key={note.id} note={note} />
+                ))}
+              </NoteSection>
+              <Separator as="h3" colSpan={1}>
+                Other
+              </Separator>
+            </>
+          )}
+          <NoteSection>
+            {otherNotes.map((note) => (
+              <Note key={note.id} note={note} />
+            ))}
+          </NoteSection>
+        </NotesContainer>
       </Grid>
 
       <DarkModeSwitch />
