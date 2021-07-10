@@ -9,10 +9,10 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import NoteOptions from "./NoteOptions";
-import { IoOpen, IoArrowBack } from "react-icons/io5";
+import { IoArrowBack } from "react-icons/io5";
 import { RiPushpinLine } from "react-icons/ri";
 import { INote } from "../../store/types";
-
+import { TiDocumentDelete } from "react-icons/ti";
 import { useRef } from "react";
 import useNoteStore from "../../store/noteStore";
 
@@ -56,8 +56,8 @@ const Note = ({ note }: NoteProps) => {
   return (
     <Grid
       pos={open ? "fixed" : "static"}
-      w={open ? "69%" : "340px"}
-      h={open ? "95%" : "255px"}
+      w={open ? "69%" : "350px"}
+      h={open ? "95%" : "265px"}
       top={open ? 0 : undefined}
       p="2.5"
       as="article"
@@ -76,7 +76,7 @@ const Note = ({ note }: NoteProps) => {
         alignItems="center"
         justifyContent="flex-start"
         rowSpan={1}
-        maxW={open ? "80%" : "315px"}
+        maxW={open ? "80%" : "325px"}
       >
         {open && (
           <IconButton
@@ -106,6 +106,8 @@ const Note = ({ note }: NoteProps) => {
         noOfLines={open ? undefined : 6}
         whiteSpace="pre-wrap"
         rowSpan={open ? 8 : 2}
+        cursor={open ? undefined : "pointer"}
+        onClick={() => setOpen.on()}
       >
         <Text
           contentEditable={open}
@@ -140,20 +142,20 @@ const Note = ({ note }: NoteProps) => {
             save={saveNote}
           />
         ) : (
-          <HStack spacing="0.5">
+          <HStack spacing="1">
+            <IconButton
+              size="sm"
+              colorScheme="darkpink"
+              icon={<TiDocumentDelete />}
+              aria-label="delete"
+              onClick={deleteNote}
+            />
             <IconButton
               size="sm"
               colorScheme={note.isPinned ? "yellow" : "gray"}
               icon={<RiPushpinLine />}
               aria-label="pin"
               onClick={pinNote}
-            />
-            <IconButton
-              size="sm"
-              colorScheme="messenger"
-              icon={<IoOpen />}
-              aria-label="open"
-              onClick={() => setOpen.on()}
             />
           </HStack>
         )}
