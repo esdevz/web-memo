@@ -45,7 +45,7 @@ const theme = extendTheme<Theme>({
         fontFamily: "Montserrat",
       },
       em: {
-        fontSize: "0.7rem",
+        fontSize: "0.65rem",
         fontFamily: "Montserrat",
       },
     },
