@@ -3,6 +3,7 @@ import { NoteStore } from "./types";
 import Dexie from "dexie";
 import { INote } from "../../popup/useBackgroundNotes";
 
+const updatingError = "an error happened while updating your note";
 const DB_NAME = "notes";
 const db = new Dexie("web-notes");
 db.version(1).stores({
@@ -12,6 +13,7 @@ db.version(1).stores({
 const defaultNote = {
   title: "",
   content: "",
+  fullUrl: "",
   createdAt: 0,
   favicon: "",
   isPinned: false,
@@ -61,9 +63,15 @@ const useNoteStore = create<NoteStore>((set) => ({
           ),
         },
       }));
-      return "note updated";
+      return {
+        type: "success",
+        message: "saved",
+      };
     } else {
-      return "couldn't update note";
+      return {
+        type: "error",
+        message: updatingError,
+      };
     }
   },
   async delete(note) {
@@ -87,7 +95,19 @@ const useNoteStore = create<NoteStore>((set) => ({
         };
       }
     });
-    await db.table(DB_NAME).delete(note.id!);
+    try {
+      await db.table(DB_NAME).delete(note.id!);
+      return {
+        type: "success",
+        message: "deleted",
+      };
+    } catch (err) {
+      console.log(err);
+      return {
+        type: "error",
+        message: "an error happened while deleting",
+      };
+    }
   },
   async pin(note) {
     set((state) => ({
@@ -99,9 +119,19 @@ const useNoteStore = create<NoteStore>((set) => ({
         ),
       },
     }));
-    await db
+    const updates = await db
       .table(DB_NAME)
-      .update(note.id, { ...note, isPinned: !note.isPinned });
+      .update(note.id, { isPinned: !note.isPinned });
+    if (!updates) {
+      return {
+        type: "error",
+        message: updatingError,
+      };
+    }
+    return {
+      type: "success",
+      message: `${note.isPinned ? "Unpinned" : "Pinned"}`,
+    };
   },
 }));
 

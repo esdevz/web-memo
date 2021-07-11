@@ -7,6 +7,8 @@ import {
   useColorMode,
   IconButton,
   HStack,
+  Link,
+  useToast,
 } from "@chakra-ui/react";
 import NoteOptions from "./NoteOptions";
 import { IoArrowBack } from "react-icons/io5";
@@ -29,25 +31,43 @@ const Note = ({ note }: NoteProps) => {
   const contentRef = useRef<HTMLParagraphElement>(null);
   const TitleRef = useRef<HTMLHeadingElement>(null);
   const { colorMode } = useColorMode();
+  const toast = useToast();
 
   const saveNote = async () => {
     let editedNote = {
       ...note,
       createdAt: Date.now(),
       content: contentRef.current?.innerText || "...",
-      title: TitleRef.current?.innerText || "Empty note",
+      title: TitleRef.current?.innerText || "...",
     };
     setLoading.on();
-    await editNote(editedNote);
+    const feedback = await editNote(editedNote);
     setLoading.off();
+    toast({
+      title: feedback.message,
+      status: feedback.type,
+      duration: 1500,
+    });
   };
 
   const pinNote = async () => {
-    await pin(note);
+    const feedback = await pin(note);
+    feedback.type === "error" &&
+      toast({
+        title: feedback.message,
+        status: feedback.type,
+        duration: 1500,
+      });
   };
 
   const deleteNote = async () => {
-    await del(note);
+    const feedback = await del(note);
+    feedback.type === "error" &&
+      toast({
+        title: feedback.message,
+        status: feedback.type,
+        duration: 1500,
+      });
   };
 
   if (note.createdAt === 0) {
@@ -126,15 +146,31 @@ const Note = ({ note }: NoteProps) => {
         justifyContent="space-between"
         rowSpan={1}
       >
-        <Text as="em" fontSize="xs" color={emColor}>
-          {new Date(note.createdAt).toLocaleString(navigator.language, {
-            year: "numeric",
-            month: "short",
-            weekday: "short",
-            hour: "numeric",
-            minute: "2-digit",
-          })}
-        </Text>
+        <HStack spacing="3">
+          <Text as="em" fontSize="xs" color={emColor}>
+            {new Date(note.createdAt).toLocaleString(navigator.language, {
+              year: "numeric",
+              month: "short",
+              weekday: "short",
+              hour: "numeric",
+              minute: "2-digit",
+            })}
+          </Text>
+          {open && note.fullUrl && (
+            <Link
+              maxW="md"
+              fontSize="xs"
+              fontFamily="Montserrat"
+              isTruncated
+              referrerPolicy="no-referrer"
+              isExternal
+              href={note.fullUrl}
+            >
+              {note.fullUrl}
+            </Link>
+          )}
+        </HStack>
+
         {open ? (
           <NoteOptions
             delete={deleteNote}
