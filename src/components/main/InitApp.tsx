@@ -5,16 +5,11 @@ import useNoteStore from "../../store/noteStore";
 
 const InitApp: FC = (props) => {
   const [loading, setLoading] = useState(true);
-  const getNotes = useNoteStore((state) => state.getNotes);
-
-  const getNotesCallback = useCallback(
-    async () => await getNotes(),
-    [getNotes]
-  );
+  const getNotes = useNoteStore(useCallback((state) => state.getNotes, []));
 
   useEffect(() => {
-    getNotesCallback().then(() => setLoading(false));
-  }, [getNotesCallback]);
+    getNotes().then(() => setLoading(false));
+  }, [getNotes]);
   if (loading) {
     return <div> loading... </div>;
   }
