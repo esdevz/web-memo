@@ -34,7 +34,6 @@ const Popup = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await saveNote();
-
     setNote(initialNoteState);
   };
 
