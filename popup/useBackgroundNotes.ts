@@ -5,6 +5,7 @@ export interface INote {
   id?: number;
   title: string;
   website: string;
+  fullUrl: string;
   favicon: string;
   content: string;
   createdAt: number;
@@ -14,6 +15,7 @@ export interface INote {
 export const initialNoteState: INote = {
   title: "",
   website: "notes",
+  fullUrl: "",
   favicon: "",
   content: "",
   createdAt: 0,
@@ -26,7 +28,7 @@ export function useBackgroundNote() {
 
   useEffect(() => {
     const sending = browser.runtime.sendMessage({
-      note: "getting note...",
+      msg: "GET_NOTE",
     });
     sending.then(
       (backgroundNote: INote) => {

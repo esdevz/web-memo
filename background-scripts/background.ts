@@ -3,6 +3,7 @@ const SAVE_NOTE_ID = "save-as-note";
 const initialNoteState = {
   title: "",
   website: "notes",
+  fullUrl: "",
   favicon: "",
   content: "",
   createdAt: 0,
@@ -31,6 +32,7 @@ browser.menus.onClicked.addListener(async (info, tab) => {
     let note = {
       title: tab?.title || "",
       website: getHostName(tab?.url || ""),
+      fullUrl: tab?.url || "",
       favicon: tab?.favIconUrl || "",
       content: info.selectionText || "",
       isPinned: false,
@@ -41,9 +43,11 @@ browser.menus.onClicked.addListener(async (info, tab) => {
   }
 });
 
-browser.runtime.onMessage.addListener((_, __, sendResponse) => {
-  sendResponse(backgroundNote);
-  backgroundNote = initialNoteState;
+browser.runtime.onMessage.addListener((request, __, sendResponse) => {
+  if (request.msg === "GET_NOTE") {
+    sendResponse(backgroundNote);
+    backgroundNote = initialNoteState;
+  }
 });
 
 export {};
