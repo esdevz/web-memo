@@ -29,6 +29,11 @@ const theme = extendTheme<Theme>({
   breakpoints,
   styles: {
     global: {
+      h1: {
+        fontSize: "1.4rem",
+        fontFamily: "Raleway",
+        fontWeight: "normal",
+      },
       h2: {
         fontSize: "1rem",
         fontWeight: "600",
