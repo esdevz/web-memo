@@ -21,7 +21,7 @@
   "permissions": ["storage", "menus", "contextMenus", "tabs"],
   "browser_specific_settings": {
     "gecko": {
-      "id": "web-notes@w.h.com"
+      "id": "web-memo@w.h.com"
     }
   }
 }
