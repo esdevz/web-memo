@@ -14,6 +14,7 @@ const NotesContainer = (props: { children: ReactNode }) => {
       gridGap="1"
       gridTemplateColumns="1fr"
       gridAutoRows="max-content"
+      borderLeft="1px solid rgba(128, 128, 128, 0.34)"
       overflow="auto"
       sx={{
         scrollbarWidth: "thin",
