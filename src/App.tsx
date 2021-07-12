@@ -1,6 +1,9 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { useCallback } from "react";
+import { useEffect } from "react";
 import { useMemo } from "react";
 import { DarkModeSwitch } from "./components/main/DarkModeSwitch";
+import EmptyCollection from "./components/main/EmptyCollection";
 import Tab from "./components/main/Tab";
 import Note from "./components/note/Note";
 import NotesContainer from "./components/note/NotesContainer";
@@ -9,10 +12,17 @@ import Separator from "./components/note/NoteSeparator";
 import useNoteStore from "./store/noteStore";
 
 const App = () => {
-  const [notes, activeTab] = useNoteStore((state) => [
-    state.notes,
-    state.activeTab,
-  ]);
+  const [notes, activeTab, addNewNote] = useNoteStore(
+    useCallback((state) => [state.notes, state.activeTab, state.addNewNote], [])
+  );
+
+  useEffect(() => {
+    browser.runtime.onMessage.addListener((request) => {
+      if (request.msg === "NEW_NOTE") {
+        addNewNote();
+      }
+    });
+  }, [addNewNote]);
 
   const pinnedNote = useMemo(() => {
     return notes[activeTab].filter((note) => note.isPinned);
@@ -22,9 +32,6 @@ const App = () => {
     return notes[activeTab].filter((note) => !note.isPinned);
   }, [activeTab, notes]);
 
-  if (Object.keys(notes).length === 0) {
-    return <div>You didn't save any notes yet </div>;
-  }
   return (
     <Box as="main" w="100vw" h="100vh">
       <Grid
@@ -54,6 +61,7 @@ const App = () => {
           ))}
         </GridItem>
         <NotesContainer>
+          <EmptyCollection notes={notes} />
           {pinnedNote.length > 0 && (
             <>
               <Separator as="h3" colSpan={1}>

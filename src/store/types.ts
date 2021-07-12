@@ -18,6 +18,7 @@ export interface NoteStore {
   notes: Record<string, INote[]>;
   activeTab: string;
   setActiveTab: (url: string) => void;
+  addNewNote: () => Promise<void>;
   getNotes: () => Promise<void>;
   edit: (note: INote) => Promise<NotificationMessage>;
   delete: (note: INote) => Promise<NotificationMessage>;

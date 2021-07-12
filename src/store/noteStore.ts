@@ -1,10 +1,14 @@
 import create from "zustand";
 import { NoteStore } from "./types";
 import Dexie from "dexie";
-import { INote } from "../../popup/useBackgroundNotes";
+import { INote } from "./types";
+
+export const DB_NAME = "notes";
+export const defaultState = (notes: Record<string, INote[]>): boolean => {
+  return Object.keys(notes).length === 1 && notes[DB_NAME].length === 1;
+};
 
 const updatingError = "an error happened while updating your note";
-const DB_NAME = "notes";
 const db = new Dexie("web-notes");
 db.version(1).stores({
   notes: "++id ,title,website ,content,createdAt",
@@ -24,8 +28,8 @@ const formatNotes = (noteArray: INote[]): Record<string, INote[]> => {
   return noteArray.reduce(
     (notes: Record<string, INote[]>, currentNote) => {
       notes[currentNote.website] = [
-        ...(notes[currentNote.website] || []),
         currentNote,
+        ...(notes[currentNote.website] || []),
       ];
       return notes;
     },
@@ -44,8 +48,29 @@ const useNoteStore = create<NoteStore>((set) => ({
       activeTab: url,
     }));
   },
+  async addNewNote() {
+    const newNote = await db
+      .table<INote, number>(DB_NAME)
+      .toCollection()
+      .last();
+    if (newNote) {
+      set((state) => {
+        let newCollection = [newNote, ...(state.notes[newNote.website] || [])];
+        return {
+          ...state,
+          notes: {
+            ...state.notes,
+            [newNote.website]: newCollection,
+          },
+        };
+      });
+    }
+  },
   async getNotes() {
-    const fetchedNotes = await db.table<INote, number>("notes").toArray();
+    const fetchedNotes = await db
+      .table<INote, number>(DB_NAME)
+      .orderBy("createdAt")
+      .toArray();
     set((state) => ({
       ...state,
       notes: formatNotes(fetchedNotes),
