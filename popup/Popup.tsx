@@ -34,6 +34,7 @@ const Popup = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await saveNote();
+    browser.runtime.sendMessage({ msg: "NEW_NOTE" });
     setNote(initialNoteState);
   };
 
