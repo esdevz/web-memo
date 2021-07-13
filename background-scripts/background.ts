@@ -23,8 +23,9 @@ function getHostName(url: string) {
 
 browser.menus.create({
   id: SAVE_NOTE_ID,
-  title: "save",
+  title: "Save",
   contexts: ["selection"],
+  documentUrlPatterns: ["*://*/*"],
 });
 
 browser.menus.onClicked.addListener(async (info, tab) => {
