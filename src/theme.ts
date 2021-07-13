@@ -37,7 +37,7 @@ const theme = extendTheme<Theme>({
       h2: {
         fontSize: "1rem",
         fontWeight: "600",
-        fontFamily: "Georgia",
+        fontFamily: "Georgia, sans-serif",
       },
       h3: {
         fontSize: "0.9rem",
