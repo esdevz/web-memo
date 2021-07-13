@@ -15,7 +15,7 @@ module.exports = {
   output: {
     filename: "static/[name].[contenthash].js",
     path: path.resolve(__dirname, "..", "build/popup"),
-    assetModuleFilename: "assets/[name][ext]",
+    assetModuleFilename: "../assets/[name][ext]",
   },
   resolve: {
     extensions: [".js", ".ts", ".tsx"],
