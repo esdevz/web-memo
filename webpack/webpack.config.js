@@ -10,7 +10,15 @@ const env = Object.keys(envParsed).reduce((result, key) => {
 }, {});
 
 module.exports = {
-  entry: path.resolve(__dirname, "..", "src/index.tsx"),
+  entry: {
+    "react-lib": {
+      import: ["react", "react-dom"],
+    },
+    main: {
+      import: path.resolve(__dirname, "..", "src/index.tsx"),
+      dependOn: ["react-lib"],
+    },
+  },
   output: {
     filename: "static/[name].[contenthash].js",
     path: path.resolve(__dirname, "..", "build"),
@@ -32,15 +40,6 @@ module.exports = {
   optimization: {
     runtimeChunk: "single",
     moduleIds: "deterministic",
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendors",
-          chunks: "all",
-        },
-      },
-    },
   },
   module: {
     rules: [

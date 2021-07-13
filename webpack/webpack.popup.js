@@ -3,9 +3,17 @@ const path = require("path");
 
 module.exports = {
   mode: "production",
-  entry: path.resolve(__dirname, "..", "popup/index.tsx"),
+  entry: {
+    "react-lib": {
+      import: ["react", "react-dom"],
+    },
+    popup: {
+      import: path.resolve(__dirname, "..", "popup/index.tsx"),
+      dependOn: ["react-lib"],
+    },
+  },
   output: {
-    filename: "popup.js",
+    filename: "static/[name].[contenthash].js",
     path: path.resolve(__dirname, "..", "build/popup"),
     assetModuleFilename: "assets/[name][ext]",
   },
@@ -17,6 +25,10 @@ module.exports = {
       template: path.resolve(__dirname, "..", "popup/index.html"),
     }),
   ],
+  optimization: {
+    runtimeChunk: "single",
+    moduleIds: "deterministic",
+  },
   module: {
     rules: [
       {
