@@ -4,11 +4,12 @@ import { INote } from "../../store/types";
 
 interface EmptyCollectionProps {
   notes: Record<string, INote[]>;
+  activeTab: string;
 }
 
 const EmptyCollection = (props: EmptyCollectionProps) => {
   const color = useColorModeValue("blue.400", "gray.200");
-  if (defaultState(props.notes)) {
+  if (defaultState(props.notes, props.activeTab)) {
     return (
       <GridItem
         display="grid"

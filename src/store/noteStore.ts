@@ -4,8 +4,15 @@ import Dexie from "dexie";
 import { INote } from "./types";
 
 export const DB_NAME = "notes";
-export const defaultState = (notes: Record<string, INote[]>): boolean => {
-  return Object.keys(notes).length === 1 && notes[DB_NAME].length === 1;
+export const defaultState = (
+  notes: Record<string, INote[]>,
+  activeTab: string
+): boolean => {
+  const initialState =
+    Object.keys(notes).length === 1 && notes[DB_NAME].length === 1;
+  const emptyNotesCollection =
+    notes[DB_NAME].length === 1 && activeTab === DB_NAME;
+  return initialState || emptyNotesCollection;
 };
 
 const updatingError = "an error happened while updating your note";

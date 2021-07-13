@@ -61,7 +61,7 @@ const App = () => {
           ))}
         </GridItem>
         <NotesContainer>
-          <EmptyCollection notes={notes} />
+          <EmptyCollection notes={notes} activeTab={activeTab} />
           {pinnedNote.length > 0 && (
             <>
               <Separator as="h3" colSpan={1}>
