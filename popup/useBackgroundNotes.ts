@@ -1,16 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import Dexie from "dexie";
-
-export interface INote {
-  id?: number;
-  title: string;
-  website: string;
-  fullUrl: string;
-  favicon: string;
-  content: string;
-  createdAt: number;
-  isPinned: boolean;
-}
+import { INote } from "./types";
 
 export const initialNoteState: INote = {
   title: "",
