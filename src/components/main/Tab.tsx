@@ -16,6 +16,7 @@ const Tab = (props: SidebarProps) => {
   return (
     <Button
       onClick={toggleActiveTab}
+      borderRadius="0"
       role="tab"
       display="flex"
       align="center"
