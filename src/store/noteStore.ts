@@ -18,7 +18,7 @@ export const defaultState = (
 const updatingError = "an error happened while updating your note";
 const db = new Dexie("web-notes");
 db.version(1).stores({
-  notes: "++id ,title,website ,content,createdAt",
+  notes: "++id ,title,website ,fullUrl,createdAt",
 });
 
 const defaultNote = {
