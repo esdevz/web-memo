@@ -15,20 +15,20 @@ import { IoArrowBack } from "react-icons/io5";
 import { RiPushpinLine } from "react-icons/ri";
 import { INote } from "../../store/types";
 import { TiDocumentDelete } from "react-icons/ti";
-import { useRef } from "react";
+import { useRef, useCallback } from "react";
 import useNoteStore from "../../store/noteStore";
+import Editable from "./Editable";
+import { dateString, sanitizeHtml } from "../../../utils";
 
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
   const [open, setOpen] = useBoolean(false);
-  const [editNote, pin, del] = useNoteStore((state) => [
-    state.edit,
-    state.pin,
-    state.delete,
-  ]);
+  const [editNote, pin, del] = useNoteStore(
+    useCallback((state) => [state.edit, state.pin, state.delete], [])
+  );
   const [loading, setLoading] = useBoolean(false);
 
-  const contentRef = useRef<HTMLParagraphElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const TitleRef = useRef<HTMLHeadingElement>(null);
   const { colorMode } = useColorMode();
   const toast = useToast();
@@ -37,7 +37,7 @@ const Note = ({ note }: NoteProps) => {
     let editedNote = {
       ...note,
       createdAt: Date.now(),
-      content: contentRef.current?.innerText || "...",
+      content: sanitizeHtml(contentRef.current?.innerHTML),
       title: TitleRef.current?.innerText || "...",
     };
     setLoading.on();
@@ -96,7 +96,7 @@ const Note = ({ note }: NoteProps) => {
         alignItems="center"
         justifyContent="flex-start"
         rowSpan={1}
-        maxW={open ? "80%" : "325px"}
+        maxW={open ? "80ch" : "325px"}
       >
         {open && (
           <IconButton
@@ -111,35 +111,24 @@ const Note = ({ note }: NoteProps) => {
         <Text
           contentEditable={open}
           spellCheck="false"
-          outline="0px solid transparent"
+          _focusVisible={{
+            outline: "2px solid rgba(128, 128, 128, 0.34)",
+            borderRadius: "4px",
+          }}
           ref={TitleRef}
           as="h2"
           isTruncated
+          w="full"
         >
           {note.title}
         </Text>
       </GridItem>
-
-      <GridItem
-        overflow={open ? "auto" : "hidden"}
-        sx={{ scrollbarWidth: "thin" }}
-        noOfLines={open ? undefined : 6}
-        whiteSpace="pre-wrap"
-        rowSpan={open ? 8 : 2}
-        cursor={open ? undefined : "pointer"}
-        onClick={() => setOpen.on()}
-      >
-        <Text
-          contentEditable={open}
-          spellCheck="false"
-          outline="0px solid transparent"
-          ref={contentRef}
-          maxW="75ch"
-        >
-          {note.content}
-        </Text>
-      </GridItem>
-
+      <Editable
+        isOpen={open}
+        html={sanitizeHtml(note.content)}
+        ref={contentRef}
+        onClick={setOpen.on}
+      />
       <GridItem
         display="flex"
         alignItems="center"
@@ -148,13 +137,7 @@ const Note = ({ note }: NoteProps) => {
       >
         <HStack spacing="3">
           <Text as="em" fontSize="xs" color={emColor}>
-            {new Date(note.createdAt).toLocaleString(navigator.language, {
-              year: "numeric",
-              month: "short",
-              weekday: "short",
-              hour: "numeric",
-              minute: "2-digit",
-            })}
+            {dateString(note.createdAt)}
           </Text>
           {open && note.fullUrl && (
             <Link
