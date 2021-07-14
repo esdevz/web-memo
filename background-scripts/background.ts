@@ -1,3 +1,5 @@
+import { getHostName } from "../utils";
+
 const SAVE_NOTE_ID = "save-as-note";
 
 const initialNoteState = {
@@ -11,15 +13,6 @@ const initialNoteState = {
 };
 
 let backgroundNote = initialNoteState;
-
-function getHostName(url: string) {
-  try {
-    let hostName = new URL(url).hostname;
-    return hostName;
-  } catch {
-    return "notes";
-  }
-}
 
 browser.menus.create({
   id: SAVE_NOTE_ID,
