@@ -8,14 +8,14 @@ import {
   FormLabel,
   Switch,
 } from "@chakra-ui/react";
-import { ChangeEvent, FormEvent } from "react";
-
+import { ChangeEvent, FormEvent, useRef } from "react";
 import FormInput from "./FormInput";
 import { initialNoteState, useBackgroundNote } from "./useBackgroundNotes";
+import { getHostName, sanitizeHtml } from "../utils";
 
 const Popup = () => {
   const { note, setNote, saveNote, loading } = useBackgroundNote();
-
+  const contentRef = useRef<HTMLDivElement>(null);
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -31,11 +31,36 @@ const Popup = () => {
     });
   };
 
+  const setUrl = async () => {
+    const [tab] = await browser.tabs.query({
+      active: true,
+    });
+    if (tab.url) {
+      setNote({
+        ...note,
+        favicon: tab.favIconUrl || "",
+        fullUrl: tab.url,
+        website: getHostName(tab.url),
+      });
+    }
+  };
+  const resetNote = () => {
+    setNote(initialNoteState);
+    if (contentRef.current) {
+      contentRef.current.innerHTML = "";
+    }
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await saveNote();
+    let newNote = {
+      ...note,
+      content: sanitizeHtml(contentRef.current?.innerHTML),
+      createdAt: Date.now(),
+    };
+    await saveNote(newNote);
     browser.runtime.sendMessage({ msg: "NEW_NOTE" });
-    setNote(initialNoteState);
+    resetNote();
   };
 
   const openNotes = () => {
@@ -72,44 +97,63 @@ const Popup = () => {
               placeholder: "Title",
             }}
           />
-          <FormInput
-            w="85%"
-            id="Content :"
-            textField
-            textAreaProps={{
-              w: "full",
-              name: "content",
-              value: note.content,
-              onChange: handleChange,
-              placeholder: "Content",
-              h: "11em",
-            }}
-          />
+          <VStack spacing="1" align="flex-start" h="10em" w="85%">
+            <Text as="h3">Content :</Text>
+            <Box
+              ref={contentRef}
+              contentEditable="true"
+              w="full"
+              maxW="full"
+              h="full"
+              border="1px solid rgba(128, 128, 128, 0.34)"
+              borderRadius="1"
+              p="1.5"
+              spellCheck="false"
+              overflow="auto"
+              whiteSpace="pre-wrap"
+              sx={{ scrollbarWidth: "thin" }}
+              _focusVisible={{
+                outline: "2px solid rgb(49, 130, 206)",
+              }}
+            >
+              {note.content}
+            </Box>
+          </VStack>
+
           <HStack w="85%" justifyContent="space-between">
-            <Text as="h3" colorScheme="messenger">
-              Collection : {note.website}
-            </Text>
+            <Text as="h3">Collection : {note.website}</Text>
             <Button
-              onClick={() => setNote(initialNoteState)}
+              onClick={setUrl}
               ml="auto"
               colorScheme="teal"
-              w="7ch"
+              w="13ch"
+              type="button"
+            >
+              Current URL
+            </Button>
+          </HStack>
+          <HStack w="85%" justifyContent="space-between">
+            <FormControl display="flex" alignItems="center">
+              <FormLabel htmlFor="is-pinned">Pin :</FormLabel>
+              <Switch
+                size="lg"
+                colorScheme="teal"
+                name="isPinned"
+                onChange={switchHandler}
+                isChecked={note.isPinned}
+                id="is-pinned"
+              />
+            </FormControl>
+            <Button
+              onClick={resetNote}
+              ml="auto"
+              colorScheme="teal"
+              w="18ch"
               type="button"
             >
               Clear
             </Button>
           </HStack>
-          <FormControl w="85%" display="flex" alignItems="center">
-            <FormLabel htmlFor="is-pinned">Pin :</FormLabel>
-            <Switch
-              size="lg"
-              colorScheme="teal"
-              name="isPinned"
-              onChange={switchHandler}
-              isChecked={note.isPinned}
-              id="is-pinned"
-            />
-          </FormControl>
           <Button
             isLoading={loading}
             isDisabled={loading}

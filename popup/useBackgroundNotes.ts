@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import Dexie from "dexie";
-import { INote } from "./types";
+import { INote } from "../src/store/types";
 
 export const initialNoteState: INote = {
   title: "",
@@ -30,14 +30,14 @@ export function useBackgroundNote() {
     );
   }, []);
 
-  const saveNote = useCallback(async () => {
+  const saveNote = useCallback(async (newNote: INote) => {
     const db = new Dexie("web-notes");
     db.version(1).stores({
-      notes: "++id ,title , website ,content,createdAt",
+      notes: "++id ,title ,website, fullUrl,createdAt",
     });
     setLoading(true);
     try {
-      await db.table("notes").put({ ...note, createdAt: Date.now() });
+      await db.table("notes").put(newNote);
       setLoading(false);
       return {
         msg: "note saved",
@@ -51,7 +51,7 @@ export function useBackgroundNote() {
         state: false,
       };
     }
-  }, [note]);
+  }, []);
 
   return { note, setNote, saveNote, loading };
 }
