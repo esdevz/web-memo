@@ -43,5 +43,3 @@ browser.runtime.onMessage.addListener((request, __, sendResponse) => {
     backgroundNote = initialNoteState;
   }
 });
-
-export {};
