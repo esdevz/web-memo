@@ -1,8 +1,8 @@
 import { sanitize, Config } from "dompurify";
 
 const sanitizeOptions: Config = {
-  ALLOWED_TAGS: ["img", "br", "em", "strong", "sup", "sub"],
-  ALLOWED_ATTR: ["src"],
+  ALLOWED_TAGS: ["img", "br", "em", "strong", "sup", "sub", "span", "p"],
+  ALLOWED_ATTR: ["src", "style"],
 };
 
 export function getHostName(url: string) {
