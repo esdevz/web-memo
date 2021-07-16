@@ -110,7 +110,8 @@ const Popup = () => {
               p="1.5"
               spellCheck="false"
               overflow="auto"
-              whiteSpace="pre-wrap"
+              whiteSpace="break-spaces"
+              lineHeight="1.7"
               sx={{ scrollbarWidth: "thin" }}
               _focusVisible={{
                 outline: "2px solid rgb(49, 130, 206)",

@@ -47,11 +47,11 @@ const theme = extendTheme<Theme>({
       p: {
         fontSize: "0.8rem",
         fontWeight: "normal",
-        fontFamily: "Montserrat",
+        fontFamily: "Open Sans",
       },
       em: {
         fontSize: "0.65rem",
-        fontFamily: "Montserrat",
+        fontFamily: "Open Sans",
       },
     },
   },

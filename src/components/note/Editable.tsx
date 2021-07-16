@@ -11,7 +11,7 @@ const Editable = forwardRef(
       overflow={isOpen ? "auto" : "hidden"}
       sx={{ scrollbarWidth: "thin" }}
       noOfLines={isOpen ? undefined : 6}
-      whiteSpace="pre-wrap"
+      whiteSpace="break-spaces"
       rowSpan={isOpen ? 8 : 2}
       cursor={isOpen ? undefined : "pointer"}
       p="1.5"
@@ -22,9 +22,10 @@ const Editable = forwardRef(
       contentEditable={isOpen}
       spellCheck="false"
       maxW="80ch"
-      fontFamily="Montserrat"
+      fontFamily="Open Sans"
       fontWeight="normal"
       fontSize="0.8rem"
+      lineHeight="1.7"
       dangerouslySetInnerHTML={{
         __html: html,
       }}

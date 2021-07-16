@@ -143,7 +143,7 @@ const Note = ({ note }: NoteProps) => {
             <Link
               maxW="md"
               fontSize="xs"
-              fontFamily="Montserrat"
+              fontFamily="Open Sans"
               isTruncated
               referrerPolicy="no-referrer"
               isExternal

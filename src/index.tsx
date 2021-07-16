@@ -1,5 +1,5 @@
 import "@fontsource/raleway";
-import "@fontsource/montserrat";
+import "@fontsource/open-sans";
 import ReactDom from "react-dom";
 import App from "./App";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
