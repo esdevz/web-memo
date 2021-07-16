@@ -1,9 +1,12 @@
 import create from "zustand";
+import { NotesDB } from "../idb/NotesDb";
 import { NoteStore } from "./types";
-import Dexie from "dexie";
 import { INote } from "./types";
 
-export const DB_NAME = "notes";
+const db = new NotesDB();
+const DB_NAME = "notes";
+const updatingError = "an error happened while updating your note";
+
 export const defaultState = (
   notes: Record<string, INote[]>,
   activeTab: string
@@ -14,12 +17,6 @@ export const defaultState = (
     notes[DB_NAME].length === 1 && activeTab === DB_NAME;
   return initialState || emptyNotesCollection;
 };
-
-const updatingError = "an error happened while updating your note";
-const db = new Dexie("web-notes");
-db.version(1).stores({
-  notes: "++id ,title,website ,fullUrl,createdAt",
-});
 
 const defaultNote = {
   title: "",
@@ -56,10 +53,7 @@ const useNoteStore = create<NoteStore>((set) => ({
     }));
   },
   async addNewNote() {
-    const newNote = await db
-      .table<INote, number>(DB_NAME)
-      .toCollection()
-      .last();
+    const newNote = await db.getLastNote();
     if (newNote) {
       set((state) => {
         let newCollection = [newNote, ...(state.notes[newNote.website] || [])];
@@ -74,17 +68,15 @@ const useNoteStore = create<NoteStore>((set) => ({
     }
   },
   async getNotes() {
-    const fetchedNotes = await db
-      .table<INote, number>(DB_NAME)
-      .orderBy("createdAt")
-      .toArray();
+    const fetchedNotes = await db.getNotes();
+
     set((state) => ({
       ...state,
       notes: formatNotes(fetchedNotes),
     }));
   },
   async edit(newNote) {
-    const updates = await db.table(DB_NAME).update(newNote.id, newNote);
+    const updates = await db.updateNote(newNote.id!, newNote);
     if (updates) {
       set((state) => ({
         ...state,
@@ -128,7 +120,7 @@ const useNoteStore = create<NoteStore>((set) => ({
       }
     });
     try {
-      await db.table(DB_NAME).delete(note.id!);
+      await db.deleteNote(note.id!);
       return {
         type: "success",
         message: "deleted",
@@ -151,9 +143,7 @@ const useNoteStore = create<NoteStore>((set) => ({
         ),
       },
     }));
-    const updates = await db
-      .table(DB_NAME)
-      .update(note.id, { isPinned: !note.isPinned });
+    const updates = await db.updateNote(note.id!, { isPinned: !note.isPinned });
     if (!updates) {
       return {
         type: "error",

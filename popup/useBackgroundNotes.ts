@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import Dexie from "dexie";
+import { NotesDB } from "../src/idb/NotesDb";
 import { INote } from "../src/store/types";
+
+const db = new NotesDB();
 
 export const initialNoteState: INote = {
   title: "",
@@ -31,13 +33,9 @@ export function useBackgroundNote() {
   }, []);
 
   const saveNote = useCallback(async (newNote: INote) => {
-    const db = new Dexie("web-notes");
-    db.version(1).stores({
-      notes: "++id ,title ,website, fullUrl,createdAt",
-    });
     setLoading(true);
     try {
-      await db.table("notes").put(newNote);
+      await db.putNote(newNote);
       setLoading(false);
       return {
         msg: "note saved",
