@@ -16,7 +16,7 @@
     "@chakra-ui/react": "^1.6.4",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@fontsource/montserrat": "^4.4.5",
+    "@fontsource/open-sans": "^4.5.0",
     "@fontsource/raleway": "^4.4.5",
     "dexie": "^3.0.3",
     "dompurify": "^2.3.0",
