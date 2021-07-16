@@ -71,8 +71,8 @@ const Popup = () => {
   };
   return (
     <Box as="main" w="380px" h="400px">
-      <VStack h="100%" w="100%" spacing="10px">
-        <Button w="full" colorScheme="teal" onClick={openNotes}>
+      <VStack h="100%" w="100%" spacing="1.5">
+        <Button h="2.7em" w="full" colorScheme="teal" onClick={openNotes}>
           Open Notes
         </Button>
 
@@ -82,7 +82,7 @@ const Popup = () => {
           mt="8px"
           w="full"
           h="full"
-          spacing="8px"
+          spacing="1.5"
           p="3"
         >
           <FormInput
@@ -97,7 +97,7 @@ const Popup = () => {
               placeholder: "Title",
             }}
           />
-          <VStack spacing="1" align="flex-start" h="10em" w="85%">
+          <VStack spacing="1" align="flex-start" h="13em" w="85%">
             <Text as="h3">Content :</Text>
             <Box
               ref={contentRef}
@@ -106,7 +106,7 @@ const Popup = () => {
               maxW="full"
               h="full"
               border="1px solid rgba(128, 128, 128, 0.34)"
-              borderRadius="1"
+              borderRadius="2"
               p="1.5"
               spellCheck="false"
               overflow="auto"
@@ -123,6 +123,7 @@ const Popup = () => {
           <HStack w="85%" justifyContent="space-between">
             <Text as="h3">Collection : {note.website}</Text>
             <Button
+              h="2.5em"
               onClick={setUrl}
               ml="auto"
               colorScheme="teal"
@@ -136,7 +137,6 @@ const Popup = () => {
             <FormControl display="flex" alignItems="center">
               <FormLabel htmlFor="is-pinned">Pin :</FormLabel>
               <Switch
-                size="lg"
                 colorScheme="teal"
                 name="isPinned"
                 onChange={switchHandler}
@@ -146,6 +146,7 @@ const Popup = () => {
             </FormControl>
             <Button
               onClick={resetNote}
+              h="2.5em"
               ml="auto"
               colorScheme="teal"
               w="18ch"
@@ -160,6 +161,7 @@ const Popup = () => {
             type="submit"
             colorScheme="teal"
             w="full"
+            h="2.5em"
           >
             Save
           </Button>
