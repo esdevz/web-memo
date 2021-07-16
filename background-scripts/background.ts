@@ -1,6 +1,8 @@
+import { NotesDB } from "../src/idb/NotesDb";
 import { getHostName } from "../utils";
 
 const SAVE_NOTE_ID = "save-as-note";
+const db = new NotesDB();
 
 const initialNoteState = {
   title: "",
@@ -32,6 +34,7 @@ browser.menus.onClicked.addListener(async (info, tab) => {
       isPinned: false,
       createdAt: Date.now(),
     };
+    await db.putNote(note);
     backgroundNote = note;
     await browser.browserAction.openPopup();
   }
