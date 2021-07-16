@@ -1,10 +1,11 @@
 import { NotesDB } from "../src/idb/NotesDb";
+import { INote } from "../src/store/types";
 import { getHostName } from "../utils";
 
 const SAVE_NOTE_ID = "save-as-note";
 const db = new NotesDB();
 
-const initialNoteState = {
+const initialNoteState: INote = {
   title: "",
   website: "notes",
   fullUrl: "",
@@ -34,9 +35,16 @@ browser.menus.onClicked.addListener(async (info, tab) => {
       isPinned: false,
       createdAt: Date.now(),
     };
-    await db.putNote(note);
-    backgroundNote = note;
-    await browser.browserAction.openPopup();
+    const noteId = await db.putNote(note);
+    backgroundNote = { id: noteId, ...note };
+    await Promise.all([
+      browser.browserAction.setBadgeText({
+        text: "I",
+      }),
+      browser.browserAction.setBadgeTextColor({
+        color: "silver",
+      }),
+    ]);
   }
 });
 
@@ -44,5 +52,8 @@ browser.runtime.onMessage.addListener((request, __, sendResponse) => {
   if (request.msg === "GET_NOTE") {
     sendResponse(backgroundNote);
     backgroundNote = initialNoteState;
+    browser.browserAction.setBadgeText({
+      text: "",
+    });
   }
 });
