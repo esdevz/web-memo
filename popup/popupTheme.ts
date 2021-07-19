@@ -1,12 +1,5 @@
 import { extendTheme, Theme } from "@chakra-ui/react";
-import { createBreakpoints } from "@chakra-ui/theme-tools";
 
-const breakpoints = createBreakpoints({
-  sm: "10em",
-  md: "22em",
-  lg: "34em",
-  xl: "40em",
-});
 const FormLabel = {
   baseStyle: {
     fontWeight: "500",
@@ -14,7 +7,6 @@ const FormLabel = {
   },
 };
 const theme = extendTheme<Theme>({
-  breakpoints,
   components: {
     FormLabel,
     Button: FormLabel,
