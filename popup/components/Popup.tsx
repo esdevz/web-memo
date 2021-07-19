@@ -14,8 +14,11 @@ import { MdCollectionsBookmark } from "react-icons/md";
 import { GrPowerReset } from "react-icons/gr";
 import { ChangeEvent, FormEvent, useRef } from "react";
 import FormInput from "./FormInput";
-import { initialNoteState, useBackgroundNote } from "./useBackgroundNotes";
-import { getHostName, sanitizeHtml } from "../utils";
+import {
+  initialNoteState,
+  useBackgroundNote,
+} from "../hooks/useBackgroundNotes";
+import { getHostName, sanitizeHtml } from "../../utils";
 
 const Popup = () => {
   const { note, setNote, saveNote, loading } = useBackgroundNote();
@@ -128,10 +131,9 @@ const Popup = () => {
           <HStack w="85%" justifyContent="space-between">
             <Text as="h3">Collection : {note.website}</Text>
             <Tooltip
-              hasArrow
               label="Current URL"
               placement="left"
-              fontSize="xs"
+              fontSize="1em"
               fontFamily="Raleway"
             >
               <IconButton
@@ -156,10 +158,9 @@ const Popup = () => {
               />
             </FormControl>
             <Tooltip
-              hasArrow
               label="Reset"
               placement="left"
-              fontSize="xs"
+              fontSize="1em"
               fontFamily="Raleway"
             >
               <IconButton

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { NotesDB } from "../src/idb/NotesDb";
-import { INote } from "../src/store/types";
+import { NotesDB } from "../../src/idb/NotesDb";
+import { INote } from "../../src/store/types";
 
 const db = new NotesDB();
 

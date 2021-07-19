@@ -1,7 +1,7 @@
 import "@fontsource/raleway";
 import ReactDom from "react-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import Popup from "./Popup";
+import Popup from "./components/Popup";
 import theme from "./popupTheme";
 
 ReactDom.render(
