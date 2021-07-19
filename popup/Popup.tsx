@@ -7,7 +7,11 @@ import {
   FormControl,
   FormLabel,
   Switch,
+  IconButton,
+  Tooltip,
 } from "@chakra-ui/react";
+import { MdCollectionsBookmark } from "react-icons/md";
+import { GrPowerReset } from "react-icons/gr";
 import { ChangeEvent, FormEvent, useRef } from "react";
 import FormInput from "./FormInput";
 import { initialNoteState, useBackgroundNote } from "./useBackgroundNotes";
@@ -70,7 +74,7 @@ const Popup = () => {
     });
   };
   return (
-    <Box as="main" w="380px" h="400px">
+    <Box as="main" minH="300px" minW="320px" maxW="360px" maxH="390px">
       <VStack h="100%" w="100%" spacing="1.5">
         <Button h="2.7em" w="full" colorScheme="teal" onClick={openNotes}>
           Open Notes
@@ -123,16 +127,22 @@ const Popup = () => {
 
           <HStack w="85%" justifyContent="space-between">
             <Text as="h3">Collection : {note.website}</Text>
-            <Button
-              h="2.5em"
-              onClick={setUrl}
-              ml="auto"
-              colorScheme="teal"
-              w="13ch"
-              type="button"
+            <Tooltip
+              hasArrow
+              label="Current URL"
+              placement="left"
+              fontSize="xs"
+              fontFamily="Raleway"
             >
-              Current URL
-            </Button>
+              <IconButton
+                aria-label="set collection to current url"
+                onClick={setUrl}
+                ml="auto"
+                colorScheme="teal"
+                type="button"
+                icon={<MdCollectionsBookmark />}
+              />
+            </Tooltip>
           </HStack>
           <HStack w="85%" justifyContent="space-between">
             <FormControl display="flex" alignItems="center">
@@ -145,16 +155,22 @@ const Popup = () => {
                 id="is-pinned"
               />
             </FormControl>
-            <Button
-              onClick={resetNote}
-              h="2.5em"
-              ml="auto"
-              colorScheme="teal"
-              w="18ch"
-              type="button"
+            <Tooltip
+              hasArrow
+              label="Reset"
+              placement="left"
+              fontSize="xs"
+              fontFamily="Raleway"
             >
-              Clear
-            </Button>
+              <IconButton
+                aria-label="reset note"
+                onClick={resetNote}
+                ml="auto"
+                colorScheme="teal"
+                type="button"
+                icon={<GrPowerReset />}
+              />
+            </Tooltip>
           </HStack>
           <Button
             isLoading={loading}
