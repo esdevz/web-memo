@@ -38,7 +38,7 @@ const Note = ({ note }: NoteProps) => {
       ...note,
       createdAt: Date.now(),
       content: sanitizeHtml(contentRef.current?.innerHTML),
-      title: TitleRef.current?.innerText || "...",
+      title: TitleRef.current?.textContent || "...",
     };
     setLoading.on();
     const feedback = await editNote(editedNote);
