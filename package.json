@@ -5,8 +5,9 @@
   "description": "web extension to create and manage notes",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack/webpack.config.js --config webpack/webpack.prod.js --merge && yarn webext-background && yarn popup",
-    "webext-background": "webpack --config webpack/webpack.background.js",
+    "build": "yarn main && yarn background && yarn popup",
+    "main": "webpack --config webpack/webpack.config.js",
+    "background": "webpack --config webpack/webpack.background.js",
     "popup": "webpack --config webpack/webpack.popup.js"
   },
   "keywords": [],

@@ -10,6 +10,7 @@ const env = Object.keys(envParsed).reduce((result, key) => {
 }, {});
 
 module.exports = {
+  mode: "production",
   entry: {
     "react-lib": {
       import: ["react", "react-dom"],
