@@ -76,7 +76,7 @@ const Note = ({ note }: NoteProps) => {
   return (
     <Grid
       pos={open ? "fixed" : "static"}
-      w={open ? "69%" : "350px"}
+      w={open ? "69%" : "250px"}
       h={open ? "95%" : "265px"}
       top={open ? 0 : undefined}
       p="2.5"
@@ -87,7 +87,7 @@ const Note = ({ note }: NoteProps) => {
       gap={2}
       m="1"
       border="1px solid rgba(128, 128, 128, 0.34)"
-      transition="all 0.2s ease-in-out"
+      transition="height 0.2s ease-in-out"
       zIndex={open ? 2 : undefined}
       bgColor={colorMode === "dark" ? "gray.800" : "white"}
     >
@@ -96,7 +96,6 @@ const Note = ({ note }: NoteProps) => {
         alignItems="center"
         justifyContent="flex-start"
         rowSpan={1}
-        maxW={open ? "80ch" : "325px"}
       >
         {open && (
           <IconButton
@@ -118,7 +117,7 @@ const Note = ({ note }: NoteProps) => {
           ref={TitleRef}
           as="h2"
           isTruncated
-          w="full"
+          maxW={open ? "80ch" : "230px"}
         >
           {note.title}
         </Text>
