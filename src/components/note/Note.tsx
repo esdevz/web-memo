@@ -122,6 +122,7 @@ const Note = ({ note }: NoteProps) => {
             as="h2"
             isTruncated
             maxW={open ? "80ch" : "230px"}
+            w={open ? "50ch" : undefined}
           >
             {note.title}
           </Text>
