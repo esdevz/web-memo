@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { MdCollectionsBookmark } from "react-icons/md";
-import { GrPowerReset } from "react-icons/gr";
+import { IoReload } from "react-icons/io5";
 import { ChangeEvent, FormEvent, useRef } from "react";
 import FormInput from "./FormInput";
 import {
@@ -131,7 +131,7 @@ const Popup = () => {
           <HStack w="85%" justifyContent="space-between">
             <Text as="h3">Collection : {note.website}</Text>
             <Tooltip
-              label="Current URL"
+              label="Set collection"
               placement="left"
               fontSize="1em"
               fontFamily="Raleway"
@@ -169,7 +169,7 @@ const Popup = () => {
                 ml="auto"
                 colorScheme="teal"
                 type="button"
-                icon={<GrPowerReset />}
+                icon={<IoReload />}
               />
             </Tooltip>
           </HStack>
