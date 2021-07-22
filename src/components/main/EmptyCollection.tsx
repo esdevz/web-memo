@@ -15,7 +15,8 @@ const EmptyCollection = (props: EmptyCollectionProps) => {
         display="grid"
         placeItems="center"
         gridTemplateRows="minmax(10vh, 80vh)"
-        colSpan={1}
+        pos="absolute"
+        w="full"
       >
         <Text as="h1" color={color}>
           notes collection is empty
