@@ -9,6 +9,7 @@ import {
   HStack,
   Link,
   useToast,
+  Tooltip,
 } from "@chakra-ui/react";
 import NoteOptions from "./NoteOptions";
 import { IoArrowBack } from "react-icons/io5";
@@ -107,20 +108,24 @@ const Note = ({ note }: NoteProps) => {
             mr="1"
           />
         )}
-        <Text
-          contentEditable={open}
-          spellCheck="false"
-          _focusVisible={{
-            outline: "2px solid rgba(128, 128, 128, 0.34)",
-            borderRadius: "4px",
-          }}
-          ref={TitleRef}
-          as="h2"
-          isTruncated
-          maxW={open ? "80ch" : "230px"}
-        >
-          {note.title}
-        </Text>
+        <Tooltip label={note.title} fontSize="xs">
+          <Text
+            onClick={setOpen.on}
+            cursor={open ? undefined : "pointer"}
+            contentEditable={open}
+            spellCheck="false"
+            _focusVisible={{
+              outline: "2px solid rgba(128, 128, 128, 0.34)",
+              borderRadius: "4px",
+            }}
+            ref={TitleRef}
+            as="h2"
+            isTruncated
+            maxW={open ? "80ch" : "230px"}
+          >
+            {note.title}
+          </Text>
+        </Tooltip>
       </GridItem>
       <Editable
         isOpen={open}
