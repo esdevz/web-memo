@@ -8,7 +8,7 @@ const NoteSection = (props: { children: ReactNode }) => {
       colSpan={1}
       display="grid"
       gridGap="1.5"
-      gridTemplateColumns="repeat(auto-fill, 355px)"
+      gridTemplateColumns="repeat(auto-fill, 255px)"
       gridTemplateRows="repeat(auto-fill,275px)"
     >
       {props.children}
