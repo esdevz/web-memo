@@ -18,7 +18,8 @@ import {
   initialNoteState,
   useBackgroundNote,
 } from "../hooks/useBackgroundNotes";
-import { getHostName, sanitizeHtml } from "../../utils";
+import { getHostName } from "../../utils";
+import { sanitizeHtml } from "../../utils/sanitizeHtml";
 
 const Popup = () => {
   const { note, setNote, saveNote, loading } = useBackgroundNote();

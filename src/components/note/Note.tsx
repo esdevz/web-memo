@@ -19,7 +19,8 @@ import { TiDocumentDelete } from "react-icons/ti";
 import { useRef, useCallback } from "react";
 import useNoteStore from "../../store/noteStore";
 import Editable from "./Editable";
-import { dateString, sanitizeHtml } from "../../../utils";
+import { dateString } from "../../../utils";
+import { sanitizeHtml } from "../../../utils/sanitizeHtml";
 
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
