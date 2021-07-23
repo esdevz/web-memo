@@ -22,9 +22,9 @@ module.exports = {
   },
   output: {
     filename: "static/[name].[contenthash].js",
-    path: path.resolve(__dirname, "..", "build"),
+    path: path.resolve(__dirname, "..", "build/main"),
     clean: true,
-    assetModuleFilename: "assets/[name][ext]",
+    assetModuleFilename: "../assets/[name][ext]",
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -32,7 +32,12 @@ module.exports = {
     }),
     new DefinePlugin(env),
     new CopyPlugin({
-      patterns: [{ from: path.resolve(__dirname, "..", "public") }],
+      patterns: [
+        {
+          from: path.resolve(__dirname, "..", "public"),
+          to: path.resolve(__dirname, "..", "build"),
+        },
+      ],
     }),
   ],
   resolve: {
