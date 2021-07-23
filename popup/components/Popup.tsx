@@ -72,7 +72,7 @@ const Popup = () => {
 
   const openNotes = () => {
     browser.tabs.create({
-      url: browser.extension.getURL("index.html"),
+      url: browser.extension.getURL("main/index.html"),
       active: true,
     });
   };
