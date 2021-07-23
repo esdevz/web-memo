@@ -3,7 +3,7 @@ import { ForwardedRef, forwardRef } from "react";
 
 const Editable = forwardRef(
   (
-    { html, isOpen, ...props }: EditableProps,
+    { sanitizedHtml, isOpen, ...props }: EditableProps,
     ref: ForwardedRef<HTMLDivElement>
   ) => (
     <GridItem
@@ -27,7 +27,7 @@ const Editable = forwardRef(
       fontSize="0.8rem"
       lineHeight="1.7"
       dangerouslySetInnerHTML={{
-        __html: html,
+        __html: sanitizedHtml,
       }}
       {...props}
     >
@@ -39,6 +39,6 @@ const Editable = forwardRef(
 export default Editable;
 
 interface EditableProps extends GridItemProps {
-  html: string;
+  sanitizedHtml: string;
   isOpen: boolean;
 }

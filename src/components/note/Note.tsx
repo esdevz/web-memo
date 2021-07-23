@@ -130,7 +130,7 @@ const Note = ({ note }: NoteProps) => {
       </GridItem>
       <Editable
         isOpen={open}
-        html={sanitizeHtml(note.content)}
+        sanitizedHtml={sanitizeHtml(note.content)}
         ref={contentRef}
         onClick={setOpen.on}
       />
