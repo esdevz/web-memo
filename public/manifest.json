@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Web Memo",
   "version": "1.0.0",
-  "description": "right click and save any text on the web",
+  "description": "select and save web content with automatically filled notes , categorized by website",
   "icons": {
     "16": "favicon.svg",
     "32": "favicon.svg",
@@ -21,7 +21,8 @@
   "permissions": ["storage", "menus", "contextMenus", "tabs"],
   "browser_specific_settings": {
     "gecko": {
-      "id": "web-memo@w.h.com"
+      "id": "web-memo@w.h.com",
+      "strict_min_version": "80"
     }
   }
 }
