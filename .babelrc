@@ -4,7 +4,7 @@
       "@babel/preset-env",
       {
         "targets": {
-          "firefox": "88"
+          "firefox": "80"
         }
       }
     ],
