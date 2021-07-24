@@ -35,8 +35,15 @@ browser.menus.onClicked.addListener((info, tab) => {
     };
 
     backgroundNote = note;
-    browser.browserAction.openPopup();
+    browser.sidebarAction.open();
   }
+});
+
+browser.browserAction.onClicked.addListener(() => {
+  browser.tabs.create({
+    url: "main/index.html",
+    active: true,
+  });
 });
 
 browser.runtime.onMessage.addListener((request, __, sendResponse) => {

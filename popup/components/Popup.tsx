@@ -78,7 +78,7 @@ const Popup = () => {
     });
   };
   return (
-    <Box as="main" minH="300px" minW="320px" maxW="360px" maxH="390px">
+    <Box as="main" minH="300px" minW="320px" w="full" m="auto">
       <VStack h="100%" w="100%" spacing="1.5">
         <Button h="2.7em" w="full" colorScheme="teal" onClick={openNotes}>
           Open Notes
@@ -105,7 +105,7 @@ const Popup = () => {
               placeholder: "Title",
             }}
           />
-          <VStack spacing="1" align="flex-start" h="13em" w="85%">
+          <VStack spacing="1" align="flex-start" h="18rem" w="85%">
             <Text as="h3">Content :</Text>
             <Box
               ref={contentRef}
