@@ -85,7 +85,7 @@ const Note = ({ note }: NoteProps) => {
       as="article"
       shadow="md"
       templateRows={`repeat(${open ? 10 : 4},1fr )`}
-      templateColumns="repeat(1, 1fr)"
+      templateColumns="1fr"
       gap={2}
       m="1"
       border="1px solid rgba(128, 128, 128, 0.34)"
