@@ -49,10 +49,7 @@ browser.menus.onClicked.addListener((info, tab) => {
 });
 
 browser.browserAction.onClicked.addListener(() => {
-  browser.tabs.create({
-    url: "main/index.html",
-    active: true,
-  });
+  browser.sidebarAction.toggle();
 });
 
 browser.runtime.onMessage.addListener((request, __, sendResponse) => {
