@@ -33,8 +33,17 @@ browser.menus.onClicked.addListener((info, tab) => {
       isPinned: false,
       createdAt: Date.now(),
     };
+    browser.sidebarAction.isOpen({}).then((isOpen) => {
+      if (isOpen) {
+        browser.runtime.sendMessage({
+          msg: "EDIT_NOTE",
+          note,
+        });
+      } else {
+        backgroundNote = note;
+      }
+    });
 
-    backgroundNote = note;
     browser.sidebarAction.open();
   }
 });

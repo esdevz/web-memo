@@ -30,6 +30,13 @@ export function useBackgroundNote() {
         console.log(err);
       }
     );
+    browser.runtime.onMessage.addListener(
+      (request: { msg: string; note?: INote }) => {
+        if (request.msg === "EDIT_NOTE" && request.note) {
+          setNote(request.note);
+        }
+      }
+    );
   }, []);
 
   const saveNote = useCallback(async (newNote: INote) => {
