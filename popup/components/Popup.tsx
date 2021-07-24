@@ -7,11 +7,7 @@ import {
   FormControl,
   FormLabel,
   Switch,
-  IconButton,
-  Tooltip,
 } from "@chakra-ui/react";
-import { MdCollectionsBookmark } from "react-icons/md";
-import { IoReload } from "react-icons/io5";
 import { ChangeEvent, FormEvent, useRef } from "react";
 import FormInput from "./FormInput";
 import {
@@ -100,7 +96,7 @@ const Popup = () => {
           p="3"
         >
           <FormInput
-            w="85%"
+            w="95%"
             id="Title :"
             inputProps={{
               w: "full",
@@ -111,7 +107,7 @@ const Popup = () => {
               placeholder: "Title",
             }}
           />
-          <VStack spacing="1" align="flex-start" h="18rem" w="85%">
+          <VStack spacing="1" align="flex-start" h="25rem" w="95%">
             <Text as="h3">Content :</Text>
             <Box
               ref={contentRef}
@@ -135,27 +131,21 @@ const Popup = () => {
             </Box>
           </VStack>
 
-          <HStack w="85%" justifyContent="space-between">
+          <HStack w="95%" justifyContent="space-between">
             <Text as="h3">Collection : {note.website}</Text>
-            <Tooltip
-              label="Set collection"
-              placement="left"
-              fontSize="1em"
-              fontFamily="Raleway"
+            <Button
+              aria-label="set collection to current url"
+              onClick={setUrl}
+              colorScheme="teal"
+              variant="outline"
+              type="button"
+              w="13ch"
             >
-              <IconButton
-                aria-label="set collection to current url"
-                onClick={setUrl}
-                ml="auto"
-                colorScheme="teal"
-                variant="outline"
-                type="button"
-                icon={<MdCollectionsBookmark />}
-              />
-            </Tooltip>
+              Current URL
+            </Button>
           </HStack>
-          <HStack w="85%" justifyContent="space-between">
-            <FormControl display="flex" alignItems="center">
+          <HStack w="95%" justifyContent="space-between">
+            <FormControl w="fit-content" display="flex" alignItems="center">
               <FormLabel htmlFor="is-pinned">Pin :</FormLabel>
               <Switch
                 colorScheme="teal"
@@ -165,22 +155,16 @@ const Popup = () => {
                 id="is-pinned"
               />
             </FormControl>
-            <Tooltip
-              label="Reset"
-              placement="left"
-              fontSize="1em"
-              fontFamily="Raleway"
+            <Button
+              aria-label="reset note"
+              onClick={resetNote}
+              colorScheme="teal"
+              variant="outline"
+              type="button"
+              w="13ch"
             >
-              <IconButton
-                aria-label="reset note"
-                onClick={resetNote}
-                ml="auto"
-                colorScheme="teal"
-                variant="outline"
-                type="button"
-                icon={<IoReload />}
-              />
-            </Tooltip>
+              Reset
+            </Button>
           </HStack>
           <Button
             isLoading={loading}
