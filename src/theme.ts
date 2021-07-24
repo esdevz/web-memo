@@ -8,6 +8,7 @@ const breakpoints = createBreakpoints({
   xl: "80em",
 });
 const config: ThemeConfig = {
+  initialColorMode: "light",
   useSystemColorMode: false,
 };
 

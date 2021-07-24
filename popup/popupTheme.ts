@@ -1,4 +1,4 @@
-import { extendTheme, Theme } from "@chakra-ui/react";
+import { extendTheme, Theme, ThemeConfig } from "@chakra-ui/react";
 
 const FormLabel = {
   baseStyle: {
@@ -6,7 +6,14 @@ const FormLabel = {
     fontFamily: "Raleway",
   },
 };
+
+const config: ThemeConfig = {
+  initialColorMode: "light",
+  useSystemColorMode: false,
+};
+
 const theme = extendTheme<Theme>({
+  config,
   components: {
     FormLabel,
     Button: FormLabel,
