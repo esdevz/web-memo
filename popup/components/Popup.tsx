@@ -80,7 +80,13 @@ const Popup = () => {
   return (
     <Box as="main" minH="300px" minW="320px" w="full" m="auto">
       <VStack h="100%" w="100%" spacing="1.5">
-        <Button h="2.7em" w="full" colorScheme="teal" onClick={openNotes}>
+        <Button
+          h="2.7em"
+          w="full"
+          colorScheme="teal"
+          variant="outline"
+          onClick={openNotes}
+        >
           Open Notes
         </Button>
 
@@ -142,6 +148,7 @@ const Popup = () => {
                 onClick={setUrl}
                 ml="auto"
                 colorScheme="teal"
+                variant="outline"
                 type="button"
                 icon={<MdCollectionsBookmark />}
               />
@@ -169,6 +176,7 @@ const Popup = () => {
                 onClick={resetNote}
                 ml="auto"
                 colorScheme="teal"
+                variant="outline"
                 type="button"
                 icon={<IoReload />}
               />
@@ -179,6 +187,7 @@ const Popup = () => {
             isDisabled={loading}
             type="submit"
             colorScheme="teal"
+            variant="outline"
             w="full"
             h="2.5em"
           >
