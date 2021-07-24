@@ -22,7 +22,7 @@ browser.menus.create({
   documentUrlPatterns: ["*://*/*"],
 });
 
-browser.menus.onClicked.addListener(async (info, tab) => {
+browser.menus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === SAVE_NOTE_ID) {
     let note = {
       title: tab?.title || "",
@@ -35,7 +35,7 @@ browser.menus.onClicked.addListener(async (info, tab) => {
     };
 
     backgroundNote = note;
-    await browser.browserAction.openPopup();
+    browser.browserAction.openPopup();
   }
 });
 
