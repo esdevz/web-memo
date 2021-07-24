@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": "true",
   "description": "web extension to create and manage notes",
-  "main": "index.js",
   "scripts": {
     "build": "yarn main && yarn background && yarn popup",
     "main": "webpack --config webpack/webpack.config.js",
