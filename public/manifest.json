@@ -16,7 +16,7 @@
   "sidebar_action": {
     "default_icon": "favicon.svg",
     "default_title": "Web Memo",
-    "default_panel": "popup/index.html",
+    "default_panel": "sidebar/index.html",
     "browser_style": true
   },
   "background": {

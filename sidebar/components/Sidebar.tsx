@@ -17,7 +17,7 @@ import {
 import { getHostName } from "../../utils";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
 
-const Popup = () => {
+const Sidebar = () => {
   const { note, setNote, saveNote, loading } = useBackgroundNote();
   const contentRef = useRef<HTMLDivElement>(null);
   const handleChange = (
@@ -182,4 +182,4 @@ const Popup = () => {
     </Box>
   );
 };
-export default Popup;
+export default Sidebar;

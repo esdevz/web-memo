@@ -5,10 +5,10 @@
   "description": "web extension to create and manage notes",
   "license": "MPL 2.0",
   "scripts": {
-    "build": "yarn main && yarn background && yarn popup",
+    "build": "yarn main && yarn background && yarn sidebar",
     "main": "webpack --config webpack/webpack.config.js",
     "background": "webpack --config webpack/webpack.background.js",
-    "popup": "webpack --config webpack/webpack.popup.js"
+    "sidebar": "webpack --config webpack/webpack.sidebar.js"
   },
   "author": "wael H",
   "dependencies": {

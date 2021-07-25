@@ -7,14 +7,14 @@ module.exports = {
     "react-lib": {
       import: ["react", "react-dom"],
     },
-    popup: {
-      import: path.resolve(__dirname, "..", "popup/index.tsx"),
+    sidebar: {
+      import: path.resolve(__dirname, "..", "sidebar/index.tsx"),
       dependOn: ["react-lib"],
     },
   },
   output: {
     filename: "static/[name].[contenthash].js",
-    path: path.resolve(__dirname, "..", "build/popup"),
+    path: path.resolve(__dirname, "..", "build/sidebar"),
     assetModuleFilename: "../assets/[name][ext]",
     clean: true,
   },
@@ -23,7 +23,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "..", "popup/index.html"),
+      template: path.resolve(__dirname, "..", "sidebar/index.html"),
     }),
   ],
   optimization: {

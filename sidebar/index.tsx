@@ -1,13 +1,13 @@
 import "@fontsource/raleway";
 import ReactDom from "react-dom";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
-import Popup from "./components/Popup";
-import theme from "./popupTheme";
+import Sidebar from "./components/Sidebar";
+import theme from "./SidebarTheme";
 
 ReactDom.render(
   <ChakraProvider theme={theme} resetCSS>
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-    <Popup />
+    <Sidebar />
   </ChakraProvider>,
   document.getElementById("root")
 );
