@@ -1,3 +1,4 @@
+import { useColorMode } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { NotesDB } from "../../src/idb/NotesDb";
 import { INote } from "../../src/store/types";
@@ -17,6 +18,7 @@ export const initialNoteState: INote = {
 export function useBackgroundNote() {
   const [note, setNote] = useState(initialNoteState);
   const [loading, setLoading] = useState(false);
+  const { toggleColorMode } = useColorMode();
 
   useEffect(() => {
     const sending = browser.runtime.sendMessage({
@@ -30,14 +32,18 @@ export function useBackgroundNote() {
         console.log(err);
       }
     );
-    browser.runtime.onMessage.addListener(
-      (request: { msg: string; note?: INote }) => {
-        if (request.msg === "EDIT_NOTE" && request.note) {
-          setNote(request.note);
-        }
+    const onMessageHandler = (request: { msg: string; note?: INote }) => {
+      if (request.msg === "EDIT_NOTE" && request.note) {
+        setNote(request.note);
       }
-    );
-  }, []);
+      if (request.msg === "TOGGLE_COLOR_MODE") {
+        toggleColorMode();
+      }
+    };
+    browser.runtime.onMessage.addListener(onMessageHandler);
+
+    return () => browser.runtime.onMessage.removeListener(onMessageHandler);
+  }, [toggleColorMode]);
 
   const saveNote = useCallback(async (newNote: INote) => {
     setLoading(true);

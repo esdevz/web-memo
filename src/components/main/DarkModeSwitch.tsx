@@ -12,13 +12,18 @@ export const DarkModeSwitch = () => {
     right: "1em",
   } as const;
 
+  const toggleMode = () => {
+    browser.runtime.sendMessage({ msg: "TOGGLE_COLOR_MODE" });
+    toggleColorMode();
+  };
+
   if (isDark) {
     return (
       <IconButton
         borderRadius="33%"
         icon={<BiMoon color="lightblue" size="1.3em" />}
         aria-label="dark mode"
-        onClick={toggleColorMode}
+        onClick={toggleMode}
         {...styleProps}
       />
     );
@@ -28,7 +33,7 @@ export const DarkModeSwitch = () => {
       borderRadius="33%"
       icon={<BiSun color="goldenrod" size="1.3em" />}
       aria-label="light mode"
-      onClick={toggleColorMode}
+      onClick={toggleMode}
       {...styleProps}
     />
   );
