@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "private": "true",
   "description": "web extension to create and manage notes",
+  "license": "MPL 2.0",
   "scripts": {
     "build": "yarn main && yarn background && yarn popup",
     "main": "webpack --config webpack/webpack.config.js",
     "background": "webpack --config webpack/webpack.background.js",
     "popup": "webpack --config webpack/webpack.popup.js"
   },
-  "keywords": [],
   "author": "wael H",
   "dependencies": {
     "@chakra-ui/react": "^1.6.4",
