@@ -26,6 +26,9 @@ export function useBackgroundNote() {
     });
     sending.then(
       (backgroundNote: INote) => {
+        if (backgroundNote.createdAt === 0) {
+          return;
+        }
         setNote(backgroundNote);
       },
       (err) => {
@@ -34,7 +37,10 @@ export function useBackgroundNote() {
     );
     const onMessageHandler = (request: { msg: string; note?: INote }) => {
       if (request.msg === "EDIT_NOTE" && request.note) {
-        setNote(request.note);
+        setNote((currentNote) => ({
+          ...currentNote,
+          content: currentNote.content.concat(request.note?.content || ""),
+        }));
       }
       if (request.msg === "TOGGLE_COLOR_MODE") {
         toggleColorMode();
