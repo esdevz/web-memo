@@ -39,7 +39,10 @@ export function useBackgroundNote() {
       if (request.msg === "EDIT_NOTE" && request.note) {
         setNote((currentNote) => ({
           ...currentNote,
-          content: currentNote.content.concat(request.note?.content || ""),
+          content: currentNote.content.concat(
+            "\n",
+            request.note?.content || ""
+          ),
         }));
       }
       if (request.msg === "TOGGLE_COLOR_MODE") {
