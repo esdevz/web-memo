@@ -10,11 +10,11 @@ import { ChangeEvent } from "react";
 const DataList = (props: DataListProps) => {
   return (
     <HStack fontFamily="Raleway" fontSize="1em" spacing="1" w="65%">
-      <InputGroup w="clamp(auto, 45%,60%)">
+      <InputGroup w="full">
         <InputLeftAddon>
           Collection:
           {props.icon && (
-            <Image ml="2ch" borderRadius="50%" w="1.2em" src={props.icon} />
+            <Image ml="1ch" borderRadius="50%" w="1.2em" src={props.icon} />
           )}
         </InputLeftAddon>
         <Input
