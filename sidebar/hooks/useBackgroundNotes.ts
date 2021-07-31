@@ -17,6 +17,7 @@ export const initialNoteState: INote = {
 
 export function useBackgroundNote() {
   const [note, setNote] = useState(initialNoteState);
+  const [collections, setUserCollections] = useState(["notes"]);
   const [loading, setLoading] = useState(false);
   const { toggleColorMode } = useColorMode();
 
@@ -37,13 +38,7 @@ export function useBackgroundNote() {
     );
     const onMessageHandler = (request: { msg: string; note?: INote }) => {
       if (request.msg === "EDIT_NOTE" && request.note) {
-        setNote((currentNote) => ({
-          ...currentNote,
-          content: currentNote.content.concat(
-            "\n",
-            request.note?.content || ""
-          ),
-        }));
+        setNote(request.note);
       }
       if (request.msg === "TOGGLE_COLOR_MODE") {
         toggleColorMode();
@@ -54,11 +49,32 @@ export function useBackgroundNote() {
     return () => browser.runtime.onMessage.removeListener(onMessageHandler);
   }, [toggleColorMode]);
 
+  useEffect(() => {
+    db.getNotes().then((col) => {
+      const userCollections = col.reduce(
+        (res: string[], note) => {
+          if (!note.favicon && !res.includes(note.website)) {
+            res.push(note.website);
+          }
+          return res;
+        },
+        ["notes"]
+      );
+      setUserCollections(userCollections);
+    });
+  }, []);
+
   const saveNote = useCallback(async (newNote: INote) => {
     setLoading(true);
     try {
       await db.putNote(newNote);
       setLoading(false);
+      setUserCollections((currentCollection) => {
+        if (currentCollection.includes(newNote.website) || newNote.favicon) {
+          return currentCollection;
+        }
+        return currentCollection.concat(newNote.website);
+      });
       return {
         msg: "note saved",
         state: true,
@@ -73,5 +89,5 @@ export function useBackgroundNote() {
     }
   }, []);
 
-  return { note, setNote, saveNote, loading };
+  return { note, setNote, saveNote, loading, collections };
 }

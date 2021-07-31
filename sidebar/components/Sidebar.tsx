@@ -7,6 +7,7 @@ import {
   FormControl,
   FormLabel,
   Switch,
+  Tooltip,
 } from "@chakra-ui/react";
 import { ChangeEvent, FormEvent, useRef } from "react";
 import FormInput from "./FormInput";
@@ -16,15 +17,17 @@ import {
 } from "../hooks/useBackgroundNotes";
 import { getHostName } from "../../utils";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
+import DataList from "./DataList";
 
 const Sidebar = () => {
-  const { note, setNote, saveNote, loading } = useBackgroundNote();
+  const { note, setNote, saveNote, loading, collections } = useBackgroundNote();
   const contentRef = useRef<HTMLDivElement>(null);
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setNote({
       ...note,
+      favicon: e.target.name === "website" ? "" : note.favicon,
       [e.target.name]: e.target.value,
     });
   };
@@ -61,6 +64,7 @@ const Sidebar = () => {
       ...note,
       content: sanitizeHtml(contentRef.current?.innerHTML),
       createdAt: Date.now(),
+      website: note.website.trim() || "notes",
     };
     await saveNote(newNote);
     browser.runtime.sendMessage({ msg: "NEW_NOTE" });
@@ -132,17 +136,24 @@ const Sidebar = () => {
           </VStack>
 
           <HStack w="95%" justifyContent="space-between">
-            <Text as="h3">Collection : {note.website}</Text>
-            <Button
-              aria-label="set collection to current url"
-              onClick={setUrl}
-              colorScheme="teal"
-              variant="outline"
-              type="button"
-              w="13ch"
-            >
-              Current URL
-            </Button>
+            <DataList
+              onChangeHandler={handleChange}
+              defaultValue={note.website}
+              collections={collections}
+              icon={note.favicon}
+            />
+            <Tooltip fontSize="0.9em" label="set collection & icon">
+              <Button
+                aria-label="set collection to current url"
+                onClick={setUrl}
+                colorScheme="teal"
+                variant="outline"
+                type="button"
+                w="13ch"
+              >
+                Current URL
+              </Button>
+            </Tooltip>
           </HStack>
           <HStack w="95%" justifyContent="space-between">
             <FormControl w="fit-content" display="flex" alignItems="center">
