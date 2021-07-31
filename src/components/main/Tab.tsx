@@ -26,8 +26,8 @@ const Tab = (props: SidebarProps) => {
       h="2.7em"
       colorScheme={activeTab === props.note.website ? "facebook" : "gray"}
     >
-      {props.note.favicon && (
-        <Image mr="2ch" borderRadius="50%" w="2rem" src={props.note.favicon} />
+      {props.icon && (
+        <Image mr="2ch" borderRadius="50%" w="2rem" src={props.icon} />
       )}
       <Text as="h3"> {props.note.website} </Text>
     </Button>
@@ -37,4 +37,5 @@ export default Tab;
 
 interface SidebarProps {
   note: INote;
+  icon?: string;
 }

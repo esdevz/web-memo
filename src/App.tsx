@@ -57,7 +57,11 @@ const App = () => {
           }}
         >
           {Object.keys(notes).map((url) => (
-            <Tab key={url} note={notes[url][0]} />
+            <Tab
+              key={url}
+              note={notes[url][0]}
+              icon={notes[url].find((n) => n.favicon)?.favicon}
+            />
           ))}
         </GridItem>
         <NotesContainer>
