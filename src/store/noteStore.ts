@@ -1,9 +1,8 @@
+import { db } from "./db";
 import create from "zustand";
-import { NotesDB } from "../idb/NotesDb";
 import { NoteStore } from "./types";
 import { INote } from "./types";
 
-const db = new NotesDB();
 const DB_NAME = "notes";
 const updatingError = "an error happened while updating your note";
 
@@ -18,7 +17,7 @@ export const defaultState = (
   return initialState || emptyNotesCollection;
 };
 
-const defaultNote = {
+export const defaultNote = {
   title: "",
   content: "",
   fullUrl: "",
