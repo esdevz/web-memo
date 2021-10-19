@@ -1,3 +1,4 @@
+import React, { useRef, useCallback } from "react";
 import {
   Text,
   Grid,
@@ -16,11 +17,9 @@ import { IoArrowBack } from "react-icons/io5";
 import { RiPushpinLine } from "react-icons/ri";
 import { INote } from "../../store/types";
 import { TiDocumentDelete } from "react-icons/ti";
-import { useRef, useCallback } from "react";
 import useNoteStore from "../../store/noteStore";
 import Editable from "./Editable";
-import { dateString } from "../../../utils";
-import { sanitizeHtml } from "../../../utils/sanitizeHtml";
+import { dateString, sanitizeHtml } from "../../../utils";
 
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
@@ -40,7 +39,7 @@ const Note = ({ note }: NoteProps) => {
       ...note,
       createdAt: Date.now(),
       content: sanitizeHtml(contentRef.current?.innerHTML),
-      title: TitleRef.current?.textContent || "...",
+      title: TitleRef.current?.textContent ?? "",
     };
     setLoading.on();
     const feedback = await editNote(editedNote);
@@ -161,11 +160,7 @@ const Note = ({ note }: NoteProps) => {
         </HStack>
 
         {open ? (
-          <NoteOptions
-            delete={deleteNote}
-            savingState={loading}
-            save={saveNote}
-          />
+          <NoteOptions delete={deleteNote} savingState={loading} save={saveNote} />
         ) : (
           <HStack spacing="1">
             <IconButton

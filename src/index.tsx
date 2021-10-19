@@ -1,12 +1,11 @@
 import "@fontsource/raleway";
-import "@fontsource/open-sans";
+import React from "react";
 import ReactDom from "react-dom";
+import InitApp from "./components/main/InitApp";
 import App from "./App";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import theme from "./theme";
 import "./index.css";
-import InitApp from "./components/main/InitApp";
-
 ReactDom.render(
   <ChakraProvider resetCSS theme={theme}>
     <InitApp>

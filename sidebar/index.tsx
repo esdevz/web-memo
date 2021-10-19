@@ -1,4 +1,5 @@
 import "@fontsource/raleway";
+import React from "react";
 import ReactDom from "react-dom";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import Sidebar from "./components/Sidebar";

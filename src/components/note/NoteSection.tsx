@@ -1,7 +1,7 @@
+import React, { FC } from "react";
 import { GridItem } from "@chakra-ui/react";
-import { ReactNode } from "react";
 
-const NoteSection = (props: { children: ReactNode }) => {
+const NoteSection: FC = (props) => {
   return (
     <GridItem
       as="section"

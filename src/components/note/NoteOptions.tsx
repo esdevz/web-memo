@@ -1,3 +1,4 @@
+import React from "react";
 import { HStack, Button } from "@chakra-ui/react";
 import { FiSave } from "react-icons/fi";
 import { TiDocumentDelete } from "react-icons/ti";

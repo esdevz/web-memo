@@ -1,5 +1,5 @@
+import React, { ForwardedRef, forwardRef } from "react";
 import { GridItem, GridItemProps } from "@chakra-ui/react";
-import { ForwardedRef, forwardRef } from "react";
 
 const Editable = forwardRef(
   (
@@ -21,7 +21,7 @@ const Editable = forwardRef(
       }}
       contentEditable={isOpen}
       spellCheck="false"
-      maxW="90ch"
+      maxW="100ch"
       fontFamily="Open Sans"
       fontWeight="normal"
       fontSize="0.8rem"
