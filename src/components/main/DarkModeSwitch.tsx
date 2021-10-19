@@ -1,40 +1,50 @@
-import { BiSun, BiMoon } from "react-icons/bi";
-import { useColorMode, IconButton } from "@chakra-ui/react";
+import React from "react";
+import { BsSun, BsMoon } from "react-icons/bs";
+import { useColorMode, IconButton, Tooltip } from "@chakra-ui/react";
+import { motion, Variants } from "framer-motion";
+
+const option: Variants = {
+  animate: {
+    y: "0rem",
+    opacity: 1,
+    scale: 1,
+    transition: {
+      y: {
+        stiffness: 500,
+      },
+    },
+  },
+  idle: {
+    y: "2rem",
+    opacity: 0,
+    scale: 0.3,
+    transition: {
+      y: { stiffness: 500 },
+    },
+  },
+};
 
 export const DarkModeSwitch = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
-  const styleProps = {
-    m: "1em",
-    boxSize: "2.7em",
-    pos: "absolute",
-    bottom: "1em",
-    right: "1em",
-  } as const;
 
   const toggleMode = () => {
     browser.runtime.sendMessage({ msg: "TOGGLE_COLOR_MODE" });
     toggleColorMode();
   };
-
-  if (isDark) {
-    return (
-      <IconButton
-        borderRadius="33%"
-        icon={<BiMoon color="lightblue" size="1.3em" />}
-        aria-label="dark mode"
-        onClick={toggleMode}
-        {...styleProps}
-      />
-    );
-  }
   return (
-    <IconButton
-      borderRadius="33%"
-      icon={<BiSun color="goldenrod" size="1.3em" />}
-      aria-label="light mode"
-      onClick={toggleMode}
-      {...styleProps}
-    />
+    <Tooltip label="Dark/Light Mode" placement="left">
+      <IconButton
+        as={motion.button}
+        colorScheme="bb"
+        m="0.7em"
+        boxSize="2.85em"
+        variants={option}
+        borderRadius="33%"
+        icon={isDark ? <BsMoon size="1.3em" /> : <BsSun size="1.3em" />}
+        aria-label={isDark ? "dark mode" : "light mode"}
+        onClick={toggleMode}
+      />
+    </Tooltip>
   );
 };
