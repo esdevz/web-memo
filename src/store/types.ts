@@ -26,28 +26,32 @@ export type CustomIcon =
 
 export type Layout = "default" | "minimized";
 
+export interface Collection {
+  displayName: string;
+  customIconType: CustomIcon;
+  notes: INote[];
+}
+
 export interface CollectionOptions {
   displayName: string;
   customIconType: CustomIcon;
 }
 export interface Configs {
+  id: number;
   tabLayout: Layout;
   collections: Record<string, CollectionOptions>;
 }
 export interface NoteStore {
-  notes: Record<string, INote[]>;
+  tabLayout: Layout;
+  collections: Record<string, Collection>;
   activeTab: string;
   setActiveTab: (url: string) => void;
-  addNewNote: () => Promise<void>;
+  addNewNote: (collectionProps: CollectionOptions) => Promise<void>;
   getNotes: () => Promise<void>;
   edit: (note: INote) => Promise<NotificationMessage>;
   delete: (note: INote) => Promise<NotificationMessage>;
   //   deleteAll: (website: string) => Promise<void>;
   pin: (note: INote) => Promise<NotificationMessage>;
-}
-export interface ConfigStore extends Configs {
-  getConfigs: () => Promise<void>;
-  update: (id: number, cfg: Partial<Configs>) => Promise<void>;
-  updateCollection: (website: string, opts: CollectionOptions) => Promise<void>;
-  addNewCollection: (website: string, opts: CollectionOptions) => void;
+  updateLayout: (layout: Layout) => Promise<void>;
+  updateCollection: (website: string, newCollection: CollectionOptions) => Promise<void>;
 }
