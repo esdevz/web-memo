@@ -1,71 +1,74 @@
-import { Box, Grid, GridItem } from "@chakra-ui/react";
-import { useCallback } from "react";
-import { useEffect } from "react";
-import { useMemo } from "react";
-import { DarkModeSwitch } from "./components/main/DarkModeSwitch";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { Box, Grid, useDisclosure } from "@chakra-ui/react";
 import EmptyCollection from "./components/main/EmptyCollection";
-import Tab from "./components/main/Tab";
+import Tab from "./components/tab/Tab";
 import Note from "./components/note/Note";
 import NotesContainer from "./components/note/NotesContainer";
 import NoteSection from "./components/note/NoteSection";
 import Separator from "./components/note/NoteSeparator";
+import TabContainer from "./components/tab/TabContainer";
 import useNoteStore from "./store/noteStore";
+import Settings from "./components/main/Settings";
+import Modal from "../ui/drawer/Modal";
+import EditCollectionForm from "../ui/shared/EditCollectionForm";
+import { CollectionOptions } from "./store/types";
 
 const App = () => {
-  const [notes, activeTab, addNewNote] = useNoteStore(
-    useCallback((state) => [state.notes, state.activeTab, state.addNewNote], [])
+  const [collections, activeTab, addNewNote, layout, updateCollection] = useNoteStore(
+    useCallback(
+      (state) => [
+        state.collections,
+        state.activeTab,
+        state.addNewNote,
+        state.tabLayout,
+        state.updateCollection,
+      ],
+      []
+    )
   );
 
   useEffect(() => {
-    browser.runtime.onMessage.addListener((request) => {
-      if (request.msg === "NEW_NOTE") {
-        addNewNote();
+    browser.runtime.onMessage.addListener(
+      (request: { msg: string; collectionProps: CollectionOptions }) => {
+        if (request.msg === "NEW_NOTE") {
+          addNewNote(request.collectionProps);
+        }
       }
-    });
+    );
   }, [addNewNote]);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const pinnedNote = useMemo(() => {
-    return notes[activeTab].filter((note) => note.isPinned);
-  }, [activeTab, notes]);
+    return collections[activeTab].notes.filter((note) => note.isPinned);
+  }, [activeTab, collections]);
 
   const otherNotes = useMemo(() => {
-    return notes[activeTab].filter((note) => !note.isPinned);
-  }, [activeTab, notes]);
+    return collections[activeTab].notes.filter((note) => !note.isPinned);
+  }, [activeTab, collections]);
 
   return (
     <Box as="main" w="100vw" h="100vh">
       <Grid
         h="full"
-        templateRows="repeat(1, 1fr)"
-        templateColumns="repeat(8, 1fr)"
+        templateRows="1fr"
+        templateColumns={`repeat(${layout === "default" ? "10" : "14"} , 1fr)`}
         gap={3}
         overflow="auto"
       >
-        <GridItem
-          p="1"
-          role="tablist"
-          aria-label="websites"
-          as="section"
-          rowSpan={1}
-          colSpan={2}
-          gridGap="2"
-          display="grid"
-          overflow="auto"
-          gridAutoRows="max-content"
-          sx={{
-            scrollbarWidth: "thin",
-          }}
-        >
-          {Object.keys(notes).map((url) => (
+        <TabContainer colSpan={layout === "default" ? 2 : 1}>
+          {Object.keys(collections).map((url) => (
             <Tab
               key={url}
-              note={notes[url][0]}
-              icon={notes[url].find((n) => n.favicon)?.favicon}
+              displayName={collections[url].displayName}
+              customIconType={collections[url].customIconType}
+              note={collections[url].notes[0]}
+              favicon={collections[url].notes.find((n) => n.favicon)?.favicon}
             />
           ))}
-        </GridItem>
-        <NotesContainer>
-          <EmptyCollection notes={notes} activeTab={activeTab} />
+        </TabContainer>
+        <NotesContainer colSpan={layout === "default" ? 8 : 13}>
+          <EmptyCollection collections={collections} activeTab={activeTab} />
           {pinnedNote.length > 0 && (
             <>
               <Separator as="h3" colSpan={1}>
@@ -88,8 +91,22 @@ const App = () => {
           </NoteSection>
         </NotesContainer>
       </Grid>
-
-      <DarkModeSwitch />
+      <Settings openModal={onOpen} />
+      <Modal
+        size="md"
+        modalTitle={collections[activeTab].notes[0].website}
+        onClose={onClose}
+        isOpen={isOpen}
+        returnFocusOnClose={false}
+      >
+        <EditCollectionForm
+          editCollection={updateCollection}
+          url={collections[activeTab].notes[0].website}
+          dispalyName={collections[activeTab].displayName}
+          iconType={collections[activeTab].customIconType}
+          favicon={collections[activeTab].notes[0].favicon}
+        />
+      </Modal>
     </Box>
   );
 };
