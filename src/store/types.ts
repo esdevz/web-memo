@@ -15,13 +15,13 @@ interface NotificationMessage {
 
 export type CustomIcon =
   | "default"
-  | "book"
+  | "screenshot"
   | "movie"
   | "menu"
   | "code"
   | "todo"
   | "note"
-  | "notebook"
+  | "shop"
   | "clipboard";
 
 export type Layout = "default" | "minimized";
