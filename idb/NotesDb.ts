@@ -1,18 +1,9 @@
 import Dexie from "dexie";
 import { CollectionOptions, Configs, INote } from "../src/store/types";
-
-const defaultNote = {
-  title: "",
-  content: "",
-  fullUrl: "",
-  createdAt: 0,
-  favicon: "",
-  isPinned: false,
-  website: "notes",
-};
+import { defaultNote } from "../utils";
 
 const schema = "++id ,title ,website, fullUrl,createdAt",
-  configsSchema = "++id, tabLayout , collections",
+  configsSchema = "id, tabLayout , collections",
   CONFIGS_TABLE = "configs",
   NOTES_TABLE = "notes";
 
@@ -35,6 +26,7 @@ export class NotesDB extends Dexie {
             return cfg;
           },
           {
+            id: 1,
             tabLayout: "default",
             collections: {},
           }
@@ -67,6 +59,14 @@ export class NotesDB extends Dexie {
 
   updateConfigs(id: number, cfg: Partial<Configs>) {
     return this.table<Configs, number>(CONFIGS_TABLE).update(id, cfg);
+  }
+
+  deleteCollection(name: string) {
+    return this.table<Configs, number>(CONFIGS_TABLE)
+      .toCollection()
+      .modify((cfg) => {
+        delete cfg.collections[name];
+      });
   }
 
   updateCollection(name: string, subCollection: CollectionOptions) {
