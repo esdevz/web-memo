@@ -1,3 +1,4 @@
+import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
 import {
   Box,
   VStack,
@@ -9,22 +10,19 @@ import {
   Switch,
   Tooltip,
 } from "@chakra-ui/react";
-import { ChangeEvent, FormEvent, useRef } from "react";
-import FormInput from "./FormInput";
-import {
-  initialNoteState,
-  useBackgroundNote,
-} from "../hooks/useBackgroundNotes";
+import FormInput from "../../ui/form/FormInput";
+import DataList from "../../ui/form/DataList";
+import { initialNoteState, useBackgroundNote } from "../hooks/useBackgroundNotes";
 import { getHostName } from "../../utils";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
-import DataList from "./DataList";
+import { CustomIcon } from "../../src/store/types";
 
 const Sidebar = () => {
   const { note, setNote, saveNote, loading, collections } = useBackgroundNote();
+  const [icon, setIcon] = useState<CustomIcon>("default");
+
   const contentRef = useRef<HTMLDivElement>(null);
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNote({
       ...note,
       favicon: e.target.name === "website" ? "" : note.favicon,
@@ -58,6 +56,10 @@ const Sidebar = () => {
     }
   };
 
+  const handleIconChange = (option: CustomIcon) => {
+    setIcon(option);
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     let newNote = {
@@ -66,8 +68,11 @@ const Sidebar = () => {
       createdAt: Date.now(),
       website: note.website.trim() || "notes",
     };
-    await saveNote(newNote);
-    browser.runtime.sendMessage({ msg: "NEW_NOTE" });
+    await saveNote(newNote, icon);
+    browser.runtime.sendMessage({
+      msg: "NEW_NOTE",
+      collectionProps: { displayName: note.website, customIconType: icon },
+    });
     resetNote();
   };
 
@@ -78,7 +83,7 @@ const Sidebar = () => {
     });
   };
   return (
-    <Box as="main" minH="300px" minW="320px" w="full" m="auto">
+    <Box as="main" minH="300px" minW="320px" w="full">
       <VStack h="100%" w="100%" spacing="1.5">
         <Button
           h="2.7em"
@@ -111,7 +116,7 @@ const Sidebar = () => {
               placeholder: "Title",
             }}
           />
-          <VStack spacing="1" align="flex-start" h="25rem" w="95%">
+          <VStack spacing="1" align="flex-start" h="30rem" w="95%">
             <Text as="h3">Content :</Text>
             <Box
               ref={contentRef}
@@ -135,14 +140,16 @@ const Sidebar = () => {
             </Box>
           </VStack>
 
-          <HStack w="95%" justifyContent="space-between">
+          <HStack mt="1rem !important" w="95%" justifyContent="space-between">
             <DataList
+              handleIconChange={handleIconChange}
+              icon={icon}
               onChangeHandler={handleChange}
               defaultValue={note.website}
               collections={collections}
-              icon={note.favicon}
+              favicon={note.favicon}
             />
-            <Tooltip fontSize="0.9em" label="set collection & icon">
+            <Tooltip fontFamily="Raleway" fontSize="0.9em" label="set collection & icon">
               <Button
                 aria-label="set collection to current url"
                 onClick={setUrl}
@@ -155,7 +162,7 @@ const Sidebar = () => {
               </Button>
             </Tooltip>
           </HStack>
-          <HStack w="95%" justifyContent="space-between">
+          <HStack mt="0.6rem !important" w="95%" justifyContent="space-between">
             <FormControl w="fit-content" display="flex" alignItems="center">
               <FormLabel htmlFor="is-pinned">Pin :</FormLabel>
               <Switch
@@ -178,6 +185,7 @@ const Sidebar = () => {
             </Button>
           </HStack>
           <Button
+            mt="0.6rem !important"
             isLoading={loading}
             isDisabled={loading}
             type="submit"

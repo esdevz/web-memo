@@ -1,7 +1,7 @@
-import { useColorMode } from "@chakra-ui/react";
+import { NotesDB } from "../../idb/NotesDb";
 import { useCallback, useEffect, useState } from "react";
-import { NotesDB } from "../../src/idb/NotesDb";
-import { INote } from "../../src/store/types";
+import { useColorMode } from "@chakra-ui/react";
+import { CustomIcon, INote } from "../../src/store/types";
 
 const db = new NotesDB();
 
@@ -64,10 +64,16 @@ export function useBackgroundNote() {
     });
   }, []);
 
-  const saveNote = useCallback(async (newNote: INote) => {
+  const saveNote = useCallback(async (newNote: INote, icon: CustomIcon) => {
     setLoading(true);
     try {
-      await db.putNote(newNote);
+      await Promise.all([
+        db.updateCollection(newNote.website, {
+          displayName: newNote.website,
+          customIconType: icon,
+        }),
+        db.putNote(newNote),
+      ]);
       setLoading(false);
       setUserCollections((currentCollection) => {
         if (currentCollection.includes(newNote.website) || newNote.favicon) {
