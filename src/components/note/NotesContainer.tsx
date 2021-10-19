@@ -1,7 +1,7 @@
+import React, { FC } from "react";
 import { GridItem } from "@chakra-ui/react";
-import { ReactNode } from "react";
 
-const NotesContainer = (props: { children: ReactNode }) => {
+const NotesContainer: FC<NotesContainerProps> = (props) => {
   return (
     <GridItem
       pos="relative"
@@ -9,12 +9,11 @@ const NotesContainer = (props: { children: ReactNode }) => {
       tabIndex={0}
       as="section"
       rowSpan={1}
-      colSpan={6}
+      colSpan={props.colSpan}
       display="grid"
       gridGap="1"
       gridTemplateColumns="1fr"
       gridAutoRows="max-content"
-      borderLeft="1px solid rgba(128, 128, 128, 0.34)"
       overflow="auto"
       sx={{
         scrollbarWidth: "thin",
@@ -26,3 +25,7 @@ const NotesContainer = (props: { children: ReactNode }) => {
 };
 
 export default NotesContainer;
+
+interface NotesContainerProps {
+  colSpan: number;
+}
