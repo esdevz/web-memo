@@ -22,6 +22,7 @@ export class NotesDB extends Dexie {
             cfg.collections[note.website] = {
               displayName: note.website,
               customIconType: "default",
+              favicon: note.favicon || "",
             };
             return cfg;
           },
@@ -42,9 +43,7 @@ export class NotesDB extends Dexie {
     return this.table<INote, number>(NOTES_TABLE).toCollection().last();
   }
   getNotes() {
-    return this.table<INote, number>(NOTES_TABLE)
-      .orderBy("createdAt")
-      .toArray();
+    return this.table<INote, number>(NOTES_TABLE).orderBy("createdAt").toArray();
   }
   updateNote(id: number, newNote: Partial<INote>) {
     return this.table<INote, number>(NOTES_TABLE).update(id, newNote);
