@@ -29,6 +29,7 @@ const EditCollectionForm = (props: EditCollectionFormProps) => {
     await props.editCollection(props.url, {
       customIconType: icon,
       displayName: name,
+      favicon: props.favicon,
     });
     setLoading.off();
   };

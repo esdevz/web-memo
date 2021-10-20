@@ -11,6 +11,7 @@ export const formatNotes = (
         displayName:
           cfg.collections[currentNote.website]?.displayName || currentNote.website,
         customIconType: cfg.collections[currentNote.website]?.customIconType || "default",
+        favicon: cfg.collections[currentNote.website].favicon ?? "",
         notes: [currentNote, ...(collections[currentNote.website]?.notes || [])],
       };
       return collections;
@@ -19,6 +20,7 @@ export const formatNotes = (
       notes: {
         displayName: "notes",
         customIconType: "default",
+        favicon: "",
         notes: [],
       },
     }
