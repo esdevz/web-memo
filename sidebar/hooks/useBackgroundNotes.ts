@@ -50,17 +50,11 @@ export function useBackgroundNote() {
   }, [toggleColorMode]);
 
   useEffect(() => {
-    db.getNotes().then((col) => {
-      const userCollections = col.reduce(
-        (res: string[], note) => {
-          if (!note.favicon && !res.includes(note.website)) {
-            res.push(note.website);
-          }
-          return res;
-        },
-        ["notes"]
-      );
-      setUserCollections(userCollections);
+    db.getConfigs().then((col) => {
+      if (col) {
+        const userCollections = Object.keys(col.collections);
+        setUserCollections(userCollections);
+      }
     });
   }, []);
 
@@ -71,12 +65,13 @@ export function useBackgroundNote() {
         db.updateCollection(newNote.website, {
           displayName: newNote.website,
           customIconType: icon,
+          favicon: newNote.favicon,
         }),
-        db.putNote(newNote),
+        db.putNote({ ...newNote, favicon: "" }),
       ]);
       setLoading(false);
       setUserCollections((currentCollection) => {
-        if (currentCollection.includes(newNote.website) || newNote.favicon) {
+        if (currentCollection.includes(newNote.website)) {
           return currentCollection;
         }
         return currentCollection.concat(newNote.website);
