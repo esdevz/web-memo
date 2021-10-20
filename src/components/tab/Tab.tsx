@@ -20,12 +20,16 @@ const Tab = (props: SidebarProps) => {
 
   const onDropHandler = (e: DragEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dropToCollection(props.website);
-    setDragHover.off();
+    if (activeTab !== props.website) {
+      dropToCollection(props.website);
+      setDragHover.off();
+    }
   };
 
   const dragOverHandler = (e: DragEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+    if (activeTab !== props.website) {
+      e.preventDefault();
+    }
   };
 
   const dragHandlers = {
