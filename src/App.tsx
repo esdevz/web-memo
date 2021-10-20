@@ -62,8 +62,8 @@ const App = () => {
               key={url}
               displayName={collections[url].displayName}
               customIconType={collections[url].customIconType}
-              note={collections[url].notes[0]}
-              favicon={collections[url].notes.find((n) => n.favicon)?.favicon}
+              website={url}
+              favicon={collections[url].favicon}
             />
           ))}
         </TabContainer>
@@ -94,17 +94,17 @@ const App = () => {
       <Settings openModal={onOpen} />
       <Modal
         size="md"
-        modalTitle={collections[activeTab].notes[0].website}
+        modalTitle={activeTab}
         onClose={onClose}
         isOpen={isOpen}
         returnFocusOnClose={false}
       >
         <EditCollectionForm
           editCollection={updateCollection}
-          url={collections[activeTab].notes[0].website}
+          url={activeTab}
           dispalyName={collections[activeTab].displayName}
           iconType={collections[activeTab].customIconType}
-          favicon={collections[activeTab].notes[0].favicon}
+          favicon={collections[activeTab].favicon}
         />
       </Modal>
     </Box>

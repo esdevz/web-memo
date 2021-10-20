@@ -1,7 +1,6 @@
 import React, { useRef, useCallback } from "react";
 import {
   Text,
-  Grid,
   GridItem,
   useColorModeValue,
   useBoolean,
@@ -11,6 +10,7 @@ import {
   Link,
   useToast,
   Tooltip,
+  Icon,
 } from "@chakra-ui/react";
 import NoteOptions from "./NoteOptions";
 import { IoArrowBack } from "react-icons/io5";
@@ -20,14 +20,20 @@ import { TiDocumentDelete } from "react-icons/ti";
 import useNoteStore from "../../store/noteStore";
 import Editable from "./Editable";
 import { dateString, sanitizeHtml } from "../../../utils";
+import NoteContainer from "./NoteContainer";
+import { VscGrabber } from "react-icons/vsc";
 
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
   const [open, setOpen] = useBoolean(false);
-  const [editNote, pin, del] = useNoteStore(
-    useCallback((state) => [state.edit, state.pin, state.delete], [])
+  const [editNote, pin, del, setDraggedNote] = useNoteStore(
+    useCallback(
+      (state) => [state.edit, state.pin, state.delete, state.setDraggedNote],
+      []
+    )
   );
   const [loading, setLoading] = useBoolean(false);
+  const [drag, setDrag] = useBoolean(false);
 
   const contentRef = useRef<HTMLDivElement>(null);
   const TitleRef = useRef<HTMLHeadingElement>(null);
@@ -71,26 +77,20 @@ const Note = ({ note }: NoteProps) => {
       });
   };
 
+  const dragStartHandler = () => {
+    setDraggedNote(note);
+  };
+
   if (note.createdAt === 0) {
     return null;
   }
   return (
-    <Grid
-      pos={open ? "fixed" : "static"}
-      w={open ? "69%" : "250px"}
-      h={open ? "95%" : "265px"}
-      top={open ? 0 : undefined}
-      p="2.5"
-      as="article"
-      shadow="md"
-      templateRows={`repeat(${open ? 10 : 4},1fr )`}
-      templateColumns="1fr"
-      gap={2}
-      m="1"
-      border="1px solid rgba(128, 128, 128, 0.34)"
-      transition="height 0.2s ease-in-out"
-      zIndex={open ? 2 : undefined}
-      bgColor={colorMode === "dark" ? "gray.800" : "white"}
+    <NoteContainer
+      onDragStart={dragStartHandler}
+      onDragEnd={setDrag.off}
+      draggable={drag}
+      open={open}
+      colorMode={colorMode}
     >
       <GridItem
         display="flex"
@@ -180,7 +180,17 @@ const Note = ({ note }: NoteProps) => {
           </HStack>
         )}
       </GridItem>
-    </Grid>
+      <GridItem display="flex" justifyContent="center" rowSpan={1}>
+        <Icon
+          as={VscGrabber}
+          boxSize="5"
+          cursor="move"
+          onMouseDown={setDrag.on}
+          onMouseUp={setDrag.off}
+          marginInline="auto"
+        />
+      </GridItem>
+    </NoteContainer>
   );
 };
 
