@@ -3,7 +3,7 @@ export interface INote {
   title: string;
   website: string;
   fullUrl: string;
-  favicon: string;
+  favicon?: string; //to be removed
   content: string;
   createdAt: number;
   isPinned: boolean;
@@ -29,12 +29,14 @@ export type Layout = "default" | "minimized";
 export interface Collection {
   displayName: string;
   customIconType: CustomIcon;
+  favicon?: string;
   notes: INote[];
 }
 
 export interface CollectionOptions {
   displayName: string;
   customIconType: CustomIcon;
+  favicon?: string;
 }
 export interface Configs {
   id: number;
@@ -45,6 +47,7 @@ export interface NoteStore {
   tabLayout: Layout;
   collections: Record<string, Collection>;
   activeTab: string;
+  draggedNote: null | INote;
   setActiveTab: (url: string) => void;
   addNewNote: (collectionProps: CollectionOptions) => Promise<void>;
   getNotes: () => Promise<void>;
@@ -54,4 +57,6 @@ export interface NoteStore {
   pin: (note: INote) => Promise<NotificationMessage>;
   updateLayout: (layout: Layout) => Promise<void>;
   updateCollection: (website: string, newCollection: CollectionOptions) => Promise<void>;
+  updateTagetCollection: (url: string) => Promise<void>;
+  setDraggedNote: (note: INote) => void;
 }
