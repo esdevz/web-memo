@@ -157,16 +157,19 @@ const useNoteStore = create<NoteStore>((set, get) => ({
     if (draggedNote) {
       return set((state) =>
         produce(state, (draft) => {
-          draft.collections[url].notes.unshift(draggedNote!);
-          draft.collections[originTab].notes.splice(
-            draft.collections[originTab].notes.findIndex((n) => n.id === draggedNote?.id),
-            1
+          const index = draft.collections[originTab].notes.findIndex(
+            (n) => n.id === draggedNote?.id
           );
-          db.updateNote(draggedNote?.id!, { website: url });
-          if (draft.collections[originTab].notes.length === 0) {
-            db.deleteCollection(originTab);
-            draft.activeTab = url;
-            delete draft.collections[originTab];
+          if (index !== -1) {
+            draft.collections[url].notes.unshift({ ...draggedNote!, website: url });
+            draft.collections[originTab].notes.splice(index, 1);
+            db.updateNote(draggedNote?.id!, { website: url });
+
+            if (draft.collections[originTab].notes.length === 0) {
+              db.deleteCollection(originTab);
+              draft.activeTab = url;
+              delete draft.collections[originTab];
+            }
           }
         })
       );
