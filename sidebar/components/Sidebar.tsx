@@ -71,7 +71,11 @@ const Sidebar = () => {
     await saveNote(newNote, icon);
     browser.runtime.sendMessage({
       msg: "NEW_NOTE",
-      collectionProps: { displayName: note.website, customIconType: icon },
+      collectionProps: {
+        displayName: note.website,
+        customIconType: icon,
+        favicon: newNote.favicon,
+      },
     });
     resetNote();
   };
