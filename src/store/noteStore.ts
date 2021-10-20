@@ -1,15 +1,16 @@
 import { db } from "./db";
 import create from "zustand";
-import { NoteStore, Layout, CollectionOptions } from "./types";
+import { NoteStore, Layout, CollectionOptions, INote } from "./types";
 import { formatNotes, defaultConfig } from "../../utils";
 import produce from "immer";
 
 const updatingError = "an error happened while updating your note";
 
-const useNoteStore = create<NoteStore>((set) => ({
+const useNoteStore = create<NoteStore>((set, get) => ({
   tabLayout: "default",
   collections: {},
   activeTab: "notes",
+  draggedNote: null,
   setActiveTab(url) {
     set((state) => ({
       ...state,
@@ -75,30 +76,21 @@ const useNoteStore = create<NoteStore>((set) => ({
     }
   },
   async delete(note) {
-    set((state) => {
-      let newNotes = state.collections[note.website].notes.filter(
-        (n) => n.id !== note.id
-      );
-      if (newNotes.length === 0) {
-        delete state.collections[note.website];
-        db.deleteCollection(note.website);
-        return {
-          ...state,
-          activeTab: "notes",
-        };
-      } else {
-        return {
-          ...state,
-          collections: {
-            ...state.collections,
-            [note.website]: {
-              ...state.collections[note.website],
-              notes: newNotes,
-            },
-          },
-        };
-      }
-    });
+    set((state) =>
+      produce(state, (draft) => {
+        const index = draft.collections[note.website].notes.findIndex(
+          (n) => n.id === note.id
+        );
+        if (index !== -1) {
+          draft.collections[note.website].notes.splice(index, 1);
+          if (draft.collections[note.website].notes.length === 0) {
+            draft.activeTab = "notes";
+            delete draft.collections[note.website];
+            db.deleteCollection(note.website);
+          }
+        }
+      })
+    );
     try {
       await db.deleteNote(note.id!);
       return {
@@ -114,18 +106,14 @@ const useNoteStore = create<NoteStore>((set) => ({
     }
   },
   async pin(note) {
-    set((state) => ({
-      ...state,
-      collections: {
-        ...state.collections,
-        [note.website]: {
-          ...state.collections[note.website],
-          notes: state.collections[note.website].notes.map((n) =>
-            n.id === note.id ? { ...n, isPinned: !n.isPinned } : n
-          ),
-        },
-      },
-    }));
+    set((state) =>
+      produce(state, (draft) => {
+        const findNote = draft.collections[note.website].notes.find(
+          (n) => n.id === note.id
+        );
+        if (findNote) findNote.isPinned = !findNote.isPinned;
+      })
+    );
     const updates = await db.updateNote(note.id!, { isPinned: !note.isPinned });
     if (!updates) {
       return {
@@ -143,16 +131,46 @@ const useNoteStore = create<NoteStore>((set) => ({
       ...state,
       tabLayout,
     }));
-    db.updateConfigs(1, { tabLayout });
+    await db.updateConfigs(1, { tabLayout });
   },
   async updateCollection(website: string, newCollection: CollectionOptions) {
     set((state) =>
       produce(state, (draft) => {
         draft.collections[website].customIconType = newCollection.customIconType;
         draft.collections[website].displayName = newCollection.displayName;
+        draft.collections[website].favicon = newCollection.favicon;
       })
     );
     db.updateCollection(website, newCollection);
+  },
+  setDraggedNote(note: INote) {
+    set((state) =>
+      produce(state, (draft) => {
+        draft.draggedNote = note;
+      })
+    );
+  },
+  async updateTagetCollection(url) {
+    let draggedNote = get().draggedNote;
+    let originTab = get().activeTab;
+
+    if (draggedNote) {
+      return set((state) =>
+        produce(state, (draft) => {
+          draft.collections[url].notes.unshift(draggedNote!);
+          draft.collections[originTab].notes.splice(
+            draft.collections[originTab].notes.findIndex((n) => n.id === draggedNote?.id),
+            1
+          );
+          db.updateNote(draggedNote?.id!, { website: url });
+          if (draft.collections[originTab].notes.length === 0) {
+            db.deleteCollection(originTab);
+            draft.activeTab = url;
+            delete draft.collections[originTab];
+          }
+        })
+      );
+    }
   },
 }));
 
