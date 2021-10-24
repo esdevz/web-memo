@@ -22,7 +22,13 @@ const CustomDrawer = ({
       <DrawerContent>
         <DrawerCloseButton />
         <DrawerHeader> {drawerTitle} </DrawerHeader>
-        <DrawerBody> {children} </DrawerBody>
+        <DrawerBody
+          sx={{
+            scrollbarWidth: "thin",
+          }}
+        >
+          {children}
+        </DrawerBody>
         <DrawerFooter>{controls}</DrawerFooter>
       </DrawerContent>
     </Drawer>
@@ -33,5 +39,5 @@ export default CustomDrawer;
 
 interface CustomDrawerProps extends DrawerProps {
   drawerTitle: string;
-  controls: React.ReactNode;
+  controls?: React.ReactNode;
 }
