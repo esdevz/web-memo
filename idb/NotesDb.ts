@@ -72,7 +72,7 @@ export class NotesDB extends Dexie {
     return this.table<Configs, number>(CONFIGS_TABLE)
       .toCollection()
       .modify((cfg) => {
-        cfg.collections[name] = subCollection;
+        cfg.collections[name] = { ...(cfg.collections[name] || {}), ...subCollection };
       });
   }
 }
