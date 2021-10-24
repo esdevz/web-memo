@@ -1,6 +1,6 @@
 import { db } from "./db";
 import create from "zustand";
-import { NoteStore, Layout, CollectionOptions, INote } from "./types";
+import { NoteStore, Layout, CollectionOptions, INote, Configs } from "./types";
 import { formatNotes, defaultConfig } from "../../utils";
 import produce from "immer";
 
@@ -21,26 +21,28 @@ const useNoteStore = create<NoteStore>((set, get) => ({
     const newNote = await db.getLastNote();
 
     if (newNote) {
-      set((state) => {
-        let newCollection = [
-          newNote,
-          ...(state.collections[newNote.website]?.notes || []),
-        ];
-        return {
-          ...state,
-          collections: {
-            ...state.collections,
-            [newNote.website]: {
-              ...collectionProps,
-              notes: newCollection,
-            },
-          },
-        };
-      });
+      set((state) =>
+        produce(state, (draft) => {
+          let currentNotes = draft.collections[newNote.website]?.notes || [];
+          let currentFavicon = draft.collections[newNote.website]?.favicon || "";
+
+          draft.collections[newNote.website] = {
+            ...collectionProps,
+            notes: currentNotes,
+          };
+          draft.collections[newNote.website].notes.unshift(newNote);
+          if (!("favicon" in collectionProps)) {
+            draft.collections[newNote.website].favicon = currentFavicon;
+          }
+        })
+      );
     }
   },
   async getNotes() {
     const [cfg, fetchedNotes] = await Promise.all([db.getConfigs(), db.getNotes()]);
+    if (!cfg) {
+      await db.table<Configs>("configs").put(defaultConfig, 1);
+    }
 
     set((state) => ({
       ...state,
