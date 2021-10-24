@@ -10,8 +10,10 @@ import TabContainer from "./components/tab/TabContainer";
 import useNoteStore from "./store/noteStore";
 import Settings from "./components/main/Settings";
 import Modal from "../ui/drawer/Modal";
+import Drawer from "../ui/drawer/Drawer";
 import EditCollectionForm from "../ui/shared/EditCollectionForm";
 import { CollectionOptions } from "./store/types";
+import SearchNotes from "./components/main/SearchNotes";
 
 const App = () => {
   const [collections, activeTab, addNewNote, layout, updateCollection] = useNoteStore(
@@ -38,6 +40,11 @@ const App = () => {
   }, [addNewNote]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isDrawerOpen,
+    onOpen: openDrawer,
+    onClose: closeDrawer,
+  } = useDisclosure();
 
   const pinnedNote = useMemo(() => {
     return collections[activeTab].notes.filter((note) => note.isPinned);
@@ -91,7 +98,7 @@ const App = () => {
           </NoteSection>
         </NotesContainer>
       </Grid>
-      <Settings openModal={onOpen} />
+      <Settings openDrawer={openDrawer} openModal={onOpen} />
       <Modal
         size="md"
         modalTitle={activeTab}
@@ -107,6 +114,15 @@ const App = () => {
           favicon={collections[activeTab].favicon}
         />
       </Modal>
+      <Drawer
+        size="xl"
+        drawerTitle="Search"
+        onClose={closeDrawer}
+        isOpen={isDrawerOpen}
+        returnFocusOnClose={false}
+      >
+        <SearchNotes />
+      </Drawer>
     </Box>
   );
 };

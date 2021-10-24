@@ -5,6 +5,7 @@ import { IconButton } from "@chakra-ui/button";
 import { BiCog } from "react-icons/bi";
 import { GoSettings } from "react-icons/go";
 import { BsLayoutSidebar } from "react-icons/bs";
+import { AiOutlineFileSearch } from "react-icons/ai";
 import { DarkModeSwitch } from "./DarkModeSwitch";
 import { useColorMode } from "@chakra-ui/color-mode";
 import useNoteStore from "../../store/noteStore";
@@ -110,6 +111,17 @@ const Settings = (props: SettingsProps) => {
                 aria-label="edit collection"
               />
             </Tooltip>
+            <Tooltip label="Search Notes" placement="left">
+              <IconButton
+                as={motion.button}
+                onClick={props.openDrawer}
+                variants={option}
+                {...styleProps}
+                colorScheme="bb"
+                icon={<AiOutlineFileSearch />}
+                aria-label="layout type"
+              />
+            </Tooltip>
             <Tooltip label="Toggle Tabs" placement="left">
               <IconButton
                 as={motion.button}
@@ -146,4 +158,5 @@ export default Settings;
 
 interface SettingsProps {
   openModal: () => void;
+  openDrawer: () => void;
 }
