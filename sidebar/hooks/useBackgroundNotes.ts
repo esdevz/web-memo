@@ -58,37 +58,46 @@ export function useBackgroundNote() {
     });
   }, []);
 
-  const saveNote = useCallback(async (newNote: INote, icon: CustomIcon) => {
-    setLoading(true);
-    try {
-      await Promise.all([
-        db.updateCollection(newNote.website, {
-          displayName: newNote.website,
-          customIconType: icon,
-          favicon: newNote.favicon,
-        }),
-        db.putNote({ ...newNote, favicon: "" }),
-      ]);
-      setLoading(false);
-      setUserCollections((currentCollection) => {
-        if (currentCollection.includes(newNote.website)) {
-          return currentCollection;
-        }
-        return currentCollection.concat(newNote.website);
-      });
-      return {
-        msg: "note saved",
-        state: true,
+  const saveNote = useCallback(
+    async (newNote: INote, icon: CustomIcon) => {
+      setLoading(true);
+      const existingCollection = collections.includes(newNote.website);
+      const collectionProps = {
+        displayName: newNote.website,
+        customIconType: icon,
+        favicon: newNote.favicon,
       };
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-      return {
-        msg: "an error occured",
-        state: false,
-      };
-    }
-  }, []);
+      if (existingCollection) {
+        delete collectionProps.favicon;
+      }
+
+      try {
+        await Promise.all([
+          db.updateCollection(newNote.website, collectionProps),
+          db.putNote({ ...newNote, favicon: "" }),
+        ]);
+        setLoading(false);
+        setUserCollections((currentCollection) => {
+          if (currentCollection.includes(newNote.website)) {
+            return currentCollection;
+          }
+          return currentCollection.concat(newNote.website);
+        });
+        return {
+          msg: "note saved",
+          state: true,
+        };
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+        return {
+          msg: "an error occured",
+          state: false,
+        };
+      }
+    },
+    [collections]
+  );
 
   return { note, setNote, saveNote, loading, collections };
 }

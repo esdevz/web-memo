@@ -62,21 +62,24 @@ const Sidebar = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    let newNote = {
+    const newNote = {
       ...note,
       content: sanitizeHtml(contentRef.current?.innerHTML),
       createdAt: Date.now(),
       website: note.website.trim() || "notes",
     };
     await saveNote(newNote, icon);
-    browser.runtime.sendMessage({
-      msg: "NEW_NOTE",
-      collectionProps: {
-        displayName: note.website,
-        customIconType: icon,
-        favicon: newNote.favicon,
-      },
-    });
+
+    const existingCollection = collections.includes(newNote.website);
+    const collectionProps = {
+      displayName: newNote.website,
+      customIconType: icon,
+      favicon: newNote.favicon,
+    };
+    if (existingCollection) {
+      delete collectionProps.favicon;
+    }
+    browser.runtime.sendMessage({ msg: "NEW_NOTE", collectionProps });
     resetNote();
   };
 
