@@ -36,7 +36,7 @@
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/parser": "^4.24.0",
     "dotenv": "^10.0.0",
-    "esbuild": "^0.13.8",
+    "esbuild": "^0.13.11",
     "eslint": "^7.26.0",
     "eslint-config-react-app": "^6.0.0",
     "eslint-plugin-flowtype": "^5.7.2",
