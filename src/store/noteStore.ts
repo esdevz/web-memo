@@ -23,17 +23,15 @@ const useNoteStore = create<NoteStore>((set, get) => ({
     if (newNote) {
       set((state) =>
         produce(state, (draft) => {
-          let currentNotes = draft.collections[newNote.website]?.notes || [];
-          let currentFavicon = draft.collections[newNote.website]?.favicon || "";
+          const currentNotes = draft.collections[newNote.website]?.notes || [];
 
-          draft.collections[newNote.website] = {
-            ...collectionProps,
-            notes: currentNotes,
-          };
-          draft.collections[newNote.website].notes.unshift(newNote);
-          if (!("favicon" in collectionProps)) {
-            draft.collections[newNote.website].favicon = currentFavicon;
+          if (Object.keys(collectionProps).length > 0) {
+            draft.collections[newNote.website] = {
+              ...collectionProps,
+              notes: currentNotes,
+            };
           }
+          draft.collections[newNote.website].notes.unshift(newNote);
         })
       );
     }
@@ -88,6 +86,7 @@ const useNoteStore = create<NoteStore>((set, get) => ({
           if (draft.collections[note.website].notes.length === 0) {
             draft.activeTab = "notes";
             delete draft.collections[note.website];
+            browser.runtime.sendMessage({ msg: "DELETE", collection: note.website });
             db.deleteCollection(note.website);
           }
         }
@@ -171,6 +170,7 @@ const useNoteStore = create<NoteStore>((set, get) => ({
               db.deleteCollection(originTab);
               draft.activeTab = url;
               delete draft.collections[originTab];
+              browser.runtime.sendMessage({ msg: "DELETE", collection: originTab });
             }
           }
         })

@@ -71,14 +71,13 @@ const Sidebar = () => {
     await saveNote(newNote, icon);
 
     const existingCollection = collections.includes(newNote.website);
-    const collectionProps = {
-      displayName: newNote.website,
-      customIconType: icon,
-      favicon: newNote.favicon,
-    };
-    if (existingCollection) {
-      delete collectionProps.favicon;
-    }
+    let collectionProps = existingCollection
+      ? {}
+      : {
+          displayName: newNote.website,
+          customIconType: icon,
+          favicon: newNote.favicon,
+        };
     browser.runtime.sendMessage({ msg: "NEW_NOTE", collectionProps });
     resetNote();
   };

@@ -68,7 +68,10 @@ export class NotesDB extends Dexie {
       });
   }
 
-  updateCollection(name: string, subCollection: CollectionOptions) {
+  updateCollection(name: string, subCollection: Partial<CollectionOptions>) {
+    if (Object.keys(subCollection).length === 0) {
+      return Promise.resolve(0);
+    }
     return this.table<Configs, number>(CONFIGS_TABLE)
       .toCollection()
       .modify((cfg) => {

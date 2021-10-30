@@ -36,14 +36,24 @@ export function useBackgroundNote() {
         console.log(err);
       }
     );
-    const onMessageHandler = (request: { msg: string; note?: INote }) => {
+    const onMessageHandler = (request: {
+      msg: string;
+      note?: INote;
+      collection?: string;
+    }) => {
       if (request.msg === "EDIT_NOTE" && request.note) {
         setNote(request.note);
       }
       if (request.msg === "TOGGLE_COLOR_MODE") {
         toggleColorMode();
       }
+      if (request.msg === "DELETE") {
+        setUserCollections((currentCollections) =>
+          currentCollections.filter((col) => col !== request.collection)
+        );
+      }
     };
+
     browser.runtime.onMessage.addListener(onMessageHandler);
 
     return () => browser.runtime.onMessage.removeListener(onMessageHandler);
@@ -62,14 +72,13 @@ export function useBackgroundNote() {
     async (newNote: INote, icon: CustomIcon) => {
       setLoading(true);
       const existingCollection = collections.includes(newNote.website);
-      const collectionProps = {
-        displayName: newNote.website,
-        customIconType: icon,
-        favicon: newNote.favicon,
-      };
-      if (existingCollection) {
-        delete collectionProps.favicon;
-      }
+      let collectionProps = existingCollection
+        ? {}
+        : {
+            displayName: newNote.website,
+            customIconType: icon,
+            favicon: newNote.favicon,
+          };
 
       try {
         await Promise.all([
