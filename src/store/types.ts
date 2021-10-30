@@ -22,6 +22,8 @@ export type CustomIcon =
   | "todo"
   | "note"
   | "shop"
+  | "QR"
+  | "paper"
   | "clipboard";
 
 export type Layout = "default" | "minimized";

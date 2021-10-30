@@ -1,9 +1,10 @@
 import React from "react";
 import { CustomIcon } from "../../src/store/types";
 import { IconProps, Icon } from "@chakra-ui/react";
-import { BsFileEarmarkCode, BsListCheck } from "react-icons/bs";
-import { BiClipboard, BiFoodMenu, BiScreenshot, BiShoppingBag } from "react-icons/bi";
+import { BsClipboard, BsFileEarmarkCode, BsListCheck, BsPaperclip } from "react-icons/bs";
+import { BiFoodMenu, BiScreenshot, BiShoppingBag } from "react-icons/bi";
 import { RiMovieLine, RiStickyNoteFill } from "react-icons/ri";
+import { AiOutlineQrcode } from "react-icons/ai";
 
 interface CollectionIconProps extends IconProps {
   customIcon: CustomIcon;
@@ -17,6 +18,8 @@ export const IconList: CustomIcon[] = [
   "todo",
   "note",
   "shop",
+  "QR",
+  "paper",
   "clipboard",
 ];
 
@@ -37,7 +40,11 @@ export const CollectionIcon = ({ customIcon, ...rest }: CollectionIconProps) => 
     case "todo":
       return <Icon as={BsListCheck} {...rest} />;
     case "clipboard":
-      return <Icon as={BiClipboard} {...rest} />;
+      return <Icon as={BsClipboard} {...rest} />;
+    case "QR":
+      return <Icon as={AiOutlineQrcode} {...rest} />;
+    case "paper":
+      return <Icon as={BsPaperclip} {...rest} />;
     default:
       return null;
   }
