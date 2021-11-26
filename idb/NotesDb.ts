@@ -1,6 +1,6 @@
 import Dexie from "dexie";
 import { CollectionOptions, Configs, INote } from "../src/store/types";
-import { defaultNote } from "../utils";
+import { defaultConfig, defaultNote } from "../utils";
 
 const schema = "++id ,title ,website, fullUrl,createdAt",
   configsSchema = "id, tabLayout , collections",
@@ -52,8 +52,15 @@ export class NotesDB extends Dexie {
     return this.table<INote, number>(NOTES_TABLE).delete(id);
   }
 
-  getConfigs() {
-    return this.table<Configs, number>(CONFIGS_TABLE).toCollection().first();
+  async getConfigs() {
+    const configs = await this.table<Configs, number>(CONFIGS_TABLE)
+      .toCollection()
+      .first();
+    if (!configs) {
+      await this.table<Configs>(CONFIGS_TABLE).put(defaultConfig, 1);
+      return defaultConfig;
+    }
+    return configs;
   }
 
   updateConfigs(id: number, cfg: Partial<Configs>) {

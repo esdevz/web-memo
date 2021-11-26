@@ -1,7 +1,7 @@
 import { db } from "./db";
 import create from "zustand";
-import { NoteStore, Layout, CollectionOptions, INote, Configs } from "./types";
-import { formatNotes, defaultConfig } from "../../utils";
+import { NoteStore, Layout, CollectionOptions, INote } from "./types";
+import { formatNotes } from "../../utils";
 import produce from "immer";
 
 const updatingError = "an error happened while updating your note";
@@ -38,14 +38,10 @@ const useNoteStore = create<NoteStore>((set, get) => ({
   },
   async getNotes() {
     const [cfg, fetchedNotes] = await Promise.all([db.getConfigs(), db.getNotes()]);
-    if (!cfg) {
-      await db.table<Configs>("configs").put(defaultConfig, 1);
-    }
-
     set((state) => ({
       ...state,
-      tabLayout: cfg?.tabLayout || "default",
-      collections: formatNotes(fetchedNotes, cfg || defaultConfig),
+      tabLayout: cfg.tabLayout,
+      collections: formatNotes(fetchedNotes, cfg),
     }));
   },
 

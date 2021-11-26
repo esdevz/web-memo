@@ -1,8 +1,7 @@
 import { NotesDB } from "../../idb/NotesDb";
 import { useCallback, useEffect, useState } from "react";
 import { useColorMode } from "@chakra-ui/react";
-import { Configs, CustomIcon, INote } from "../../src/store/types";
-import { defaultConfig } from "../../utils";
+import { CustomIcon, INote } from "../../src/store/types";
 
 const db = new NotesDB();
 
@@ -62,12 +61,8 @@ export function useBackgroundNote() {
 
   useEffect(() => {
     db.getConfigs().then((col) => {
-      if (col) {
-        const userCollections = Object.keys(col.collections);
-        setUserCollections(userCollections);
-      } else {
-        db.table<Configs>("configs").put(defaultConfig, 1);
-      }
+      const userCollections = Object.keys(col.collections);
+      setUserCollections(userCollections);
     });
   }, []);
 
