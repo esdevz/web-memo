@@ -1,5 +1,16 @@
 import { INote } from "../src/store/types";
-import { getHostName } from "../utils";
+
+const hostName = (url: string) => {
+  try {
+    let hostName = new URL(url).hostname;
+    if (hostName === "") {
+      return "notes";
+    }
+    return hostName;
+  } catch {
+    return "notes";
+  }
+};
 
 const SAVE_NOTE_ID = "save-as-note";
 
@@ -26,7 +37,7 @@ browser.menus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === SAVE_NOTE_ID) {
     let note = {
       title: tab?.title || "",
-      website: getHostName(tab?.url || ""),
+      website: hostName(tab?.url || ""),
       fullUrl: tab?.url || "",
       favicon: tab?.favIconUrl || "",
       content: info.selectionText || "",
