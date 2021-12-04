@@ -12,8 +12,9 @@ import {
 } from "@chakra-ui/react";
 import FormInput from "../../ui/form/FormInput";
 import DataList from "../../ui/form/DataList";
+import Editable from "./Editable";
 import { initialNoteState, useBackgroundNote } from "../hooks/useBackgroundNotes";
-import { getHostName } from "../../utils";
+import { getHostName } from "../../utils/getHostName";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
 import { CustomIcon } from "../../src/store/types";
 
@@ -88,16 +89,38 @@ const Sidebar = () => {
       active: true,
     });
   };
+
+  const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const data = e.clipboardData.getData("text/html");
+    if (data.length !== 0) {
+      e.preventDefault();
+
+      const selection = window.getSelection();
+      if (!selection?.rangeCount) return false;
+
+      selection.deleteFromDocument();
+      let node = document.createElement("div");
+      node.innerHTML = sanitizeHtml(data).trim();
+      selection.getRangeAt(0).insertNode(node);
+    }
+  };
+
+  const onDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    const data = e.dataTransfer.getData("text/html");
+    if (data.length !== 0) {
+      e.preventDefault();
+      let node = document.createElement("div");
+      node.innerHTML = sanitizeHtml(data).trim();
+      if (contentRef.current) {
+        contentRef.current.appendChild(node);
+      }
+    }
+  };
+
   return (
     <Box as="main" minH="300px" minW="320px" w="full">
       <VStack h="100%" w="100%" spacing="1.5">
-        <Button
-          h="2.7em"
-          w="full"
-          colorScheme="teal"
-          variant="outline"
-          onClick={openNotes}
-        >
+        <Button h="2.7em" w="full" colorScheme="bb" onClick={openNotes}>
           Open Notes
         </Button>
 
@@ -122,28 +145,14 @@ const Sidebar = () => {
               placeholder: "Title",
             }}
           />
-          <VStack spacing="1" align="flex-start" h="30rem" w="95%">
+          <VStack spacing="1" align="flex-start" h="32rem" w="95%">
             <Text as="h3">Content :</Text>
-            <Box
-              ref={contentRef}
-              contentEditable="true"
-              w="full"
-              maxW="full"
-              h="full"
-              border="1px solid rgba(128, 128, 128, 0.34)"
-              borderRadius="2"
-              p="1.5"
-              spellCheck="false"
-              overflow="auto"
-              whiteSpace="break-spaces"
-              lineHeight="1.7"
-              sx={{ scrollbarWidth: "thin" }}
-              _focusVisible={{
-                outline: "2px solid rgb(49, 130, 206)",
-              }}
-            >
-              {note.content}
-            </Box>
+            <Editable
+              contentRef={contentRef}
+              onPasteHandler={onPasteHandler}
+              onDropHandler={onDropHandler}
+              sanitizedHtml={sanitizeHtml(note.content)}
+            />
           </VStack>
 
           <HStack mt="1rem !important" w="95%" justifyContent="space-between">
@@ -159,7 +168,7 @@ const Sidebar = () => {
               <Button
                 aria-label="set collection to current url"
                 onClick={setUrl}
-                colorScheme="teal"
+                colorScheme="bb"
                 variant="outline"
                 type="button"
                 w="13ch"
@@ -172,7 +181,7 @@ const Sidebar = () => {
             <FormControl w="fit-content" display="flex" alignItems="center">
               <FormLabel htmlFor="is-pinned">Pin :</FormLabel>
               <Switch
-                colorScheme="teal"
+                colorScheme="bb"
                 name="isPinned"
                 onChange={switchHandler}
                 isChecked={note.isPinned}
@@ -182,7 +191,7 @@ const Sidebar = () => {
             <Button
               aria-label="reset note"
               onClick={resetNote}
-              colorScheme="teal"
+              colorScheme="bb"
               variant="outline"
               type="button"
               w="13ch"
@@ -195,7 +204,7 @@ const Sidebar = () => {
             isLoading={loading}
             isDisabled={loading}
             type="submit"
-            colorScheme="teal"
+            colorScheme="bb"
             variant="outline"
             w="full"
             h="2.5em"
