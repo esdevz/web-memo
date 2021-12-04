@@ -1,4 +1,5 @@
 import { extendTheme, Theme, ThemeConfig } from "@chakra-ui/react";
+import { themeColorPalette } from "../utils/theme";
 
 const FormLabel = {
   baseStyle: {
@@ -18,6 +19,21 @@ const theme = extendTheme<Theme>({
     FormLabel,
     Button: FormLabel,
   },
+  colors: {
+    bb: {
+      ...themeColorPalette([
+        "#D8E6F4",
+        "#B9D0E5",
+        "#A1BBD5",
+        "#8CA9C4",
+        "#7C98B3",
+        "#6188AD",
+        "#4A79A6",
+        "#3A6C9C",
+        "#2B6093",
+      ]),
+    },
+  },
   fontSizes: {
     xs: "0.6em",
     sm: "0.75em",
@@ -28,7 +44,7 @@ const theme = extendTheme<Theme>({
   styles: {
     global: {
       h3: {
-        fontSize: "1em",
+        fontSize: "md",
         fontWeight: "500",
         fontFamily: "Raleway",
       },
