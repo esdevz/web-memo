@@ -19,7 +19,8 @@ import { INote } from "../../store/types";
 import { TiDocumentDelete } from "react-icons/ti";
 import useNoteStore from "../../store/noteStore";
 import Editable from "./Editable";
-import { dateString, sanitizeHtml } from "../../../utils";
+import { sanitizeHtml } from "../../../utils/sanitizeHtml";
+import { dateString } from "../../../utils/Date";
 import NoteContainer from "./NoteContainer";
 import { VscGrabber } from "react-icons/vsc";
 
