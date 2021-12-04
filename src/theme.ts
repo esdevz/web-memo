@@ -1,6 +1,6 @@
 import { extendTheme, Theme, ThemeConfig } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
-import { themeColorPalette } from "../utils";
+import { themeColorPalette } from "../utils/theme";
 
 const breakpoints = createBreakpoints({
   sm: "40em",
@@ -57,12 +57,12 @@ const theme = extendTheme<Theme>({
         fontFamily: "Georgia, sans-serif",
       },
       h3: {
-        fontSize: "0.9rem",
+        fontSize: "0.93rem",
         fontWeight: "500",
         fontFamily: "Raleway",
       },
       p: {
-        fontSize: "0.8rem",
+        fontSize: "0.88rem",
         fontWeight: "normal",
         fontFamily: `-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
         Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif`,
