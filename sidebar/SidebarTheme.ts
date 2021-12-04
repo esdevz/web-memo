@@ -45,7 +45,7 @@ const theme = extendTheme<Theme>({
     global: {
       h3: {
         fontSize: "md",
-        fontWeight: "500",
+        fontWeight: "normal",
         fontFamily: "Raleway",
       },
       em: {

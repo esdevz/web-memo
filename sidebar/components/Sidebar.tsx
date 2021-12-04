@@ -120,8 +120,8 @@ const Sidebar = () => {
   return (
     <Box as="main" minH="300px" minW="320px" w="full">
       <VStack h="100%" w="100%" spacing="1.5">
-        <Button h="2.7em" w="full" colorScheme="bb" onClick={openNotes}>
-          Open Notes
+        <Button h="2.7em" w="full" colorScheme="bb" variant="outline" onClick={openNotes}>
+          <Text as="h3">Open Notes </Text>
         </Button>
 
         <VStack
@@ -173,7 +173,7 @@ const Sidebar = () => {
                 type="button"
                 w="13ch"
               >
-                Current URL
+                <Text as="h3"> Current URL</Text>
               </Button>
             </Tooltip>
           </HStack>
@@ -196,7 +196,7 @@ const Sidebar = () => {
               type="button"
               w="13ch"
             >
-              Reset
+              <Text as="h3"> Reset </Text>
             </Button>
           </HStack>
           <Button
@@ -209,7 +209,7 @@ const Sidebar = () => {
             w="full"
             h="2.5em"
           >
-            Save
+            <Text as="h3"> Save</Text>
           </Button>
         </VStack>
       </VStack>
