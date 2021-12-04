@@ -4,7 +4,7 @@ this is a web extension that helps you create notes from selected text and save 
 
 ## How it works
 
-Select a text and hit save , this will automatically generate a text note ,  
+Select a text and hit save , this will automatically generate a collection , text note and an icon then save it ,  
 or copy paste / drag into the sidebar, this will let you save copied images and screenshots (use firefox's "take screenshot" feature ,or any tool that let you copy the image).  
 All notes are saved locally and catogorized by website.
 
