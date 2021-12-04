@@ -1,30 +1,17 @@
-import { INote } from "../src/store/types";
-
-const hostName = (url: string) => {
-  try {
-    let hostName = new URL(url).hostname;
-    if (hostName === "") {
-      return "notes";
-    }
-    return hostName;
-  } catch {
-    return "notes";
-  }
-};
+import type { CollectionOptions } from "../src/store/types";
+import { NotesDB } from "../idb/NotesDb";
+import {
+  clearBadges,
+  setBadgeSaving,
+  setBadgeSavingError,
+  setBadgeSavingSuccess,
+} from "../utils/badgeColors";
+import { getHostName } from "../utils/getHostName";
+import { replaceHtmlEntities } from "../utils/replaceHtmlEntities";
 
 const SAVE_NOTE_ID = "save-as-note";
 
-const initialNoteState: INote = {
-  title: "",
-  website: "notes",
-  fullUrl: "",
-  favicon: "",
-  content: "",
-  createdAt: 0,
-  isPinned: false,
-};
-
-let backgroundNote = initialNoteState;
+const db = new NotesDB();
 
 browser.menus.create({
   id: SAVE_NOTE_ID,
@@ -33,39 +20,55 @@ browser.menus.create({
   documentUrlPatterns: ["*://*/*"],
 });
 
-browser.menus.onClicked.addListener((info, tab) => {
+browser.menus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === SAVE_NOTE_ID) {
+    setBadgeSaving();
     let note = {
       title: tab?.title || "",
-      website: hostName(tab?.url || ""),
+      website: getHostName(tab?.url || ""),
       fullUrl: tab?.url || "",
       favicon: tab?.favIconUrl || "",
-      content: info.selectionText || "",
+      content: replaceHtmlEntities(info.selectionText),
       isPinned: false,
       createdAt: Date.now(),
     };
-    browser.sidebarAction.isOpen({}).then((isOpen) => {
-      if (isOpen) {
-        browser.runtime.sendMessage({
-          msg: "EDIT_NOTE",
-          note,
-        });
-      } else {
-        backgroundNote = note;
-      }
-    });
 
-    browser.sidebarAction.open();
+    const configs = await db.getConfigs();
+
+    const collections = Object.keys(configs.collections);
+    const existingCollection = collections.includes(note.website);
+    let collectionProps = existingCollection
+      ? {}
+      : {
+          displayName: note.website,
+          customIconType: "default",
+          favicon: note.favicon,
+        };
+
+    try {
+      await Promise.all([
+        db.updateCollection(note.website, collectionProps as CollectionOptions),
+        db.putNote({ ...note, favicon: "" }),
+      ]);
+    } catch (err) {
+      console.log(err);
+      setBadgeSavingError();
+      setTimeout(() => {
+        clearBadges();
+      }, 1500);
+    }
+
+    browser.runtime.sendMessage({ msg: "NEW_NOTE", collectionProps });
+    setBadgeSavingSuccess();
+    if (!existingCollection) {
+      collections.push(note.website);
+    }
+    setTimeout(() => {
+      clearBadges();
+    }, 800);
   }
 });
 
 browser.browserAction.onClicked.addListener(() => {
   browser.sidebarAction.toggle();
-});
-
-browser.runtime.onMessage.addListener((request, __, sendResponse) => {
-  if (request.msg === "GET_NOTE") {
-    sendResponse(backgroundNote);
-    backgroundNote = initialNoteState;
-  }
 });

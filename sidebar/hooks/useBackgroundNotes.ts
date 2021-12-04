@@ -22,28 +22,11 @@ export function useBackgroundNote() {
   const { toggleColorMode } = useColorMode();
 
   useEffect(() => {
-    const sending = browser.runtime.sendMessage({
-      msg: "GET_NOTE",
-    });
-    sending.then(
-      (backgroundNote: INote) => {
-        if (backgroundNote.createdAt === 0) {
-          return;
-        }
-        setNote(backgroundNote);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
     const onMessageHandler = (request: {
       msg: string;
       note?: INote;
       collection?: string;
     }) => {
-      if (request.msg === "EDIT_NOTE" && request.note) {
-        setNote(request.note);
-      }
       if (request.msg === "TOGGLE_COLOR_MODE") {
         toggleColorMode();
       }
