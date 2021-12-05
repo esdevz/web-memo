@@ -1,6 +1,6 @@
 import Dexie from "dexie";
 import { CollectionOptions, Configs, INote } from "../src/store/types";
-import { defaultConfig, defaultNote } from "../utils";
+import { defaultConfig, defaultNote } from "../utils/defaults";
 
 const schema = "++id ,title ,website, fullUrl,createdAt",
   configsSchema = "id, tabLayout , collections",
