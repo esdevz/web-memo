@@ -22,9 +22,31 @@ const Editable = forwardRef(
       }
     };
 
+    const onDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
+      const data = e.dataTransfer.getData("text/html");
+      const selection = window.getSelection();
+
+      if (data.length !== 0 && selection?.type !== "Range") {
+        e.preventDefault();
+        e.stopPropagation();
+        let node = document.createElement("div");
+        node.innerHTML = sanitizeHtml(data).trim();
+        e.currentTarget.appendChild(node);
+      }
+    };
+
+    const onBlurHandler = () => {
+      const selection = window.getSelection();
+      if (selection?.rangeCount) {
+        selection.removeAllRanges();
+      }
+    };
+
     return (
       <GridItem
+        onBlur={onBlurHandler}
         onPaste={onPasteHandler}
+        onDrop={onDropHandler}
         ref={ref}
         overflow={isOpen ? "auto" : "hidden"}
         sx={{ scrollbarWidth: "thin" }}

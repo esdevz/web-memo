@@ -90,33 +90,6 @@ const Sidebar = () => {
     });
   };
 
-  const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
-    const data = e.clipboardData.getData("text/html");
-    if (data.length !== 0) {
-      e.preventDefault();
-
-      const selection = window.getSelection();
-      if (!selection?.rangeCount) return false;
-
-      selection.deleteFromDocument();
-      let node = document.createElement("div");
-      node.innerHTML = sanitizeHtml(data).trim();
-      selection.getRangeAt(0).insertNode(node);
-    }
-  };
-
-  const onDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    const data = e.dataTransfer.getData("text/html");
-    if (data.length !== 0) {
-      e.preventDefault();
-      let node = document.createElement("div");
-      node.innerHTML = sanitizeHtml(data).trim();
-      if (contentRef.current) {
-        contentRef.current.appendChild(node);
-      }
-    }
-  };
-
   return (
     <Box as="main" minH="300px" minW="320px" w="full">
       <VStack h="100%" w="100%" spacing="1.5">
@@ -149,8 +122,6 @@ const Sidebar = () => {
             <Text as="h3">Content :</Text>
             <Editable
               contentRef={contentRef}
-              onPasteHandler={onPasteHandler}
-              onDropHandler={onDropHandler}
               sanitizedHtml={sanitizeHtml(note.content)}
             />
           </VStack>
