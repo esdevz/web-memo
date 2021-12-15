@@ -3,5 +3,8 @@
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/eslint-recommended"
   ],
-  "parser": "@typescript-eslint/parser"
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "prefer-const": ["off"]
+  }
 }
