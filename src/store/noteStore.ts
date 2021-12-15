@@ -148,8 +148,8 @@ const useNoteStore = create<NoteStore>((set, get) => ({
     );
   },
   async updateTagetCollection(url) {
-    let draggedNote = get().draggedNote;
-    let originTab = get().activeTab;
+    const draggedNote = get().draggedNote;
+    const originTab = get().activeTab;
 
     if (draggedNote) {
       return set((state) =>

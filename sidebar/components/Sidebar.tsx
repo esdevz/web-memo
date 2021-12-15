@@ -72,7 +72,7 @@ const Sidebar = () => {
     await saveNote(newNote, icon);
 
     const existingCollection = collections.includes(newNote.website);
-    let collectionProps = existingCollection
+    const collectionProps = existingCollection
       ? {}
       : {
           displayName: newNote.website,

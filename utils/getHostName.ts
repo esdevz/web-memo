@@ -1,6 +1,6 @@
 export const getHostName = (url: string) => {
   try {
-    let hostName = new URL(url).hostname;
+    const hostName = new URL(url).hostname;
     if (hostName === "") {
       return "notes";
     }

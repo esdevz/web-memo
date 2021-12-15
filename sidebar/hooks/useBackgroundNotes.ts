@@ -53,7 +53,7 @@ export function useBackgroundNote() {
     async (newNote: INote, icon: CustomIcon) => {
       setLoading(true);
       const existingCollection = collections.includes(newNote.website);
-      let collectionProps = existingCollection
+      const collectionProps = existingCollection
         ? {}
         : {
             displayName: newNote.website,

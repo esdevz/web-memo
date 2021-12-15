@@ -17,7 +17,7 @@ export class NotesDB extends Dexie {
       })
       .upgrade(async (tx) => {
         const notes = await tx.table<INote, number>(NOTES_TABLE).toArray();
-        let configs = notes.concat(defaultNote).reduce(
+        const configs = notes.concat(defaultNote).reduce(
           (cfg: Configs, note) => {
             cfg.collections[note.website] = {
               displayName: note.website,
