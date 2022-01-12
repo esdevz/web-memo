@@ -45,8 +45,8 @@ const Tab = (props: SidebarProps) => {
       <Tooltip label={props.displayName}>
         <IconButton
           {...dragHandlers}
-          w="3.5rem"
-          h="3.6rem"
+          w="3.2rem"
+          h="3.2rem"
           borderRadius="27%"
           m="auto"
           colorScheme={setColorScheme(activeTab, props.website, dragHover)}
@@ -55,6 +55,11 @@ const Tab = (props: SidebarProps) => {
           }}
           role="tab"
           aria-label={props.displayName}
+          css={`
+            & > * {
+              pointer-events: none;
+            }
+          `}
           icon={
             <TabIcon
               icon={props.favicon}
@@ -80,6 +85,11 @@ const Tab = (props: SidebarProps) => {
       w="full"
       h="2.7em"
       colorScheme={setColorScheme(activeTab, props.website, dragHover)}
+      css={`
+        & > * {
+          pointer-events: none;
+        }
+      `}
       leftIcon={
         <TabIcon
           icon={props.favicon}
@@ -90,7 +100,7 @@ const Tab = (props: SidebarProps) => {
         />
       }
     >
-      <Text as="h3"> {props.displayName} </Text>
+      <Text as="h3">{props.displayName}</Text>
     </Button>
   );
 };
