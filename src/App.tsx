@@ -14,6 +14,7 @@ import Drawer from "../ui/drawer/Drawer";
 import EditCollectionForm from "../ui/shared/EditCollectionForm";
 import { CollectionOptions } from "./store/types";
 import SearchNotes from "./components/main/SearchNotes";
+import Export from "./components/main/Export";
 
 const App = () => {
   const [collections, activeTab, addNewNote, layout, updateCollection] = useNoteStore(
@@ -113,6 +114,8 @@ const App = () => {
           iconType={collections[activeTab].customIconType}
           favicon={collections[activeTab].favicon}
         />
+
+        <Export />
       </Modal>
       <Drawer
         size="xl"
