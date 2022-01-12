@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Web Memo",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "create notes from selected text , save copied images and screenshots",
   "icons": {
     "16": "favicon.svg",
@@ -22,7 +22,7 @@
   "background": {
     "scripts": ["background.js"]
   },
-  "permissions": ["storage", "menus", "contextMenus", "tabs"],
+  "permissions": ["storage", "menus", "contextMenus", "tabs", "downloads"],
   "browser_specific_settings": {
     "gecko": {
       "id": "web-memo@w.h.com"
