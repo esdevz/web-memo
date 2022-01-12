@@ -15,7 +15,7 @@ const TabContainer: FC<TabContainerProps> = (props) => {
       overflow="auto"
       gridAutoRows="max-content"
       sx={{
-        scrollbarWidth: "thin",
+        scrollbarWidth: "none",
       }}
     >
       {props.children}
