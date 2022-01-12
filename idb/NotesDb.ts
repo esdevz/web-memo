@@ -2,6 +2,8 @@ import Dexie from "dexie";
 import { CollectionOptions, Configs, INote } from "../src/store/types";
 import { defaultConfig, defaultNote } from "../utils/defaults";
 
+export const DATABASE = "web-notes";
+
 const schema = "++id ,title ,website, fullUrl,createdAt",
   configsSchema = "id, tabLayout , collections",
   CONFIGS_TABLE = "configs",
@@ -9,7 +11,7 @@ const schema = "++id ,title ,website, fullUrl,createdAt",
 
 export class NotesDB extends Dexie {
   constructor() {
-    super("web-notes");
+    super(DATABASE);
     this.version(2)
       .stores({
         notes: schema,
