@@ -3,7 +3,7 @@ import { Box, Grid } from "@chakra-ui/layout";
 import { Input } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
 import Note from "../note/Note";
-import { Collection, INote } from "../../store/types";
+import { dbNotes } from "../../../utils";
 
 const SearchNotes = () => {
   const collections = useNoteStore(useCallback((state) => state.collections, []));
@@ -59,11 +59,3 @@ const SearchNotes = () => {
 };
 
 export default SearchNotes;
-
-function dbNotes(collection: Record<string, Collection>) {
-  let notes: INote[] = [];
-  Object.keys(collection).forEach((website) => {
-    notes = notes.concat(collection[website].notes);
-  });
-  return notes;
-}

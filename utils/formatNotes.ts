@@ -11,7 +11,7 @@ export const formatNotes = (
         displayName:
           cfg.collections[currentNote.website]?.displayName || currentNote.website,
         customIconType: cfg.collections[currentNote.website]?.customIconType || "default",
-        favicon: cfg.collections[currentNote.website].favicon ?? "",
+        favicon: cfg?.collections[currentNote.website]?.favicon ?? "",
         notes: collections[currentNote.website]?.notes || [],
       };
       collections[currentNote.website].notes.unshift(currentNote);
@@ -27,3 +27,11 @@ export const formatNotes = (
     }
   );
 };
+
+export function dbNotes(collection: Record<string, Collection>) {
+  let notes: INote[] = [];
+  Object.keys(collection).forEach((website) => {
+    notes = notes.concat(collection[website].notes);
+  });
+  return notes;
+}
