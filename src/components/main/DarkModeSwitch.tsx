@@ -1,6 +1,6 @@
 import React from "react";
 import { BsSun, BsMoon } from "react-icons/bs";
-import { useColorMode, IconButton, Tooltip } from "@chakra-ui/react";
+import { useColorMode, IconButton, Tooltip, IconButtonProps } from "@chakra-ui/react";
 import { motion, Variants } from "framer-motion";
 
 const option: Variants = {
@@ -9,20 +9,20 @@ const option: Variants = {
     opacity: 1,
     scale: 1,
     transition: {
-      y: {
-        stiffness: 500,
-      },
+      type: "spring",
     },
   },
   idle: {
     y: "2rem",
     opacity: 0,
-    scale: 0.3,
+    scale: 0.8,
     transition: {
-      y: { stiffness: 500 },
+      type: "spring",
     },
   },
 };
+
+const MotionButton = motion<IconButtonProps>(IconButton);
 
 export const DarkModeSwitch = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -34,8 +34,7 @@ export const DarkModeSwitch = () => {
   };
   return (
     <Tooltip label="Dark/Light Mode" placement="left">
-      <IconButton
-        as={motion.button}
+      <MotionButton
         colorScheme="bb"
         m="0.7em"
         boxSize="2.85em"

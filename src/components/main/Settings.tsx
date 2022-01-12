@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Box } from "@chakra-ui/layout";
-import { IconButton } from "@chakra-ui/button";
+import { Tooltip, IconButton, BoxProps, IconButtonProps } from "@chakra-ui/react";
 import { BiCog } from "react-icons/bi";
 import { GoSettings } from "react-icons/go";
 import { BsLayoutSidebar } from "react-icons/bs";
@@ -9,7 +9,6 @@ import { AiOutlineFileSearch } from "react-icons/ai";
 import { DarkModeSwitch } from "./DarkModeSwitch";
 import { useColorMode } from "@chakra-ui/color-mode";
 import useNoteStore from "../../store/noteStore";
-import { Tooltip } from "@chakra-ui/react";
 
 const optionList: Variants = {
   idle: {
@@ -21,7 +20,7 @@ const optionList: Variants = {
   },
   animate: {
     opacity: 1,
-    transition: { staggerChildren: 0.07, delayChildren: 0.1 },
+    transition: { staggerChildren: 0.05, delayChildren: 0.1 },
   },
 };
 
@@ -46,26 +45,27 @@ const option: Variants = {
     opacity: 1,
     scale: 1,
     transition: {
-      y: {
-        stiffness: 500,
-      },
+      type: "spring",
     },
   },
   idle: {
     y: "2rem",
     opacity: 0,
-    scale: 0.3,
+    rotate: 0.8,
     transition: {
-      y: { stiffness: 500 },
+      type: "spring",
     },
   },
 };
+
+const MotionBox = motion<BoxProps>(Box);
+const MotionButton = motion<IconButtonProps>(IconButton);
 
 const styleProps = {
   m: "0.7em",
   boxSize: "2.85em",
   borderRadius: "30%",
-} as const;
+};
 
 const Settings = (props: SettingsProps) => {
   const [layout, setLayout] = useNoteStore(
@@ -89,8 +89,7 @@ const Settings = (props: SettingsProps) => {
     <Box pos="fixed" bottom="1em" right="0">
       <AnimatePresence>
         {showMenu && (
-          <Box
-            as={motion.div}
+          <MotionBox
             display="flex"
             flexDirection="column-reverse"
             alignItems="center"
@@ -101,9 +100,8 @@ const Settings = (props: SettingsProps) => {
             variants={optionList}
           >
             <Tooltip label="Edit collection" placement="left">
-              <IconButton
+              <MotionButton
                 onClick={props.openModal}
-                as={motion.button}
                 variants={option}
                 {...styleProps}
                 colorScheme="bb"
@@ -112,8 +110,7 @@ const Settings = (props: SettingsProps) => {
               />
             </Tooltip>
             <Tooltip label="Search Notes" placement="left">
-              <IconButton
-                as={motion.button}
+              <MotionButton
                 onClick={props.openDrawer}
                 variants={option}
                 {...styleProps}
@@ -123,8 +120,7 @@ const Settings = (props: SettingsProps) => {
               />
             </Tooltip>
             <Tooltip label="Toggle Tabs" placement="left">
-              <IconButton
-                as={motion.button}
+              <MotionButton
                 onClick={updateLayout}
                 variants={option}
                 {...styleProps}
@@ -134,7 +130,7 @@ const Settings = (props: SettingsProps) => {
               />
             </Tooltip>
             <DarkModeSwitch />
-          </Box>
+          </MotionBox>
         )}
       </AnimatePresence>
 
