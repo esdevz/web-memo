@@ -6,8 +6,8 @@ const NoteContainer = (props: NoteContainerProps) => {
     <Grid
       {...props}
       pos={props.open ? "fixed" : "static"}
-      w={props.open ? "75%" : "250px"}
-      h={props.open ? "95%" : "265px"}
+      w={props.open ? "75%" : "21rem"}
+      h={props.open ? "95%" : "16rem"}
       top={props.open ? 0 : undefined}
       p="2.5"
       as="article"
@@ -15,6 +15,7 @@ const NoteContainer = (props: NoteContainerProps) => {
       templateRows="repeat(10,1fr)"
       templateColumns="1fr"
       gap={2}
+      borderRadius={7}
       m="1"
       border="1px solid rgba(128, 128, 128, 0.34)"
       transition="height 0.2s ease-in-out"
