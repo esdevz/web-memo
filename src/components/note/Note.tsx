@@ -82,11 +82,20 @@ const Note = ({ note }: NoteProps) => {
     setDraggedNote(note);
   };
 
+  const onKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!open) {
+      return;
+    } else if (e.code === "Escape") {
+      setOpen.off();
+    }
+  };
+
   if (note.createdAt === 0) {
     return null;
   }
   return (
     <NoteContainer
+      onKeyDown={onKeyDownHandler}
       onDragStart={dragStartHandler}
       onDragEnd={setDrag.off}
       draggable={drag}
