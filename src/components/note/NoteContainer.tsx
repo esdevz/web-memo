@@ -6,7 +6,7 @@ const NoteContainer = (props: NoteContainerProps) => {
     <Grid
       {...props}
       pos={props.open ? "fixed" : "static"}
-      w={props.open ? "75%" : "21rem"}
+      w={props.open ? "75%" : "20rem"}
       h={props.open ? "95%" : "16rem"}
       top={props.open ? 0 : undefined}
       p="2.5"

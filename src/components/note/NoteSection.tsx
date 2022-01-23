@@ -8,7 +8,7 @@ const NoteSection: FC = (props) => {
       colSpan={1}
       display="grid"
       gridGap="4px"
-      gridTemplateColumns="repeat(auto-fill, 21.3rem)"
+      gridTemplateColumns="repeat(auto-fill, 20.3rem)"
       gridTemplateRows="repeat(auto-fill, 16.3rem)"
     >
       {props.children}
