@@ -20,7 +20,7 @@ import { TiDocumentDelete } from "react-icons/ti";
 import useNoteStore from "../../store/noteStore";
 import Editable from "./Editable";
 import { sanitizeHtml } from "../../../utils/sanitizeHtml";
-import { dateString } from "../../../utils/Date";
+import { rTime } from "../../../utils/Date";
 import NoteContainer from "./NoteContainer";
 import { VscGrabber } from "react-icons/vsc";
 
@@ -130,6 +130,7 @@ const Note = ({ note }: NoteProps) => {
         </Tooltip>
       </GridItem>
       <Editable
+        tabIndex={0}
         isOpen={open}
         sanitizedHtml={sanitizeHtml(note.content)}
         ref={contentRef}
@@ -143,7 +144,7 @@ const Note = ({ note }: NoteProps) => {
       >
         <HStack spacing="3">
           <Text as="em" fontSize="xs" color={emColor}>
-            {dateString(note.createdAt)}
+            {rTime(Date.now(), note.createdAt)}
           </Text>
           {open && note.fullUrl && (
             <Link
