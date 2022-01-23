@@ -23,6 +23,7 @@ import { sanitizeHtml } from "../../../utils/sanitizeHtml";
 import { rTime } from "../../../utils/Date";
 import NoteContainer from "./NoteContainer";
 import { VscGrabber } from "react-icons/vsc";
+import Colors from "./Colors";
 
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
@@ -152,6 +153,7 @@ const Note = ({ note }: NoteProps) => {
         rowSpan={1}
       >
         <HStack spacing="3">
+          <Colors />
           <Text as="em" fontSize="xs" color={emColor}>
             {rTime(Date.now(), note.createdAt)}
           </Text>
