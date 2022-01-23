@@ -42,7 +42,7 @@ const Tab = (props: SidebarProps) => {
 
   if (tabLayout === "minimized") {
     return (
-      <Tooltip label={props.displayName}>
+      <Tooltip placement="right" label={props.displayName}>
         <IconButton
           {...dragHandlers}
           w="3.2rem"
