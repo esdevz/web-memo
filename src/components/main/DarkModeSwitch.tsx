@@ -28,9 +28,10 @@ export const DarkModeSwitch = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
 
-  const toggleMode = () => {
-    browser.runtime.sendMessage({ msg: "TOGGLE_COLOR_MODE" });
+  const toggleMode = async () => {
     toggleColorMode();
+    let sidebarOpenState = await browser.sidebarAction.isOpen({});
+    if (sidebarOpenState) browser.runtime.sendMessage({ msg: "TOGGLE_COLOR_MODE" });
   };
   return (
     <Tooltip label="Dark/Light Mode" placement="left">
