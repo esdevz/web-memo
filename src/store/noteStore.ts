@@ -48,18 +48,13 @@ const useNoteStore = create<NoteStore>((set, get) => ({
   async edit(newNote) {
     const updates = await db.updateNote(newNote.id!, newNote);
     if (updates) {
-      set((state) => ({
-        ...state,
-        collections: {
-          ...state.collections,
-          [newNote.website]: {
-            ...state.collections[newNote.website],
-            notes: state.collections[newNote.website].notes.map((note) =>
-              note.id === newNote.id ? newNote : note
-            ),
-          },
-        },
-      }));
+      set((state) =>
+        produce(state, (draft) => {
+          draft.collections[newNote.website].notes = draft.collections[
+            newNote.website
+          ].notes.map((note) => (note.id === newNote.id ? newNote : note));
+        })
+      );
       return {
         type: "success",
         message: "saved",
