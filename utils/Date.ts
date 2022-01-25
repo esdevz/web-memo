@@ -8,7 +8,11 @@ export function dateString(date: number) {
   });
 }
 
-export function rTime(current: number, time: number) {
+export function rTime(current: number, time: number, toLocaleString?: boolean) {
+  if (toLocaleString) {
+    return dateString(time);
+  }
+
   const diff = current - time;
   const min = 60 * 1000,
     hour = min * 60,
@@ -20,8 +24,7 @@ export function rTime(current: number, time: number) {
   if (diff < 1000) {
     return "now";
   } else if (diff < min) {
-    const seconds = Math.round(diff / 1000);
-    return `${seconds} sec`;
+    return `a moment ago`;
   } else if (diff < hour) {
     const mins = Math.round(diff / min);
     return `${mins} min${mins > 1 ? "s" : ""} ago`;
