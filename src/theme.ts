@@ -76,4 +76,31 @@ const theme = extendTheme({
   },
 });
 
+export const clrSwitch: Record<"light" | "dark", Record<string, string>> = {
+  light: {
+    default: "white",
+    yellow: "yellow.100",
+    gray: "gray.200",
+    purple: "purple.100",
+    teal: "teal.100",
+    red: "red.100",
+    pink: "pink.200",
+    green: "green.100",
+    cyan: "cyan.100",
+    blue: "blue.100",
+  },
+  dark: {
+    default: "gray.800",
+    yellow: "yellow.900",
+    gray: "gray.600",
+    purple: "purple.900",
+    teal: "teal.800",
+    red: "red.900",
+    pink: "pink.800",
+    green: "green.900",
+    cyan: "cyan.900",
+    blue: "blue.800",
+  },
+};
+
 export default theme;
