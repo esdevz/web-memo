@@ -61,7 +61,7 @@ const Editable = forwardRef(
         }}
         contentEditable={isOpen}
         spellCheck="false"
-        maxW="100ch"
+        maxW="95%"
         fontWeight="normal"
         fontSize="0.88rem"
         lineHeight="1.55"
