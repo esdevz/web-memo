@@ -1,5 +1,6 @@
 import React from "react";
 import { GridProps, Grid } from "@chakra-ui/react";
+import { clrSwitch } from "../../theme";
 
 const NoteContainer = (props: NoteContainerProps) => {
   return (
@@ -20,7 +21,7 @@ const NoteContainer = (props: NoteContainerProps) => {
       border="1px solid rgba(128, 128, 128, 0.34)"
       transition="height 0.2s ease-in-out"
       zIndex={props.open ? 2 : undefined}
-      bgColor={props.colorMode === "dark" ? "gray.800" : "white"}
+      bgColor={clrSwitch[props.colorMode][props.noteColor || "default"]}
     >
       {props.children}
     </Grid>
@@ -28,8 +29,8 @@ const NoteContainer = (props: NoteContainerProps) => {
 };
 
 export default NoteContainer;
-
 interface NoteContainerProps extends GridProps {
   open: boolean;
   colorMode: "light" | "dark";
+  noteColor?: string;
 }

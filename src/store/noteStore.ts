@@ -66,6 +66,30 @@ const useNoteStore = create<NoteStore>((set, get) => ({
       };
     }
   },
+  async setNoteColor(id, clr, website) {
+    const updates = await db.updateNote(id, { colorScheme: clr });
+    if (updates) {
+      set((state) =>
+        produce(state, (draft) => {
+          const noteIdx = draft.collections[website].notes.findIndex(
+            (note) => note.id === id
+          );
+          if (noteIdx !== -1) {
+            draft.collections[website].notes[noteIdx].colorScheme = clr;
+          }
+        })
+      );
+      return {
+        type: "success",
+        message: "saved",
+      };
+    } else {
+      return {
+        type: "error",
+        message: updatingError,
+      };
+    }
+  },
   async delete(note) {
     set((state) =>
       produce(state, (draft) => {

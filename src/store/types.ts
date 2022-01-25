@@ -7,8 +7,9 @@ export interface INote {
   content: string;
   createdAt: number;
   isPinned: boolean;
+  colorScheme?: string;
 }
-interface NotificationMessage {
+export interface NotificationMessage {
   type: "success" | "info" | "warning" | "error";
   message: string;
 }
@@ -54,6 +55,11 @@ export interface NoteStore {
   addNewNote: (collectionProps: CollectionOptions) => Promise<void>;
   getNotes: () => Promise<void>;
   edit: (note: INote) => Promise<NotificationMessage>;
+  setNoteColor: (
+    id: number,
+    clr: string,
+    website: string
+  ) => Promise<NotificationMessage>;
   delete: (note: INote) => Promise<NotificationMessage>;
   //   deleteAll: (website: string) => Promise<void>;
   pin: (note: INote) => Promise<NotificationMessage>;

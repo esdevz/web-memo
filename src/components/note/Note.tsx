@@ -28,9 +28,15 @@ import Colors from "./Colors";
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
   const [open, setOpen] = useBoolean(false);
-  const [editNote, pin, del, setDraggedNote] = useNoteStore(
+  const [editNote, pin, del, setDraggedNote, setNoteColor] = useNoteStore(
     useCallback(
-      (state) => [state.edit, state.pin, state.delete, state.setDraggedNote],
+      (state) => [
+        state.edit,
+        state.pin,
+        state.delete,
+        state.setDraggedNote,
+        state.setNoteColor,
+      ],
       []
     )
   );
@@ -102,6 +108,7 @@ const Note = ({ note }: NoteProps) => {
       draggable={drag}
       open={open}
       colorMode={colorMode}
+      noteColor={note.colorScheme}
     >
       <GridItem
         display="flex"
@@ -132,7 +139,7 @@ const Note = ({ note }: NoteProps) => {
             ref={TitleRef}
             as="h2"
             isTruncated
-            maxW={open ? "80ch" : "230px"}
+            maxW={open ? "80ch" : "18rem"}
             w={open ? "50ch" : undefined}
           >
             {note.title}
@@ -140,7 +147,6 @@ const Note = ({ note }: NoteProps) => {
         </Tooltip>
       </GridItem>
       <Editable
-        tabIndex={0}
         isOpen={open}
         sanitizedHtml={sanitizeHtml(note.content)}
         ref={contentRef}
@@ -153,15 +159,15 @@ const Note = ({ note }: NoteProps) => {
         rowSpan={1}
       >
         <HStack spacing="3">
-          <Colors />
+          <Colors setNoteColor={setNoteColor} noteId={note.id!} website={note.website} />
           <Text as="em" fontSize="xs" color={emColor}>
-            {rTime(Date.now(), note.createdAt)}
+            {rTime(Date.now(), note.createdAt, open)}
           </Text>
           {open && note.fullUrl && (
             <Link
-              maxW="md"
+              maxW="sm"
               fontSize="xs"
-              fontFamily="Open Sans"
+              fontFamily="body"
               isTruncated
               referrerPolicy="no-referrer"
               isExternal
