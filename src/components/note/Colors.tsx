@@ -1,49 +1,59 @@
-import { Menu, MenuButton, IconButton, MenuList, useColorMode } from "@chakra-ui/react";
+import {
+  Menu,
+  MenuButton,
+  IconButton,
+  MenuList,
+  useColorMode,
+  useBoolean,
+  useToast,
+} from "@chakra-ui/react";
 import React from "react";
 import { IoColorPaletteSharp } from "react-icons/io5";
+import { NotificationMessage } from "../../store/types";
+import { clrSwitch } from "../../theme";
+interface ColorSwitchProps {
+  setNoteColor: (
+    id: number,
+    clr: string,
+    website: string
+  ) => Promise<NotificationMessage>;
+  noteId: number;
+  website: string;
+}
 
-const clrSwitch: Record<"light" | "dark", Record<string, string>> = {
-  light: {
-    default: "white",
-    yellow: "yellow.100",
-    gray: "gray.200",
-    purple: "purple.100",
-    teal: "teal.100",
-    red: "red.100",
-    pink: "pink.100",
-    green: "green.100",
-    cyan: "cyan.100",
-    blue: "blue.100",
-  },
-  dark: {
-    default: "gray.800",
-    yellow: "yellow.900",
-    gray: "gray.600",
-    purple: "purple.900",
-    teal: "teal.800",
-    red: "red.900",
-    pink: "pink.800",
-    green: "green.900",
-    cyan: "cyan.900",
-    blue: "blue.800",
-  },
-};
-
-const Colors = () => {
+const Colors = (props: ColorSwitchProps) => {
   const { colorMode } = useColorMode();
+  const toast = useToast();
+  const [loading, setLoading] = useBoolean(false);
+
+  const setNoteColorHandler = async (clr: string) => {
+    setLoading.on();
+    const feedback = await props.setNoteColor(props.noteId, clr, props.website);
+    setLoading.off();
+    feedback.type === "error" &&
+      toast({
+        title: feedback.message,
+        status: feedback.type,
+        duration: 1500,
+      });
+  };
+
   return (
     <Menu placement="top-start">
-      <MenuButton
-        as={IconButton}
-        size="sm"
-        variant="outline"
-        colorScheme="purple"
-        icon={<IoColorPaletteSharp />}
-        aria-label="change background color"
-      />
+      <MenuButton>
+        <IconButton
+          isLoading={loading}
+          size="sm"
+          variant="outline"
+          colorScheme="purple"
+          icon={<IoColorPaletteSharp />}
+          aria-label="change background color"
+        />
+      </MenuButton>
       <MenuList>
         {Object.entries(clrSwitch[colorMode]).map(([clr, val]) => (
           <IconButton
+            onClick={() => setNoteColorHandler(clr)}
             variant="unstyled"
             aria-label={clr}
             key={clr}
