@@ -44,8 +44,8 @@ const SearchNotes = () => {
         as="section"
         display="grid"
         gridGap="1.5"
-        gridTemplateColumns="repeat(auto-fill, 255px)"
-        gridTemplateRows="repeat(auto-fill,275px)"
+        gridTemplateColumns="repeat(auto-fill, 20.3rem)"
+        gridTemplateRows="repeat(auto-fill, 16.3rem)"
         sx={{
           scrollbarWidth: "thin",
         }}
