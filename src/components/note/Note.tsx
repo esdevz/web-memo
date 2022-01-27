@@ -14,15 +14,14 @@ import {
 } from "@chakra-ui/react";
 import NoteOptions from "./NoteOptions";
 import { IoArrowBack } from "react-icons/io5";
-import { RiPushpinLine } from "react-icons/ri";
 import { INote } from "../../store/types";
-import { TiDocumentDelete } from "react-icons/ti";
 import useNoteStore from "../../store/noteStore";
 import Editable from "./Editable";
 import { sanitizeHtml } from "../../../utils/sanitizeHtml";
 import { rTime } from "../../../utils/Date";
 import NoteContainer from "./NoteContainer";
 import { VscGrabber } from "react-icons/vsc";
+import NoteTools from "./NoteTools";
 import Colors from "./Colors";
 
 const Note = ({ note }: NoteProps) => {
@@ -42,7 +41,7 @@ const Note = ({ note }: NoteProps) => {
   );
   const [loading, setLoading] = useBoolean(false);
   const [drag, setDrag] = useBoolean(false);
-
+  const closeNoteRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const TitleRef = useRef<HTMLHeadingElement>(null);
   const { colorMode } = useColorMode();
@@ -89,6 +88,12 @@ const Note = ({ note }: NoteProps) => {
     setDraggedNote(note);
   };
 
+  const openNoteHandler = () => {
+    if (!open) {
+      setOpen.on();
+      setTimeout(() => closeNoteRef.current?.focus(), 0);
+    }
+  };
   const onKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (!open) {
       return;
@@ -118,6 +123,7 @@ const Note = ({ note }: NoteProps) => {
       >
         {open && (
           <IconButton
+            ref={closeNoteRef}
             colorScheme="messenger"
             size="sm"
             onClick={setOpen.off}
@@ -128,7 +134,7 @@ const Note = ({ note }: NoteProps) => {
         )}
         <Tooltip label={note.title} fontSize="xs">
           <Text
-            onClick={setOpen.on}
+            onClick={openNoteHandler}
             cursor={open ? undefined : "pointer"}
             contentEditable={open}
             spellCheck="false"
@@ -150,7 +156,7 @@ const Note = ({ note }: NoteProps) => {
         isOpen={open}
         sanitizedHtml={sanitizeHtml(note.content)}
         ref={contentRef}
-        onClick={setOpen.on}
+        onClick={openNoteHandler}
       />
       <GridItem
         display="flex"
@@ -159,7 +165,13 @@ const Note = ({ note }: NoteProps) => {
         rowSpan={1}
       >
         <HStack spacing="3">
-          <Colors setNoteColor={setNoteColor} noteId={note.id!} website={note.website} />
+          {open && (
+            <Colors
+              setNoteColor={setNoteColor}
+              noteId={note.id!}
+              website={note.website}
+            />
+          )}
           <Text as="em" fontSize="xs" color={emColor}>
             {rTime(Date.now(), note.createdAt, open)}
           </Text>
@@ -181,22 +193,14 @@ const Note = ({ note }: NoteProps) => {
         {open ? (
           <NoteOptions delete={deleteNote} savingState={loading} save={saveNote} />
         ) : (
-          <HStack spacing="1">
-            <IconButton
-              size="sm"
-              colorScheme="darkpink"
-              icon={<TiDocumentDelete />}
-              aria-label="delete"
-              onClick={deleteNote}
-            />
-            <IconButton
-              size="sm"
-              colorScheme={note.isPinned ? "yellow" : "gray"}
-              icon={<RiPushpinLine />}
-              aria-label="pin"
-              onClick={pinNote}
-            />
-          </HStack>
+          <NoteTools
+            setNoteColor={setNoteColor}
+            id={note.id!}
+            website={note.website}
+            deleteNote={deleteNote}
+            pinNote={pinNote}
+            isPinned={note.isPinned}
+          />
         )}
       </GridItem>
       <GridItem display="flex" justifyContent="center" rowSpan={1}>
