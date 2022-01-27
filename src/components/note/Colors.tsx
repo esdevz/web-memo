@@ -39,13 +39,12 @@ const Colors = (props: ColorSwitchProps) => {
   };
 
   return (
-    <Menu placement="top-start">
+    <Menu placement="top-end">
       <MenuButton>
         <IconButton
           isLoading={loading}
           size="sm"
           variant="outline"
-          colorScheme="purple"
           icon={<IoColorPaletteSharp />}
           aria-label="change background color"
         />
