@@ -101,8 +101,11 @@ const useNoteStore = create<NoteStore>((set, get) => ({
           if (draft.collections[note.website].notes.length === 0) {
             draft.activeTab = "notes";
             delete draft.collections[note.website];
-            browser.runtime.sendMessage({ msg: "DELETE", collection: note.website });
             db.deleteCollection(note.website);
+            browser.sidebarAction.isOpen({}).then((isOpen) => {
+              if (isOpen)
+                browser.runtime.sendMessage({ msg: "DELETE", collection: note.website });
+            });
           }
         }
       })
@@ -185,7 +188,10 @@ const useNoteStore = create<NoteStore>((set, get) => ({
               db.deleteCollection(originTab);
               draft.activeTab = url;
               delete draft.collections[originTab];
-              browser.runtime.sendMessage({ msg: "DELETE", collection: originTab });
+              browser.sidebarAction.isOpen({}).then((isOpen) => {
+                if (isOpen)
+                  browser.runtime.sendMessage({ msg: "DELETE", collection: originTab });
+              });
             }
           }
         })
