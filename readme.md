@@ -1,7 +1,7 @@
 <p align="center">
 <img src='images/wm-1.1.png' width="80%">
-<hr  width="85%">
 </p>
+<hr >
 
 ## About
 
