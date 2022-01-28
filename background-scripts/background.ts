@@ -59,6 +59,13 @@ browser.menus.onClicked.addListener(async (info, tab) => {
     }
 
     browser.runtime.sendMessage({ msg: "NEW_NOTE", collectionProps });
+
+    if (Object.keys(collectionProps).length > 0) {
+      browser.sidebarAction.isOpen({}).then((isOpen) => {
+        if (isOpen) browser.runtime.sendMessage({ msg: "ADD", collection: note.website });
+      });
+    }
+
     setBadgeSavingSuccess();
     if (!existingCollection) {
       collections.push(note.website);

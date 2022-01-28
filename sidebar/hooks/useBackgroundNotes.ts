@@ -27,13 +27,26 @@ export function useBackgroundNote() {
       note?: INote;
       collection?: string;
     }) => {
-      if (request.msg === "TOGGLE_COLOR_MODE") {
-        toggleColorMode();
-      }
-      if (request.msg === "DELETE") {
-        setUserCollections((currentCollections) =>
-          currentCollections.filter((col) => col !== request.collection)
-        );
+      switch (request.msg) {
+        case "TOGGLE_COLOR_MODE":
+          toggleColorMode();
+          break;
+        case "DELETE":
+          setUserCollections((currentCollections) =>
+            currentCollections.filter((col) => col !== request.collection)
+          );
+          break;
+        case "ADD":
+          setUserCollections((current) => {
+            if (request.collection) {
+              return current.concat(request.collection);
+            }
+            return current;
+          });
+
+          break;
+        default:
+          break;
       }
     };
 
