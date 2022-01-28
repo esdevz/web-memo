@@ -1,13 +1,19 @@
+<p align="center">
+<img src='images/wm-1.1.png' width="80%">
+</p>
+<hr width="85%">
+
 ## About
 
-this is a web extension that helps you create notes from selected text and save copied images and screenshots .
+This is a web extension that helps you create notes from selected text and save copied images and screenshots.
 
 ## How it works
 
 Select a text and hit save , this will automatically generate a collection , text note and an icon then save it ,  
-or copy paste / drag into the sidebar, this will let you save copied images and screenshots (use firefox's "take screenshot" feature ,or any tool that let you copy the image).  
-All notes are saved locally and catogorized by website.  
-[Download from AMO](https://addons.mozilla.org/en-US/firefox/addon/web-memo/)
+or copy paste / drag into the sidebar, this will let you save copied images and screenshots (use firefox's "take screenshot" feature, or any tool that let you copy the image).  
+All notes are saved locally and catogorized by website.
+
+[![Download](images/get.png)](https://addons.mozilla.org/en-US/firefox/addon/web-memo/)
 
 ## Install
 
