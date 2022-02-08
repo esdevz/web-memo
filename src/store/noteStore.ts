@@ -102,10 +102,10 @@ const useNoteStore = create<NoteStore>((set, get) => ({
             draft.activeTab = "notes";
             delete draft.collections[note.website];
             db.deleteCollection(note.website);
-            browser.sidebarAction.isOpen({}).then((isOpen) => {
-              if (isOpen)
-                browser.runtime.sendMessage({ msg: "DELETE", collection: note.website });
-            });
+            const views = chrome.extension.getViews({ type: "popup" });
+            if (views.length > 0) {
+              chrome.runtime.sendMessage({ msg: "DELETE", collection: note.website });
+            }
           }
         }
       })
@@ -188,10 +188,10 @@ const useNoteStore = create<NoteStore>((set, get) => ({
               db.deleteCollection(originTab);
               draft.activeTab = url;
               delete draft.collections[originTab];
-              browser.sidebarAction.isOpen({}).then((isOpen) => {
-                if (isOpen)
-                  browser.runtime.sendMessage({ msg: "DELETE", collection: originTab });
-              });
+              const views = chrome.extension.getViews({ type: "popup" });
+              if (views.length > 0) {
+                chrome.runtime.sendMessage({ msg: "DELETE", collection: originTab });
+              }
             }
           }
         })
