@@ -1,6 +1,6 @@
 import Dexie from "dexie";
 import { CollectionOptions, Configs, INote } from "../src/store/types";
-import { defaultConfig, defaultNote } from "../utils/defaults";
+import { defaultConfig } from "../utils/defaults";
 
 export const DATABASE = "web-notes";
 
@@ -12,30 +12,10 @@ const schema = "++id ,title ,website, fullUrl,createdAt",
 export class NotesDB extends Dexie {
   constructor() {
     super(DATABASE);
-    this.version(2)
-      .stores({
-        notes: schema,
-        configs: configsSchema,
-      })
-      .upgrade(async (tx) => {
-        const notes = await tx.table<INote, number>(NOTES_TABLE).toArray();
-        const configs = notes.concat(defaultNote).reduce(
-          (cfg: Configs, note) => {
-            cfg.collections[note.website] = {
-              displayName: note.website,
-              customIconType: "default",
-              favicon: note.favicon || "",
-            };
-            return cfg;
-          },
-          {
-            id: 1,
-            tabLayout: "default",
-            collections: {},
-          }
-        );
-        tx.table(CONFIGS_TABLE).put(configs);
-      });
+    this.version(2).stores({
+      notes: schema,
+      configs: configsSchema,
+    });
   }
 
   putNote(note: INote) {
