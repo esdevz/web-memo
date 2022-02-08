@@ -9,26 +9,33 @@ import {
   FormLabel,
   Switch,
   Tooltip,
+  CircularProgress,
 } from "@chakra-ui/react";
 import FormInput from "../../ui/form/FormInput";
 import DataList from "../../ui/form/DataList";
 import Editable from "./Editable";
 import { initialNoteState, useBackgroundNote } from "../hooks/useBackgroundNotes";
-import { getHostName } from "../../utils/getHostName";
+import { getHostName } from "../../utils";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
 import { CustomIcon } from "../../src/store/types";
+import { setBadgeTempNote } from "../../utils/badgeColors";
+
+const port = chrome.runtime.connect({ name: "popup" });
 
 const Sidebar = () => {
-  const { note, setNote, saveNote, loading, collections } = useBackgroundNote();
+  const { note, setNote, saveNote, loading, collections, draftNoteLoading } =
+    useBackgroundNote();
   const [icon, setIcon] = useState<CustomIcon>("default");
-
   const contentRef = useRef<HTMLDivElement>(null);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setNote({
+    const newNote = {
       ...note,
       favicon: e.target.name === "website" ? "" : note.favicon,
       [e.target.name]: e.target.value,
-    });
+    };
+    setNote(newNote);
+    port.postMessage({ msg: "EDITING", note: newNote });
   };
   const switchHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setNote({
@@ -38,20 +45,25 @@ const Sidebar = () => {
   };
 
   const setUrl = async () => {
-    const [tab] = await browser.tabs.query({
+    const [tab] = await chrome.tabs.query({
       active: true,
     });
     if (tab.url) {
-      setNote({
+      const newNote = {
         ...note,
         favicon: tab.favIconUrl || "",
         fullUrl: tab.url,
         website: getHostName(tab.url),
-      });
+        title: tab.title || note.title,
+      };
+
+      setNote(newNote);
+      port.postMessage({ msg: "EDITING", note: newNote });
     }
   };
   const resetNote = () => {
     setNote(initialNoteState);
+    port.postMessage({ msg: "RESET" });
     if (contentRef.current) {
       contentRef.current.innerHTML = "";
     }
@@ -70,31 +82,74 @@ const Sidebar = () => {
       website: note.website.trim() || "notes",
     };
     await saveNote(newNote, icon);
+    port.postMessage({ msg: "NOTE_SAVED" });
 
     const existingCollection = collections.includes(newNote.website);
-    const collectionProps = existingCollection
+    let collectionProps = existingCollection
       ? {}
       : {
           displayName: newNote.website,
           customIconType: icon,
           favicon: newNote.favicon,
         };
-    browser.runtime.sendMessage({ msg: "NEW_NOTE", collectionProps });
+    chrome.runtime.sendMessage({ msg: "NEW_NOTE", collectionProps });
+
     resetNote();
   };
 
   const openNotes = () => {
-    browser.tabs.create({
-      url: browser.runtime.getURL("main/index.html"),
+    chrome.tabs.create({
+      url: chrome.runtime.getURL("main/index.html"),
       active: true,
     });
   };
 
+  const onInputChange = (e: React.FormEvent<HTMLDivElement>) => {
+    setBadgeTempNote();
+    const newNote = {
+      ...note,
+      content: e.currentTarget.innerHTML,
+      createdAt: Date.now(),
+    };
+    port.postMessage({ msg: "EDITING", note: newNote });
+  };
+
+  const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const data = e.clipboardData.getData("text/html");
+    if (data.length !== 0) {
+      e.preventDefault();
+
+      const selection = window.getSelection();
+      if (!selection?.rangeCount) return false;
+
+      selection.deleteFromDocument();
+      let node = document.createElement("div");
+      node.innerHTML = sanitizeHtml(data).trim();
+      selection.getRangeAt(0).insertNode(node);
+      port.postMessage({
+        msg: "EDITING",
+        note: {
+          ...note,
+          content: contentRef.current?.innerHTML,
+          createdAt: Date.now(),
+        },
+      });
+    }
+  };
+
   return (
-    <Box as="main" minH="300px" minW="320px" w="full">
+    <Box as="main" minH="50em" minW="33em" w="35em">
       <VStack h="100%" w="100%" spacing="1.5">
-        <Button h="2.7em" w="full" colorScheme="bb" variant="outline" onClick={openNotes}>
-          <Text as="h3">Open Notes </Text>
+        <Button
+          h="2.7em"
+          w="full"
+          borderRadius="0"
+          colorScheme="bb"
+          variant="outline"
+          onClick={openNotes}
+          fontWeight="bold"
+        >
+          Open Notes
         </Button>
 
         <VStack
@@ -118,15 +173,22 @@ const Sidebar = () => {
               placeholder: "Title",
             }}
           />
-          <VStack spacing="1" align="flex-start" h="32rem" w="95%">
-            <Text as="h3">Content :</Text>
+          <VStack spacing="1" align="flex-start" h="20rem" w="95%">
+            <Text as="h3">
+              Content :
+              <Box as="span" ml="2">
+                {draftNoteLoading && <CircularProgress size="0.85rem" isIndeterminate />}
+              </Box>
+            </Text>
             <Editable
               contentRef={contentRef}
+              onPasteHandler={onPasteHandler}
+              onInputChange={onInputChange}
               sanitizedHtml={sanitizeHtml(note.content)}
             />
           </VStack>
 
-          <HStack mt="1rem !important" w="95%" justifyContent="space-between">
+          <HStack mt="0.9rem !important" w="95%" justifyContent="space-between">
             <DataList
               handleIconChange={handleIconChange}
               icon={icon}
@@ -135,16 +197,17 @@ const Sidebar = () => {
               collections={collections}
               favicon={note.favicon}
             />
-            <Tooltip fontFamily="Raleway" fontSize="0.9em" label="set collection & icon">
+            <Tooltip fontFamily="Raleway" fontSize="md" label="set collection & icon">
               <Button
                 aria-label="set collection to current url"
                 onClick={setUrl}
                 colorScheme="bb"
-                variant="outline"
                 type="button"
-                w="13ch"
+                w="8em"
+                variant="outline"
+                fontWeight="bold"
               >
-                <Text as="h3"> Current URL</Text>
+                Current URL
               </Button>
             </Tooltip>
           </HStack>
@@ -163,11 +226,12 @@ const Sidebar = () => {
               aria-label="reset note"
               onClick={resetNote}
               colorScheme="bb"
-              variant="outline"
               type="button"
-              w="13ch"
+              w="8em"
+              variant="outline"
+              fontWeight="bold"
             >
-              <Text as="h3"> Reset </Text>
+              Reset
             </Button>
           </HStack>
           <Button
@@ -176,11 +240,12 @@ const Sidebar = () => {
             isDisabled={loading}
             type="submit"
             colorScheme="bb"
-            variant="outline"
             w="full"
             h="2.5em"
+            variant="outline"
+            fontWeight="bold"
           >
-            <Text as="h3"> Save</Text>
+            Save
           </Button>
         </VStack>
       </VStack>

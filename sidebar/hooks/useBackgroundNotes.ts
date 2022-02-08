@@ -2,6 +2,8 @@ import { NotesDB } from "../../idb/NotesDb";
 import { useCallback, useEffect, useState } from "react";
 import { useColorMode } from "@chakra-ui/react";
 import { CustomIcon, INote } from "../../src/store/types";
+import { getTemporaryNote } from "../../idb/storageArea";
+import { getFaviconDataURL } from "../../utils/getFaviconDataURL";
 
 const db = new NotesDB();
 
@@ -19,6 +21,7 @@ export function useBackgroundNote() {
   const [note, setNote] = useState(initialNoteState);
   const [collections, setUserCollections] = useState(["notes"]);
   const [loading, setLoading] = useState(false);
+  const [draftNoteLoading, setDraftNoteLoading] = useState(false);
   const { toggleColorMode } = useColorMode();
 
   useEffect(() => {
@@ -27,51 +30,42 @@ export function useBackgroundNote() {
       note?: INote;
       collection?: string;
     }) => {
-      switch (request.msg) {
-        case "TOGGLE_COLOR_MODE":
-          toggleColorMode();
-          break;
-        case "DELETE":
-          setUserCollections((currentCollections) =>
-            currentCollections.filter((col) => col !== request.collection)
-          );
-          break;
-        case "ADD":
-          setUserCollections((current) => {
-            if (request.collection) {
-              return current.concat(request.collection);
-            }
-            return current;
-          });
-
-          break;
-        default:
-          break;
+      if (request.msg === "TOGGLE_COLOR_MODE") {
+        toggleColorMode();
+      }
+      if (request.msg === "DELETE") {
+        setUserCollections((currentCollections) =>
+          currentCollections.filter((col) => col !== request.collection)
+        );
       }
     };
 
-    browser.runtime.onMessage.addListener(onMessageHandler);
+    chrome.runtime.onMessage.addListener(onMessageHandler);
 
-    return () => browser.runtime.onMessage.removeListener(onMessageHandler);
+    return () => chrome.runtime.onMessage.removeListener(onMessageHandler);
   }, [toggleColorMode]);
 
   useEffect(() => {
-    db.getConfigs().then((col) => {
-      const userCollections = Object.keys(col.collections);
+    setDraftNoteLoading(true);
+    Promise.all([db.getConfigs(), getTemporaryNote()]).then(([cfg, note]) => {
+      const userCollections = Object.keys(cfg.collections);
       setUserCollections(userCollections);
+      setNote(note);
+      setDraftNoteLoading(false);
     });
   }, []);
 
   const saveNote = useCallback(
     async (newNote: INote, icon: CustomIcon) => {
       setLoading(true);
+      const dataUrl = await getFaviconDataURL(newNote.favicon);
       const existingCollection = collections.includes(newNote.website);
-      const collectionProps = existingCollection
+      let collectionProps = existingCollection
         ? {}
         : {
             displayName: newNote.website,
             customIconType: icon,
-            favicon: newNote.favicon,
+            favicon: dataUrl,
           };
 
       try {
@@ -102,5 +96,5 @@ export function useBackgroundNote() {
     [collections]
   );
 
-  return { note, setNote, saveNote, loading, collections };
+  return { note, setNote, saveNote, loading, collections, draftNoteLoading };
 }
