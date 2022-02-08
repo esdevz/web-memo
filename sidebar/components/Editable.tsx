@@ -1,58 +1,19 @@
 import React from "react";
 import { Box } from "@chakra-ui/layout";
-import { sanitizeHtml } from "../../utils/sanitizeHtml";
 
 interface Props {
   contentRef: React.RefObject<HTMLDivElement>;
-  onInputChange?: (e: React.FormEvent<HTMLDivElement>) => void;
-  onPasteHandler?: (e: React.ClipboardEvent<HTMLDivElement>) => false | void;
-  onDropHandler?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onInputChange: (e: React.FormEvent<HTMLDivElement>) => void;
+  onPasteHandler: (e: React.ClipboardEvent<HTMLDivElement>) => false | void;
   sanitizedHtml: string;
 }
 
 const Editable = (props: Props) => {
-  const onBlurHandler = () => {
-    const selection = window.getSelection();
-    if (selection?.rangeCount) {
-      selection.removeAllRanges();
-    }
-  };
-
-  const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
-    const data = e.clipboardData.getData("text/html");
-    if (data.length !== 0) {
-      e.preventDefault();
-
-      const selection = window.getSelection();
-      if (!selection?.rangeCount) return false;
-
-      selection.deleteFromDocument();
-      let node = document.createElement("div");
-      node.innerHTML = sanitizeHtml(data).trim();
-      selection.getRangeAt(0).insertNode(node);
-    }
-  };
-
-  const onDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    const data = e.dataTransfer.getData("text/html");
-    const selection = window.getSelection();
-
-    if (data.length !== 0 && selection?.type !== "Range") {
-      e.preventDefault();
-      let node = document.createElement("div");
-      node.innerHTML = sanitizeHtml(data).trim();
-      if (props.contentRef.current) {
-        props.contentRef.current.appendChild(node);
-      }
-    }
-  };
-
   return (
     <Box
-      onBlur={onBlurHandler}
       ref={props.contentRef}
-      onPaste={onPasteHandler}
-      onDrop={onDropHandler}
+      onInput={props.onInputChange}
+      onPaste={props.onPasteHandler}
       contentEditable="true"
       w="full"
       maxW="full"
@@ -68,7 +29,7 @@ const Editable = (props: Props) => {
           whiteSpace: "break-spaces",
         },
       }}
-      lineHeight="1.55"
+      lineHeight="1.7"
       _focusVisible={{
         outline: "2px solid rgb(49, 130, 206)",
       }}
