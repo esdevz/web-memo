@@ -99,7 +99,7 @@ const Export = () => {
     const blob = await exportDB(db, { prettyJson: true });
     const file = new File([blob], fileName || date, { type: "application/json" });
     const url = URL.createObjectURL(file);
-    browser.downloads.download({
+    chrome.downloads.download({
       url,
       filename: `${fileName || date}.json`,
       saveAs: true,
