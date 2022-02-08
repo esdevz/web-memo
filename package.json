@@ -30,6 +30,7 @@
     "zustand": "^3.5.5"
   },
   "devDependencies": {
+    "@types/chrome": "^0.0.178",
     "@types/dompurify": "^2.2.3",
     "@types/firefox-webext-browser": "^82.0.0",
     "@types/node": "^15.3.1",
