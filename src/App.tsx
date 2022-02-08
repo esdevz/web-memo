@@ -31,7 +31,7 @@ const App = () => {
   );
 
   useEffect(() => {
-    browser.runtime.onMessage.addListener(
+    chrome.runtime.onMessage.addListener(
       (request: { msg: string; collectionProps: CollectionOptions }) => {
         if (request.msg === "NEW_NOTE") {
           addNewNote(request.collectionProps);
