@@ -1,7 +1,8 @@
 import React, { FC } from "react";
-import { GridItem } from "@chakra-ui/react";
+import { GridItem, useColorModeValue } from "@chakra-ui/react";
 
 const NotesContainer: FC<NotesContainerProps> = (props) => {
+  const thumbColor = useColorModeValue("rgba(0, 0, 0 , 0.2)", "rgba(255,255,255,0.3)");
   return (
     <GridItem
       pos="relative"
@@ -16,7 +17,14 @@ const NotesContainer: FC<NotesContainerProps> = (props) => {
       gridAutoRows="max-content"
       overflow="auto"
       sx={{
-        scrollbarWidth: "thin",
+        "::-webkit-scrollbar": {
+          width: "8px",
+          backgroundColor: "transparent",
+        },
+        "::-webkit-scrollbar-thumb": {
+          backgroundColor: thumbColor,
+          borderRadius: "8px",
+        },
       }}
     >
       {props.children}

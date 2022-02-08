@@ -9,6 +9,7 @@ import {
   DrawerBody,
   DrawerFooter,
 } from "@chakra-ui/modal";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const CustomDrawer = ({
   controls,
@@ -16,6 +17,7 @@ const CustomDrawer = ({
   children,
   ...rest
 }: CustomDrawerProps) => {
+  const thumbColor = useColorModeValue("rgba(0, 0, 0 , 0.2)", "rgba(255,255,255,0.3)");
   return (
     <Drawer {...rest}>
       <DrawerOverlay />
@@ -24,7 +26,14 @@ const CustomDrawer = ({
         <DrawerHeader> {drawerTitle} </DrawerHeader>
         <DrawerBody
           sx={{
-            scrollbarWidth: "thin",
+            "::-webkit-scrollbar": {
+              width: "8px",
+              backgroundColor: "transparent",
+            },
+            "::-webkit-scrollbar-thumb": {
+              backgroundColor: thumbColor,
+              borderRadius: "8px",
+            },
           }}
         >
           {children}

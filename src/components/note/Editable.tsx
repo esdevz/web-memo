@@ -1,5 +1,5 @@
 import React, { ForwardedRef, forwardRef } from "react";
-import { GridItem, GridItemProps } from "@chakra-ui/react";
+import { GridItem, GridItemProps, useColorModeValue } from "@chakra-ui/react";
 import { sanitizeHtml } from "../../../utils/sanitizeHtml";
 
 const Editable = forwardRef(
@@ -7,6 +7,7 @@ const Editable = forwardRef(
     { sanitizedHtml, isOpen, ...props }: EditableProps,
     ref: ForwardedRef<HTMLDivElement>
   ) => {
+    const thumbColor = useColorModeValue("rgba(0, 0, 0 , 0.2)", "rgba(255,255,255,0.3)");
     const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
       const data = e.clipboardData.getData("text/html");
       if (data.length !== 0) {
@@ -49,7 +50,6 @@ const Editable = forwardRef(
         onDrop={onDropHandler}
         ref={ref}
         overflow={isOpen ? "auto" : "hidden"}
-        sx={{ scrollbarWidth: "thin" }}
         noOfLines={isOpen ? undefined : 6}
         whiteSpace="break-spaces"
         rowSpan={isOpen ? 8 : 7}
@@ -58,6 +58,16 @@ const Editable = forwardRef(
         _focusVisible={{
           outline: "2px solid rgba(128, 128, 128, 0.34)",
           borderRadius: "4px",
+        }}
+        sx={{
+          "::-webkit-scrollbar": {
+            width: "8px",
+            backgroundColor: "transparent",
+          },
+          "::-webkit-scrollbar-thumb": {
+            backgroundColor: thumbColor,
+            borderRadius: "8px",
+          },
         }}
         contentEditable={isOpen}
         spellCheck="false"

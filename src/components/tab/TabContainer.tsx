@@ -14,9 +14,11 @@ const TabContainer: FC<TabContainerProps> = (props) => {
       display="grid"
       overflow="auto"
       gridAutoRows="max-content"
-      sx={{
-        scrollbarWidth: "none",
-      }}
+      css={`
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      `}
     >
       {props.children}
     </GridItem>
