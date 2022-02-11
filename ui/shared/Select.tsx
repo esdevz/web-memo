@@ -1,6 +1,6 @@
 import React from "react";
 import { CollectionIcon } from "../icons";
-import { CustomIcon } from "../../src/store/types";
+import { CustomIcon } from "../../main/store/types";
 import {
   Image,
   HStack,
@@ -25,11 +25,7 @@ const IconSelect = ({
           {currentIcon === "default" && favicon ? (
             <Image boxSize="6" borderRadius="50%" src={favicon} />
           ) : (
-            <CollectionIcon
-              boxSize="6"
-              marginInline="auto"
-              customIcon={currentIcon}
-            />
+            <CollectionIcon boxSize="6" marginInline="auto" customIcon={currentIcon} />
           )}
         </MenuButton>
         <MenuList justifyContent="center" minW="0" w="5rem">

@@ -16,7 +16,7 @@ import Editable from "./Editable";
 import { initialNoteState, useBackgroundNote } from "../hooks/useBackgroundNotes";
 import { getHostName } from "../../utils/getHostName";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
-import { CustomIcon } from "../../src/store/types";
+import { CustomIcon } from "../../main/store/types";
 
 const Sidebar = () => {
   const { note, setNote, saveNote, loading, collections } = useBackgroundNote();

@@ -1,7 +1,7 @@
 import { NotesDB } from "../../idb/NotesDb";
 import { useCallback, useEffect, useState } from "react";
 import { useColorMode } from "@chakra-ui/react";
-import { CustomIcon, INote } from "../../src/store/types";
+import { CustomIcon, INote } from "../../main/store/types";
 
 const db = new NotesDB();
 

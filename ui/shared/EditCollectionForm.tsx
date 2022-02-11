@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { CollectionOptions, CustomIcon } from "../../src/store/types";
+import { CollectionOptions, CustomIcon } from "../../main/store/types";
 import Select from "./Select";
 import { IconList } from "../icons";
 import {

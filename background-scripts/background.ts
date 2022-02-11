@@ -1,4 +1,4 @@
-import type { CollectionOptions } from "../src/store/types";
+import type { CollectionOptions } from "../main/store/types";
 import { NotesDB } from "../idb/NotesDb";
 import {
   clearBadges,

@@ -1,4 +1,4 @@
-import { INote, Collection, Configs } from "../src/store/types";
+import { INote, Collection, Configs } from "../main/store/types";
 import { defaultNote } from "./defaults";
 
 export const formatNotes = (
