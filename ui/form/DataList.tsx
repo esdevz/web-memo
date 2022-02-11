@@ -2,7 +2,7 @@ import React, { ChangeEvent } from "react";
 import { HStack, Input } from "@chakra-ui/react";
 import Select from "../shared/Select";
 import { IconList } from "../icons";
-import { CustomIcon } from "../../src/store/types";
+import { CustomIcon } from "../../main/store/types";
 
 const DataList = (props: DataListProps) => {
   return (
