@@ -5,12 +5,7 @@
   "description": "web extension to create and manage notes",
   "license": "MPL 2.0",
   "scripts": {
-    "build": "yarn main && yarn sidebar && yarn background && yarn content-scripts && yarn copy",
-    "main": "node configs/main.js",
-    "background": "node configs/background.js",
-    "sidebar": "node configs/sidebar.js",
-    "content-scripts": "node configs/contentScripts.js",
-    "copy": "node configs/copyFiles.js",
+    "build": "node configs/main.js",
     "lint": "eslint . --ext .ts"
   },
   "author": "wael H",
