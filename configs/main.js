@@ -1,11 +1,29 @@
-const { copyFile } = require("fs");
+const { copyFile } = require("fs/promises");
 const path = require("path");
+const copyStaticFiles = require("./copyFiles");
+
+const buildPaths = [
+  {
+    src: path.resolve(__dirname, "..", "src/index.html"),
+    dest: path.resolve(__dirname, "..", "build/src/index.html"),
+  },
+  {
+    src: path.resolve(__dirname, "..", "sidebar/index.html"),
+    dest: path.resolve(__dirname, "..", "build/sidebar/index.html"),
+  },
+];
 
 require("esbuild")
   .build({
-    entryPoints: [path.resolve(__dirname, "..", "src/index.tsx")],
-    assetNames: "../assets/[name]-[hash]",
-    outdir: path.resolve(__dirname, "..", "build/main"),
+    entryPoints: [
+      path.resolve(__dirname, "..", "src/index.tsx"),
+      path.resolve(__dirname, "..", "background-scripts/background.ts"),
+      path.resolve(__dirname, "..", "content-scripts/content-script.ts"),
+      path.resolve(__dirname, "..", "sidebar/index.tsx"),
+    ],
+    entryNames: "[dir]/[name]",
+    assetNames: "./assets/[name]-[hash]",
+    outdir: path.resolve(__dirname, "..", "build"),
     minify: true,
     target: "es2020",
     format: "esm",
@@ -15,11 +33,14 @@ require("esbuild")
       ".woff2": "file",
     },
   })
-  .then(() => {
-    copyFile(
-      path.resolve(__dirname, "..", "src/index.html"),
-      path.resolve(__dirname, "..", "build/main/index.html"),
-      (err) => console.error(err)
-    );
-    console.log("main html file copied into build folder");
+  .then(async () => {
+    try {
+      for await (const buildPath of buildPaths) {
+        await copyFile(buildPath.src, buildPath.dest);
+      }
+      console.log("main and sidebar html files copied into the build folder");
+      copyStaticFiles();
+    } catch (err) {
+      console.error(err);
+    }
   });
