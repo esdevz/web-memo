@@ -1,5 +1,5 @@
 import Dexie from "dexie";
-import { CollectionOptions, Configs, INote } from "../src/store/types";
+import { CollectionOptions, Configs, INote } from "../main/store/types";
 import { defaultConfig } from "../utils/defaults";
 
 export const DATABASE = "web-notes";

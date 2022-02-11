@@ -4,8 +4,8 @@ const copyStaticFiles = require("./copyFiles");
 
 const buildPaths = [
   {
-    src: path.resolve(__dirname, "..", "src/index.html"),
-    dest: path.resolve(__dirname, "..", "build/src/index.html"),
+    src: path.resolve(__dirname, "..", "main/index.html"),
+    dest: path.resolve(__dirname, "..", "build/main/index.html"),
   },
   {
     src: path.resolve(__dirname, "..", "sidebar/index.html"),
@@ -16,7 +16,7 @@ const buildPaths = [
 require("esbuild")
   .build({
     entryPoints: [
-      path.resolve(__dirname, "..", "src/index.tsx"),
+      path.resolve(__dirname, "..", "main/index.tsx"),
       path.resolve(__dirname, "..", "background-scripts/background.ts"),
       path.resolve(__dirname, "..", "content-scripts/content-script.ts"),
       path.resolve(__dirname, "..", "sidebar/index.tsx"),

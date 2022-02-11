@@ -17,7 +17,7 @@ import Editable from "./Editable";
 import { initialNoteState, useBackgroundNote } from "../hooks/useBackgroundNotes";
 import { getHostName } from "../../utils";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
-import { CustomIcon } from "../../src/store/types";
+import { CustomIcon } from "../../main/store/types";
 import { setBadgeTempNote } from "../../utils/badgeColors";
 
 const port = chrome.runtime.connect({ name: "popup" });

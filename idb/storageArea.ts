@@ -1,4 +1,4 @@
-import { INote } from "../src/store/types";
+import { INote } from "../main/store/types";
 import { defaultNote } from "../utils/defaults";
 
 export async function getTemporaryNote() {

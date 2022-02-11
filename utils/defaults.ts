@@ -1,4 +1,4 @@
-import { Configs } from "../src/store/types";
+import { Configs } from "../main/store/types";
 
 export const DB_NAME = "notes";
 

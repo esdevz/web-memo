@@ -1,4 +1,4 @@
-import type { CollectionOptions, INote } from "../src/store/types";
+import type { CollectionOptions, INote } from "../main/store/types";
 import { NotesDB } from "../idb/NotesDb";
 import { getTemporaryNote, setTemporaryNote } from "../idb/storageArea";
 import { getHostName } from "../utils/getHostName";
