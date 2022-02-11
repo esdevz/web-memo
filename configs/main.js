@@ -2,6 +2,8 @@ const { copyFile } = require("fs/promises");
 const path = require("path");
 const copyStaticFiles = require("./copyFiles");
 
+const isWatchMode = process.argv[2] && process.argv[2] === "-watch";
+
 const buildPaths = [
   {
     src: path.resolve(__dirname, "..", "main/index.html"),
@@ -28,6 +30,7 @@ require("esbuild")
     target: "es2020",
     format: "esm",
     bundle: true,
+    watch: isWatchMode,
     loader: {
       ".woff": "file",
       ".woff2": "file",
@@ -35,11 +38,14 @@ require("esbuild")
   })
   .then(async () => {
     try {
-      for await (const buildPath of buildPaths) {
+      for (const buildPath of buildPaths) {
         await copyFile(buildPath.src, buildPath.dest);
       }
       console.log("main and sidebar html files copied into the build folder");
-      copyStaticFiles();
+      await copyStaticFiles();
+      if (isWatchMode) {
+        console.log("watching...");
+      }
     } catch (err) {
       console.error(err);
     }
