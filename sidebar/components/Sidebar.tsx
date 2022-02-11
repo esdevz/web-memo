@@ -99,7 +99,7 @@ const Sidebar = () => {
 
   const openNotes = () => {
     chrome.tabs.create({
-      url: chrome.runtime.getURL("src/index.html"),
+      url: chrome.runtime.getURL("main/index.html"),
       active: true,
     });
   };
