@@ -48,7 +48,9 @@ const NoteTools = (props: NoteToolsProps) => {
           icon={<IoMdMore />}
         />
         <MenuList>
-          <MenuItem onClick={props.deleteNote}>Delete</MenuItem>
+          <MenuItem fontSize="1.1em" onClick={props.deleteNote}>
+            Delete
+          </MenuItem>
         </MenuList>
       </Menu>
     </HStack>
