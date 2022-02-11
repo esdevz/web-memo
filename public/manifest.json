@@ -18,12 +18,12 @@
     "browser_style": true
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background-scripts/background.js"
   },
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["content-script.js"]
+      "js": ["content-scripts/content-script.js"]
     }
   ],
   "permissions": ["storage", "contextMenus", "tabs", "downloads"]
