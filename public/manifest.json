@@ -20,7 +20,7 @@
     "browser_style": true
   },
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["background-scripts/background.js"]
   },
   "permissions": ["storage", "menus", "contextMenus", "tabs", "downloads"],
   "browser_specific_settings": {
