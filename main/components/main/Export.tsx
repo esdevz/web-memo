@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Input,
   Text,
   useColorModeValue,
   VStack,
@@ -13,6 +14,31 @@ import { db } from "../../store/db";
 import { initialProgressState, progressReducer } from "../../store/exportReducer";
 import { DATABASE } from "../../../idb/NotesDb";
 import { Configs } from "../../store/types";
+import { AiOutlineUpload } from "react-icons/ai";
+
+const importFile = async (file: File) => {
+  const importedFile = await peakImportFile(file);
+  if (importedFile.data.databaseName !== DATABASE) {
+    throw new Error("incorrect database");
+  }
+  const cfg = await db.getConfigs();
+
+  await importInto(db, file, {
+    overwriteValues: true,
+    acceptVersionDiff: false,
+  });
+  //merge the overwritten configs
+  const importedConfigs = await db.getConfigs();
+  const configs: Configs = {
+    ...importedConfigs,
+    ...cfg,
+    collections: {
+      ...importedConfigs.collections,
+      ...cfg.collections,
+    },
+  };
+  await db.updateConfigs(1, configs);
+};
 
 const Export = () => {
   const green = useColorModeValue("green.100", "green.600");
@@ -40,6 +66,21 @@ const Export = () => {
     e.preventDefault();
   }, []);
 
+  const onFileChangeHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const file = files[0];
+      try {
+        dispatch({ type: "LOADING" });
+        await importFile(file);
+        dispatch({ type: "SUCCESS" });
+      } catch (err) {
+        console.log(err);
+        dispatch({ type: "ERROR", payload: "import operation failed" });
+      }
+    }
+  };
+
   const dropEventHandler = async (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation();
     e.preventDefault();
@@ -48,40 +89,9 @@ const Export = () => {
     try {
       const item = e.dataTransfer.items[0];
       const file = item.getAsFile();
-      if (file?.type !== "application/json") {
-        dispatch({
-          type: "ERROR",
-          payload: "incorrect format",
-        });
-        return;
-      }
       if (file) {
-        const importedFile = await peakImportFile(file);
-        if (importedFile.data.databaseName !== DATABASE) {
-          dispatch({
-            type: "ERROR",
-            payload: "incorrect database",
-          });
-          return;
-        }
-        const cfg = await db.getConfigs();
-
-        await importInto(db, file, {
-          overwriteValues: true,
-          acceptVersionDiff: false,
-        });
-        //merge the overwritten configs
-        const importedConfigs = await db.getConfigs();
-        const configs: Configs = {
-          ...importedConfigs,
-          ...cfg,
-          collections: {
-            ...importedConfigs.collections,
-            ...cfg.collections,
-          },
-        };
-        await db.updateConfigs(1, configs);
-
+        dispatch({ type: "LOADING" });
+        await importFile(file);
         dispatch({ type: "SUCCESS" });
       }
     } catch (err) {
@@ -154,6 +164,26 @@ const Export = () => {
           )}
         </Text>
       </VStack>
+      <Text as="h3" m="6px 0 0 0" fontSize="0.9rem" textAlign="center">
+        OR
+      </Text>
+      <Button
+        mt="6px"
+        leftIcon={<AiOutlineUpload />}
+        as="label"
+        colorScheme="bb"
+        w="full"
+        cursor="pointer"
+      >
+        Import
+        <Input
+          onChange={onFileChangeHandler}
+          display="none"
+          name="file"
+          type="file"
+          accept=".json"
+        />
+      </Button>
     </>
   );
 };
