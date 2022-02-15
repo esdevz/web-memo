@@ -15,6 +15,7 @@ import EditCollectionForm from "../ui/shared/EditCollectionForm";
 import { CollectionOptions } from "./store/types";
 import SearchNotes from "./components/main/SearchNotes";
 import Export from "./components/main/Export";
+import { AnimatePresence } from "framer-motion";
 
 const App = () => {
   const [collections, activeTab, addNewNote, layout, updateCollection] = useNoteStore(
@@ -29,6 +30,7 @@ const App = () => {
       []
     )
   );
+  const [tabs, setTabs] = React.useState(Object.keys(collections));
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener(
@@ -64,16 +66,23 @@ const App = () => {
         gap={3}
         overflow="auto"
       >
-        <TabContainer colSpan={layout === "default" ? 2 : 1}>
-          {Object.keys(collections).map((url) => (
-            <Tab
-              key={url}
-              displayName={collections[url].displayName}
-              customIconType={collections[url].customIconType}
-              website={url}
-              favicon={collections[url].favicon}
-            />
-          ))}
+        <TabContainer
+          onReorder={setTabs}
+          values={tabs}
+          colSpan={layout === "default" ? 3 : 1}
+        >
+          <AnimatePresence>
+            {tabs.map((url) => (
+              <Tab
+                value={url}
+                key={url}
+                displayName={collections[url].displayName}
+                customIconType={collections[url].customIconType}
+                website={url}
+                favicon={collections[url].favicon}
+              />
+            ))}
+          </AnimatePresence>
         </TabContainer>
         <NotesContainer colSpan={layout === "default" ? 8 : 13}>
           <EmptyCollection collections={collections} activeTab={activeTab} />
