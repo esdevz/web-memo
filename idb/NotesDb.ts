@@ -3,12 +3,11 @@ import { CollectionOptions, Configs, INote } from "../main/store/types";
 import { defaultConfig, defaultNote } from "../utils/defaults";
 
 export const DATABASE = "web-notes";
+export const NOTES_TABLE = "notes";
 
 const schema = "++id ,title ,website, fullUrl,createdAt",
   configsSchema = "id, tabLayout , collections",
-  CONFIGS_TABLE = "configs",
-  NOTES_TABLE = "notes";
-
+  CONFIGS_TABLE = "configs";
 export class NotesDB extends Dexie {
   constructor() {
     super(DATABASE);
