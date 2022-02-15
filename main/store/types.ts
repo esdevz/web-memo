@@ -60,7 +60,10 @@ export interface NoteStore {
     clr: string,
     website: string
   ) => Promise<NotificationMessage>;
-  delete: (note: INote) => Promise<NotificationMessage>;
+  delete: (
+    note: INote,
+    setState: (next: string[]) => void
+  ) => Promise<NotificationMessage>;
   //   deleteAll: (website: string) => Promise<void>;
   pin: (note: INote) => Promise<NotificationMessage>;
   updateLayout: (layout: Layout) => Promise<void>;

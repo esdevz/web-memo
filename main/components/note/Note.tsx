@@ -24,7 +24,12 @@ import { VscGrabber } from "react-icons/vsc";
 import NoteTools from "./NoteTools";
 import Colors from "./Colors";
 
-const Note = ({ note }: NoteProps) => {
+interface NoteProps {
+  note: INote;
+  setState: (next: string[]) => void;
+}
+
+const Note = ({ note, setState }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
   const [open, setOpen] = useBoolean(false);
   const [editNote, pin, del, setDraggedNote, setNoteColor] = useNoteStore(
@@ -75,7 +80,7 @@ const Note = ({ note }: NoteProps) => {
   };
 
   const deleteNote = async () => {
-    const feedback = await del(note);
+    const feedback = await del(note, setState);
     feedback.type === "error" &&
       toast({
         title: feedback.message,
@@ -231,7 +236,3 @@ const Note = ({ note }: NoteProps) => {
 };
 
 export default Note;
-
-interface NoteProps {
-  note: INote;
-}

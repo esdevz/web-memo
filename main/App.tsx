@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, Grid, useDisclosure } from "@chakra-ui/react";
 import EmptyCollection from "./components/main/EmptyCollection";
 import Tab from "./components/tab/Tab";
@@ -30,7 +30,8 @@ const App = () => {
       []
     )
   );
-  const [tabs, setTabs] = React.useState(Object.keys(collections));
+
+  const [tabs, setTabs] = useState(Object.keys(collections));
 
   useEffect(() => {
     browser.runtime.onMessage.addListener(
@@ -93,7 +94,7 @@ const App = () => {
               </Separator>
               <NoteSection>
                 {pinnedNote.map((note) => (
-                  <Note key={note.id} note={note} />
+                  <Note setState={setTabs} key={note.id} note={note} />
                 ))}
               </NoteSection>
               <Separator as="h3" colSpan={1}>
@@ -103,7 +104,7 @@ const App = () => {
           )}
           <NoteSection>
             {otherNotes.map((note) => (
-              <Note key={note.id} note={note} />
+              <Note setState={setTabs} key={note.id} note={note} />
             ))}
           </NoteSection>
         </NotesContainer>

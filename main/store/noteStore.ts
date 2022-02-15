@@ -90,7 +90,7 @@ const useNoteStore = create<NoteStore>((set, get) => ({
       };
     }
   },
-  async delete(note) {
+  async delete(note, setState) {
     set((state) =>
       produce(state, (draft) => {
         const index = draft.collections[note.website].notes.findIndex(
@@ -101,6 +101,7 @@ const useNoteStore = create<NoteStore>((set, get) => ({
           if (draft.collections[note.website].notes.length === 0) {
             draft.activeTab = "notes";
             delete draft.collections[note.website];
+            setState(Object.keys(draft.collections));
             db.deleteCollection(note.website);
             browser.sidebarAction.isOpen({}).then((isOpen) => {
               if (isOpen)
