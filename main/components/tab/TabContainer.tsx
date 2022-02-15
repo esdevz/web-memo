@@ -1,25 +1,28 @@
 import React, { FC } from "react";
-import { GridItem } from "@chakra-ui/layout";
+import { Reorder } from "framer-motion";
 
 const TabContainer: FC<TabContainerProps> = (props) => {
   return (
-    <GridItem
-      p="1"
+    <Reorder.Group
+      as="section"
+      axis="y"
+      style={{
+        padding: 4,
+        gridArea: `1 / 1 / 1 / ${props.colSpan}`,
+        gap: 8,
+        display: "grid",
+        overflow: "auto",
+        scrollbarWidth: "none",
+        gridAutoRows: "max-content",
+      }}
+      values={props.values}
+      layoutScroll
+      onReorder={props.onReorder}
       role="tablist"
       aria-label="websites"
-      as="section"
-      rowSpan={1}
-      colSpan={props.colSpan}
-      gridGap="2.5"
-      display="grid"
-      overflow="auto"
-      gridAutoRows="max-content"
-      sx={{
-        scrollbarWidth: "none",
-      }}
     >
       {props.children}
-    </GridItem>
+    </Reorder.Group>
   );
 };
 
@@ -27,4 +30,6 @@ export default TabContainer;
 
 interface TabContainerProps {
   colSpan: number;
+  values: any[];
+  onReorder: (newOrder: any[]) => void;
 }
