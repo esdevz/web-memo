@@ -50,6 +50,7 @@ const Tab = (props: SidebarProps) => {
         as="div"
         key={props.value}
         value={props.value}
+        onDragEnd={props.updateOrder}
       >
         <Tooltip placement="right" closeOnMouseDown label={props.displayName}>
           <IconButton
@@ -83,7 +84,12 @@ const Tab = (props: SidebarProps) => {
     );
   }
   return (
-    <Reorder.Item as="div" key={props.value} value={props.value}>
+    <Reorder.Item
+      as="div"
+      key={props.value}
+      value={props.value}
+      onDragEnd={props.updateOrder}
+    >
       <Button
         {...dragHandlers}
         borderRadius="md"
@@ -123,6 +129,7 @@ interface SidebarProps {
   displayName: string;
   customIconType: CustomIcon;
   value: string;
+  updateOrder: () => void;
 }
 
 function setColorScheme(activeTab: string, url: string, dragOver: boolean) {

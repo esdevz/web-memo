@@ -16,6 +16,7 @@ import { CollectionOptions } from "./store/types";
 import SearchNotes from "./components/main/SearchNotes";
 import Export from "./components/main/Export";
 import { AnimatePresence } from "framer-motion";
+import { db } from "./store/db";
 
 const App = () => {
   const [collections, activeTab, addNewNote, layout, updateCollection] = useNoteStore(
@@ -37,7 +38,18 @@ const App = () => {
     browser.runtime.onMessage.addListener(
       (request: { msg: string; collectionProps: CollectionOptions }) => {
         if (request.msg === "NEW_NOTE") {
-          addNewNote(request.collectionProps);
+          addNewNote(request.collectionProps).then(() => {
+            const collectionProps = request.collectionProps;
+            setTabs((currentTabs) => {
+              if (Object.keys(collectionProps).length > 0) {
+                if (!currentTabs.includes(collectionProps.displayName)) {
+                  return currentTabs.concat(collectionProps.displayName);
+                }
+                return currentTabs;
+              }
+              return currentTabs;
+            });
+          });
         }
       }
     );
@@ -58,6 +70,10 @@ const App = () => {
     return collections[activeTab].notes.filter((note) => !note.isPinned);
   }, [activeTab, collections]);
 
+  const updateCollectionOrder = () => {
+    db.updateCollections(tabs);
+  };
+
   return (
     <Box as="main" w="100vw" h="100vh">
       <Grid
@@ -75,6 +91,7 @@ const App = () => {
           <AnimatePresence>
             {tabs.map((url) => (
               <Tab
+                updateOrder={updateCollectionOrder}
                 value={url}
                 key={url}
                 displayName={collections[url].displayName}
