@@ -40,6 +40,7 @@ export interface CollectionOptions {
   displayName: string;
   customIconType: CustomIcon;
   favicon?: string;
+  order?: number;
 }
 export interface Configs {
   id: number;
