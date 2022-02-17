@@ -1,5 +1,3 @@
-import type { Dispatch, SetStateAction } from "react";
-
 export interface INote {
   id?: number;
   title: string;
@@ -54,6 +52,8 @@ export interface NoteStore {
   collections: Record<string, Collection>;
   activeTab: string;
   draggedNote: null | INote;
+  tabs: string[];
+  setTabs: (next: string[]) => void;
   setActiveTab: (url: string) => void;
   addNewNote: (collectionProps: CollectionOptions) => Promise<void>;
   getNotes: () => Promise<void>;
@@ -63,10 +63,7 @@ export interface NoteStore {
     clr: string,
     website: string
   ) => Promise<NotificationMessage>;
-  delete: (
-    note: INote,
-    setState: Dispatch<SetStateAction<string[]>>
-  ) => Promise<NotificationMessage>;
+  delete: (note: INote) => Promise<NotificationMessage>;
   //   deleteAll: (website: string) => Promise<void>;
   pin: (note: INote) => Promise<NotificationMessage>;
   updateLayout: (layout: Layout) => Promise<void>;
