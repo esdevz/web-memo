@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useCallback, Dispatch, SetStateAction } from "react";
 import {
   Text,
   GridItem,
@@ -26,7 +26,7 @@ import Colors from "./Colors";
 
 interface NoteProps {
   note: INote;
-  setState: (next: string[]) => void;
+  setState: Dispatch<SetStateAction<string[]>>;
 }
 
 const Note = ({ note, setState }: NoteProps) => {

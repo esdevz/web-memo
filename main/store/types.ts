@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from "react";
+
 export interface INote {
   id?: number;
   title: string;
@@ -63,7 +65,7 @@ export interface NoteStore {
   ) => Promise<NotificationMessage>;
   delete: (
     note: INote,
-    setState: (next: string[]) => void
+    setState: Dispatch<SetStateAction<string[]>>
   ) => Promise<NotificationMessage>;
   //   deleteAll: (website: string) => Promise<void>;
   pin: (note: INote) => Promise<NotificationMessage>;
