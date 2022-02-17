@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, Dispatch, SetStateAction } from "react";
+import React, { useRef, useCallback } from "react";
 import {
   Text,
   GridItem,
@@ -23,13 +23,13 @@ import NoteContainer from "./NoteContainer";
 import { VscGrabber } from "react-icons/vsc";
 import NoteTools from "./NoteTools";
 import Colors from "./Colors";
+import shallow from "zustand/shallow";
 
 interface NoteProps {
   note: INote;
-  setState: Dispatch<SetStateAction<string[]>>;
 }
 
-const Note = ({ note, setState }: NoteProps) => {
+const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
   const [open, setOpen] = useBoolean(false);
   const [editNote, pin, del, setDraggedNote, setNoteColor] = useNoteStore(
@@ -42,7 +42,8 @@ const Note = ({ note, setState }: NoteProps) => {
         state.setNoteColor,
       ],
       []
-    )
+    ),
+    shallow
   );
   const [loading, setLoading] = useBoolean(false);
   const [drag, setDrag] = useBoolean(false);
@@ -80,7 +81,7 @@ const Note = ({ note, setState }: NoteProps) => {
   };
 
   const deleteNote = async () => {
-    const feedback = await del(note, setState);
+    const feedback = await del(note);
     feedback.type === "error" &&
       toast({
         title: feedback.message,
@@ -225,7 +226,7 @@ const Note = ({ note, setState }: NoteProps) => {
         <Icon
           as={VscGrabber}
           boxSize="5"
-          cursor="move"
+          cursor="grab"
           onMouseDown={setDrag.on}
           onMouseUp={setDrag.off}
           marginInline="auto"
