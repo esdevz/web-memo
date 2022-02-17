@@ -56,6 +56,21 @@ export class NotesDB extends Dexie {
       });
   }
 
+  async updateCollections(collections: string[]) {
+    return this.table<Configs, number>(CONFIGS_TABLE)
+      .toCollection()
+      .modify((cfg) => {
+        const newCollections: Record<string, CollectionOptions> = {};
+        for (const [idx, col] of collections.entries()) {
+          newCollections[col] = {
+            ...cfg.collections[col],
+            order: idx,
+          };
+        }
+        cfg.collections = newCollections;
+      });
+  }
+
   updateCollection(name: string, subCollection: Partial<CollectionOptions>) {
     if (Object.keys(subCollection).length === 0) {
       return Promise.resolve(0);
