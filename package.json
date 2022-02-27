@@ -7,7 +7,8 @@
   "scripts": {
     "build": "node configs/main.js",
     "watch": "node configs/main.js -watch",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "tsc": "tsc"
   },
   "author": "wael H",
   "dependencies": {
