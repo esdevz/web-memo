@@ -18,7 +18,6 @@ import { initialNoteState, useBackgroundNote } from "../hooks/useBackgroundNotes
 import { getHostName } from "../../utils";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
 import { CustomIcon } from "../../main/store/types";
-import { setBadgeTempNote } from "../../utils/badgeColors";
 
 const port = chrome.runtime.connect({ name: "popup" });
 
@@ -29,18 +28,26 @@ const Sidebar = () => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const newNote = {
-      ...note,
+    const changes = {
       favicon: e.target.name === "website" ? "" : note.favicon,
       [e.target.name]: e.target.value,
+      createdAt: Date.now(),
+    };
+    const newNote = {
+      ...note,
+      ...changes,
     };
     setNote(newNote);
-    port.postMessage({ msg: "EDITING", note: newNote });
+    port.postMessage({ msg: "EDITING", changes });
   };
   const switchHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setNote({
       ...note,
       [e.target.name]: e.target.checked,
+    });
+    port.postMessage({
+      msg: "EDITING",
+      changes: { isPinned: e.target.checked, createdAt: Date.now() },
     });
   };
 
@@ -49,16 +56,20 @@ const Sidebar = () => {
       active: true,
     });
     if (tab.url) {
-      const newNote = {
-        ...note,
+      const changes = {
         favicon: tab.favIconUrl || "",
         fullUrl: tab.url,
         website: getHostName(tab.url),
         title: tab.title || note.title,
+        createdAt: Date.now(),
+      };
+      const newNote = {
+        ...note,
+        ...changes,
       };
 
       setNote(newNote);
-      port.postMessage({ msg: "EDITING", note: newNote });
+      port.postMessage({ msg: "EDITING", changes });
     }
   };
   const resetNote = () => {
@@ -102,39 +113,6 @@ const Sidebar = () => {
       url: chrome.runtime.getURL("main/index.html"),
       active: true,
     });
-  };
-
-  const onInputChange = (e: React.FormEvent<HTMLDivElement>) => {
-    setBadgeTempNote();
-    const newNote = {
-      ...note,
-      content: e.currentTarget.innerHTML,
-      createdAt: Date.now(),
-    };
-    port.postMessage({ msg: "EDITING", note: newNote });
-  };
-
-  const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
-    const data = e.clipboardData.getData("text/html");
-    if (data.length !== 0) {
-      e.preventDefault();
-
-      const selection = window.getSelection();
-      if (!selection?.rangeCount) return false;
-
-      selection.deleteFromDocument();
-      let node = document.createElement("div");
-      node.innerHTML = sanitizeHtml(data).trim();
-      selection.getRangeAt(0).insertNode(node);
-      port.postMessage({
-        msg: "EDITING",
-        note: {
-          ...note,
-          content: contentRef.current?.innerHTML,
-          createdAt: Date.now(),
-        },
-      });
-    }
   };
 
   return (
@@ -181,9 +159,8 @@ const Sidebar = () => {
               </Box>
             </Text>
             <Editable
+              port={port}
               contentRef={contentRef}
-              onPasteHandler={onPasteHandler}
-              onInputChange={onInputChange}
               sanitizedHtml={sanitizeHtml(note.content)}
             />
           </VStack>

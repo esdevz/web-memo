@@ -25,8 +25,6 @@ const initialNoteState: INote = {
   isPinned: false,
 };
 
-let backgroundNote = initialNoteState;
-
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: SAVE_NOTE_ID,
@@ -95,16 +93,20 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
 });
 
-chrome.runtime.onConnect.addListener((port) => {
+chrome.runtime.onConnect.addListener(async (port) => {
+  let backgroundNote = await getTemporaryNote();
   port.onDisconnect.addListener(() => {
     if (backgroundNote.createdAt !== 0) {
       setTemporaryNote(backgroundNote);
     }
   });
 
-  port.onMessage.addListener((request) => {
-    if (request.msg === "EDITING" && request.note) {
-      backgroundNote = request.note;
+  port.onMessage.addListener((request: PopupRequest) => {
+    if (request.msg === "EDITING" && request.changes) {
+      backgroundNote = {
+        ...backgroundNote,
+        ...request.changes,
+      };
     }
     if (request.msg === "RESET") {
       setTemporaryNote(initialNoteState);
@@ -118,3 +120,8 @@ chrome.runtime.onConnect.addListener((port) => {
     }
   });
 });
+
+interface PopupRequest {
+  msg: string;
+  changes: Partial<INote>;
+}

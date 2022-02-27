@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useColorMode } from "@chakra-ui/react";
 import { CustomIcon, INote } from "../../main/store/types";
 import { getTemporaryNote } from "../../idb/storageArea";
-import { getFaviconDataURL } from "../../utils/getFaviconDataURL";
 
 const db = new NotesDB();
 
@@ -58,7 +57,7 @@ export function useBackgroundNote() {
   const saveNote = useCallback(
     async (newNote: INote, icon: CustomIcon) => {
       setLoading(true);
-      const dataUrl = await getFaviconDataURL(newNote.favicon);
+      const dataUrl = newNote.favicon;
       const existingCollection = collections.includes(newNote.website);
       let collectionProps = existingCollection
         ? {}
