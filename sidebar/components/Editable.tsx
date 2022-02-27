@@ -13,7 +13,7 @@ const Editable = (props: Props) => {
     const data = e.clipboardData.getData("text/html");
     if (data.length !== 0) {
       e.preventDefault();
-
+      setBadgeTempNote();
       const selection = window.getSelection();
       if (!selection?.rangeCount) return false;
 
