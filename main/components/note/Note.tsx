@@ -102,22 +102,31 @@ const Note = ({ note }: NoteProps) => {
   };
   const onKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (!open) {
-      return;
+      switch (e.code) {
+        case "Space":
+        case "Enter":
+          setOpen.on();
+          break;
+        default:
+          break;
+      }
     }
-    switch (e.key) {
-      case "Escape":
-        setOpen.off();
-        contentRef.current?.blur();
-        break;
-      case e.ctrlKey && "s":
-        e.preventDefault();
-        saveNote();
-        break;
-      case "Delete":
-        deleteNote();
-        break;
-      default:
-        break;
+    if (open) {
+      switch (e.key) {
+        case "Escape":
+          setOpen.off();
+          contentRef.current?.blur();
+          break;
+        case e.ctrlKey && "s":
+          e.preventDefault();
+          saveNote();
+          break;
+        case "Delete":
+          deleteNote();
+          break;
+        default:
+          break;
+      }
     }
   };
 
