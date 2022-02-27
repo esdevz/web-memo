@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import { Box, Grid, useDisclosure } from "@chakra-ui/react";
 import EmptyCollection from "./components/main/EmptyCollection";
-import Tab from "./components/tab/Tab";
 import Note from "./components/note/Note";
 import NotesContainer from "./components/note/NotesContainer";
 import NoteSection from "./components/note/NoteSection";
 import Separator from "./components/note/NoteSeparator";
-import TabContainer from "./components/tab/TabContainer";
+import CollectionTabs from "./components/tab/CollectionTabs";
 import useNoteStore from "./store/noteStore";
 import Settings from "./components/main/Settings";
 import Modal from "../ui/drawer/Modal";
@@ -15,7 +14,8 @@ import EditCollectionForm from "../ui/shared/EditCollectionForm";
 import { CollectionOptions } from "./store/types";
 import SearchNotes from "./components/main/SearchNotes";
 import Export from "./components/main/Export";
-import { AnimatePresence } from "framer-motion";
+
+import shallow from "zustand/shallow";
 
 const App = () => {
   const [collections, activeTab, addNewNote, layout, updateCollection] = useNoteStore(
@@ -28,9 +28,9 @@ const App = () => {
         state.updateCollection,
       ],
       []
-    )
+    ),
+    shallow
   );
-  const [tabs, setTabs] = React.useState(Object.keys(collections));
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener(
@@ -66,24 +66,7 @@ const App = () => {
         gap={3}
         overflow="auto"
       >
-        <TabContainer
-          onReorder={setTabs}
-          values={tabs}
-          colSpan={layout === "default" ? 3 : 1}
-        >
-          <AnimatePresence>
-            {tabs.map((url) => (
-              <Tab
-                value={url}
-                key={url}
-                displayName={collections[url].displayName}
-                customIconType={collections[url].customIconType}
-                website={url}
-                favicon={collections[url].favicon}
-              />
-            ))}
-          </AnimatePresence>
-        </TabContainer>
+        <CollectionTabs />
         <NotesContainer colSpan={layout === "default" ? 8 : 13}>
           <EmptyCollection collections={collections} activeTab={activeTab} />
           {pinnedNote.length > 0 && (
