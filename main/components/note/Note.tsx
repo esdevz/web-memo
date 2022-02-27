@@ -23,6 +23,11 @@ import NoteContainer from "./NoteContainer";
 import { VscGrabber } from "react-icons/vsc";
 import NoteTools from "./NoteTools";
 import Colors from "./Colors";
+import shallow from "zustand/shallow";
+
+interface NoteProps {
+  note: INote;
+}
 
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
@@ -37,7 +42,8 @@ const Note = ({ note }: NoteProps) => {
         state.setNoteColor,
       ],
       []
-    )
+    ),
+    shallow
   );
   const [loading, setLoading] = useBoolean(false);
   const [drag, setDrag] = useBoolean(false);
@@ -220,7 +226,7 @@ const Note = ({ note }: NoteProps) => {
         <Icon
           as={VscGrabber}
           boxSize="5"
-          cursor="move"
+          cursor="grab"
           onMouseDown={setDrag.on}
           onMouseUp={setDrag.off}
           marginInline="auto"
