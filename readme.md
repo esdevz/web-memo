@@ -34,4 +34,4 @@ yarn build
 ```
 
 Enable developper mode from the extensions page.
-Click "Load Unpacked" and select the the build folder.
+Click "Load Unpacked" and select the build folder.
