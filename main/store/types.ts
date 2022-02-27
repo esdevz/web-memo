@@ -52,6 +52,8 @@ export interface NoteStore {
   collections: Record<string, Collection>;
   activeTab: string;
   draggedNote: null | INote;
+  tabs: string[];
+  setTabs: (next: string[]) => void;
   setActiveTab: (url: string) => void;
   addNewNote: (collectionProps: CollectionOptions) => Promise<void>;
   getNotes: () => Promise<void>;

@@ -11,6 +11,13 @@ const useNoteStore = create<NoteStore>((set, get) => ({
   collections: {},
   activeTab: "notes",
   draggedNote: null,
+  tabs: [],
+  setTabs(newOrder: string[]) {
+    set((state) => ({
+      ...state,
+      tabs: newOrder,
+    }));
+  },
   setActiveTab(url) {
     set((state) => ({
       ...state,
@@ -30,6 +37,7 @@ const useNoteStore = create<NoteStore>((set, get) => ({
               ...collectionProps,
               notes: currentNotes,
             };
+            draft.tabs.push(collectionProps.displayName);
           }
           draft.collections[newNote.website].notes.unshift(newNote);
         })
@@ -38,10 +46,12 @@ const useNoteStore = create<NoteStore>((set, get) => ({
   },
   async getNotes() {
     const [cfg, fetchedNotes] = await Promise.all([db.getConfigs(), db.getNotes()]);
+    const cols = formatNotes(fetchedNotes, cfg);
     set((state) => ({
       ...state,
       tabLayout: cfg.tabLayout,
-      collections: formatNotes(fetchedNotes, cfg),
+      collections: cols,
+      tabs: Object.keys(cols),
     }));
   },
 
@@ -96,10 +106,12 @@ const useNoteStore = create<NoteStore>((set, get) => ({
         const index = draft.collections[note.website].notes.findIndex(
           (n) => n.id === note.id
         );
+        const tabIdx = draft.tabs.findIndex((tab) => tab === note.website);
         if (index !== -1) {
           draft.collections[note.website].notes.splice(index, 1);
           if (draft.collections[note.website].notes.length === 0) {
             draft.activeTab = "notes";
+            draft.tabs.splice(tabIdx, 1);
             delete draft.collections[note.website];
             db.deleteCollection(note.website);
             const views = chrome.extension.getViews({ type: "popup" });
@@ -179,6 +191,7 @@ const useNoteStore = create<NoteStore>((set, get) => ({
           const index = draft.collections[originTab].notes.findIndex(
             (n) => n.id === draggedNote?.id
           );
+          const originTabIdx = draft.tabs.findIndex((tab) => tab === originTab);
           if (index !== -1) {
             draft.collections[url].notes.unshift({ ...draggedNote!, website: url });
             draft.collections[originTab].notes.splice(index, 1);
@@ -187,6 +200,7 @@ const useNoteStore = create<NoteStore>((set, get) => ({
             if (draft.collections[originTab].notes.length === 0) {
               db.deleteCollection(originTab);
               draft.activeTab = url;
+              draft.tabs.splice(originTabIdx, 1);
               delete draft.collections[originTab];
               const views = chrome.extension.getViews({ type: "popup" });
               if (views.length > 0) {
