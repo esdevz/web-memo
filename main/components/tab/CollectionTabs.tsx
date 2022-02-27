@@ -28,7 +28,6 @@ const CollectionTabs = () => {
         gap: 8,
         display: "grid",
         overflow: "auto",
-        scrollbarWidth: "none",
         gridAutoRows: "max-content",
       }}
       values={tabs}
