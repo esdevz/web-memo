@@ -6,6 +6,7 @@ const NoteContainer = (props: NoteContainerProps) => {
   return (
     <Grid
       {...props}
+      tabIndex={0}
       pos={props.open ? "fixed" : "static"}
       w={props.open ? "75%" : "20rem"}
       h={props.open ? "95%" : "16rem"}
@@ -22,6 +23,9 @@ const NoteContainer = (props: NoteContainerProps) => {
       transition="height 0.2s ease-in-out"
       zIndex={props.open ? 2 : undefined}
       bgColor={clrSwitch[props.colorMode][props.noteColor || "default"]}
+      _focusVisible={{
+        boxShadow: "0 0 0 3px rgba(66, 153, 225, 0.6)",
+      }}
     >
       {props.children}
     </Grid>
