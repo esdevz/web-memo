@@ -1,19 +1,48 @@
 import React from "react";
 import { Box } from "@chakra-ui/layout";
+import { sanitizeHtml, setBadgeTempNote } from "../../utils";
 
 interface Props {
   contentRef: React.RefObject<HTMLDivElement>;
-  onInputChange: (e: React.FormEvent<HTMLDivElement>) => void;
-  onPasteHandler: (e: React.ClipboardEvent<HTMLDivElement>) => false | void;
   sanitizedHtml: string;
+  port: chrome.runtime.Port;
 }
 
 const Editable = (props: Props) => {
+  const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const data = e.clipboardData.getData("text/html");
+    if (data.length !== 0) {
+      e.preventDefault();
+
+      const selection = window.getSelection();
+      if (!selection?.rangeCount) return false;
+
+      selection.deleteFromDocument();
+      let node = document.createElement("div");
+      node.innerHTML = sanitizeHtml(data).trim();
+      selection.getRangeAt(0).insertNode(node);
+      props.port.postMessage({
+        msg: "EDITING",
+        changes: {
+          content: props.contentRef.current?.innerHTML,
+          createdAt: Date.now(),
+        },
+      });
+    }
+  };
+
+  const onInputChange = (e: React.FormEvent<HTMLDivElement>) => {
+    setBadgeTempNote();
+    props.port.postMessage({
+      msg: "EDITING",
+      changes: { content: e.currentTarget.innerHTML, createdAt: Date.now() },
+    });
+  };
   return (
     <Box
       ref={props.contentRef}
-      onInput={props.onInputChange}
-      onPaste={props.onPasteHandler}
+      onInput={onInputChange}
+      onPaste={onPasteHandler}
       contentEditable="true"
       w="full"
       maxW="full"
