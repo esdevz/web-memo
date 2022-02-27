@@ -65,6 +65,11 @@ const App = () => {
         templateColumns={`repeat(${layout === "default" ? "10" : "14"} , 1fr)`}
         gap={3}
         overflow="auto"
+        css={`
+          & > section:first-child::-webkit-scrollbar {
+            width: 0;
+          }
+        `}
       >
         <CollectionTabs />
         <NotesContainer colSpan={layout === "default" ? 8 : 13}>
