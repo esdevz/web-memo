@@ -10,7 +10,7 @@ const Tab = (props: SidebarProps) => {
     state.setActiveTab,
     state.activeTab,
     state.tabLayout,
-    state.updateTagetCollection,
+    state.updateTargetCollection,
   ]);
 
   const [dragHover, setDragHover] = useBoolean(false);

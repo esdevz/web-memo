@@ -65,6 +65,6 @@ export interface NoteStore {
   pin: (note: INote) => Promise<NotificationMessage>;
   updateLayout: (layout: Layout) => Promise<void>;
   updateCollection: (website: string, newCollection: CollectionOptions) => Promise<void>;
-  updateTagetCollection: (url: string) => Promise<void>;
+  updateTargetCollection: (url: string) => Promise<void>;
   setDraggedNote: (note: INote) => void;
 }

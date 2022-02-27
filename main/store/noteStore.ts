@@ -169,7 +169,7 @@ const useNoteStore = create<NoteStore>((set, get) => ({
       })
     );
   },
-  async updateTagetCollection(url) {
+  async updateTargetCollection(url) {
     const draggedNote = get().draggedNote;
     const originTab = get().activeTab;
 
