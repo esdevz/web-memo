@@ -3,6 +3,7 @@ import { Text, Button, Tooltip, IconButton, useBoolean } from "@chakra-ui/react"
 import useNoteStore from "../../store/noteStore";
 import { CustomIcon } from "../../store/types";
 import TabIcon from "./TabIcon";
+import { Reorder } from "framer-motion";
 
 const Tab = (props: SidebarProps) => {
   const [setActiveTab, activeTab, tabLayout, dropToCollection] = useNoteStore((state) => [
@@ -42,66 +43,76 @@ const Tab = (props: SidebarProps) => {
 
   if (tabLayout === "minimized") {
     return (
-      <Tooltip placement="right" label={props.displayName}>
-        <IconButton
-          {...dragHandlers}
-          w="3.2rem"
-          h="3.2rem"
-          borderRadius="27%"
-          m="auto"
-          colorScheme={setColorScheme(activeTab, props.website, dragHover)}
-          _focus={{
-            outlineColor: "transparent",
-          }}
-          role="tab"
-          aria-label={props.displayName}
-          css={`
-            & > * {
-              pointer-events: none;
+      <Reorder.Item
+        style={{
+          margin: "auto",
+        }}
+        as="div"
+        key={props.value}
+        value={props.value}
+      >
+        <Tooltip placement="right" closeOnMouseDown label={props.displayName}>
+          <IconButton
+            {...dragHandlers}
+            w="3.2rem"
+            h="3.2rem"
+            borderRadius="27%"
+            colorScheme={setColorScheme(activeTab, props.website, dragHover)}
+            _focus={{
+              outlineColor: "transparent",
+            }}
+            role="tab"
+            aria-label={props.displayName}
+            css={`
+              & > * {
+                pointer-events: none;
+              }
+            `}
+            icon={
+              <TabIcon
+                icon={props.favicon}
+                layoutType={tabLayout}
+                customIcon={props.customIconType}
+                collectionName={props.website}
+                collectionLabel={props.displayName}
+              />
             }
-          `}
-          icon={
-            <TabIcon
-              icon={props.favicon}
-              layoutType={tabLayout}
-              customIcon={props.customIconType}
-              collectionName={props.website}
-              collectionLabel={props.displayName}
-            />
-          }
-        />
-      </Tooltip>
+          />
+        </Tooltip>
+      </Reorder.Item>
     );
   }
   return (
-    <Button
-      {...dragHandlers}
-      borderRadius="md"
-      role="tab"
-      display="flex"
-      alignItems="center"
-      justifyContent="flex-start"
-      tabIndex={0}
-      w="full"
-      h="2.7em"
-      colorScheme={setColorScheme(activeTab, props.website, dragHover)}
-      css={`
-        & > * {
-          pointer-events: none;
+    <Reorder.Item as="div" key={props.value} value={props.value}>
+      <Button
+        {...dragHandlers}
+        borderRadius="md"
+        role="tab"
+        display="flex"
+        alignItems="center"
+        justifyContent="flex-start"
+        tabIndex={0}
+        w="full"
+        h="2.7em"
+        colorScheme={setColorScheme(activeTab, props.website, dragHover)}
+        css={`
+          & > * {
+            pointer-events: none;
+          }
+        `}
+        leftIcon={
+          <TabIcon
+            icon={props.favicon}
+            layoutType={tabLayout}
+            customIcon={props.customIconType}
+            collectionName={props.website}
+            collectionLabel={props.displayName}
+          />
         }
-      `}
-      leftIcon={
-        <TabIcon
-          icon={props.favicon}
-          layoutType={tabLayout}
-          customIcon={props.customIconType}
-          collectionName={props.website}
-          collectionLabel={props.displayName}
-        />
-      }
-    >
-      <Text as="h3">{props.displayName}</Text>
-    </Button>
+      >
+        <Text as="h3">{props.displayName}</Text>
+      </Button>
+    </Reorder.Item>
   );
 };
 export default Tab;
@@ -111,6 +122,7 @@ interface SidebarProps {
   favicon?: string;
   displayName: string;
   customIconType: CustomIcon;
+  value: string;
 }
 
 function setColorScheme(activeTab: string, url: string, dragOver: boolean) {
