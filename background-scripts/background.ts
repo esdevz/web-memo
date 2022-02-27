@@ -9,7 +9,6 @@ import {
   setBadgeSavingSuccess,
   setBadgeTempNote,
 } from "../utils/badgeColors";
-import { getFaviconDataURL } from "../utils/getFaviconDataURL";
 import { sendMessage } from "../utils/chrome";
 
 const SAVE_NOTE_ID = "save-as-note";
@@ -41,12 +40,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === SAVE_NOTE_ID) {
     setBadgeSaving();
     const data = await sendMessage(tab?.id!, "GET_SELECTION", {});
-    const favicon = await getFaviconDataURL(tab?.favIconUrl);
     let note = {
       title: tab?.title || "",
       website: getHostName(tab?.url || ""),
       fullUrl: tab?.url || "",
-      favicon: favicon,
+      favicon: tab?.favIconUrl || "",
       content: data,
       isPinned: false,
       createdAt: Date.now(),
