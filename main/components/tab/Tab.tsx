@@ -1,17 +1,24 @@
-import React, { DragEvent } from "react";
+import React, { DragEvent, useCallback } from "react";
 import { Text, Button, Tooltip, IconButton, useBoolean } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
 import { CustomIcon } from "../../store/types";
 import TabIcon from "./TabIcon";
-import { Reorder } from "framer-motion";
+import { MotionProps, Reorder } from "framer-motion";
+import shallow from "zustand/shallow";
 
 const Tab = (props: SidebarProps) => {
-  const [setActiveTab, activeTab, tabLayout, dropToCollection] = useNoteStore((state) => [
-    state.setActiveTab,
-    state.activeTab,
-    state.tabLayout,
-    state.updateTargetCollection,
-  ]);
+  const [setActiveTab, activeTab, tabLayout, dropToCollection] = useNoteStore(
+    useCallback(
+      (state) => [
+        state.setActiveTab,
+        state.activeTab,
+        state.tabLayout,
+        state.updateTargetCollection,
+      ],
+      []
+    ),
+    shallow
+  );
 
   const [dragHover, setDragHover] = useBoolean(false);
 
@@ -41,6 +48,15 @@ const Tab = (props: SidebarProps) => {
     onDrop: onDropHandler,
   };
 
+  const animationProps: MotionProps = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+    transition: {
+      duration: 0.2,
+    },
+  };
+
   if (tabLayout === "minimized") {
     return (
       <Reorder.Item
@@ -48,8 +64,9 @@ const Tab = (props: SidebarProps) => {
           margin: "auto",
         }}
         as="div"
-        key={props.value}
         value={props.value}
+        onDragEnd={props.updateOrder}
+        {...animationProps}
       >
         <Tooltip placement="right" closeOnMouseDown label={props.displayName}>
           <IconButton
@@ -83,7 +100,13 @@ const Tab = (props: SidebarProps) => {
     );
   }
   return (
-    <Reorder.Item as="div" key={props.value} value={props.value}>
+    <Reorder.Item
+      as="div"
+      key={props.value}
+      value={props.value}
+      onDragEnd={props.updateOrder}
+      {...animationProps}
+    >
       <Button
         {...dragHandlers}
         borderRadius="md"
@@ -123,6 +146,7 @@ interface SidebarProps {
   displayName: string;
   customIconType: CustomIcon;
   value: string;
+  updateOrder: () => void;
 }
 
 function setColorScheme(activeTab: string, url: string, dragOver: boolean) {
