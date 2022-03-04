@@ -7,11 +7,11 @@ const isWatchMode = process.argv[2] && process.argv[2] === "-watch";
 const buildPaths = [
   {
     src: path.resolve(__dirname, "..", "main/index.html"),
-    dest: path.resolve(__dirname, "..", "build/main/index.html"),
+    dest: path.resolve(__dirname, "..", "build/firefox/main/index.html"),
   },
   {
     src: path.resolve(__dirname, "..", "sidebar/index.html"),
-    dest: path.resolve(__dirname, "..", "build/sidebar/index.html"),
+    dest: path.resolve(__dirname, "..", "build/firefox/sidebar/index.html"),
   },
 ];
 
@@ -24,7 +24,7 @@ require("esbuild")
     ],
     entryNames: "[dir]/[name]",
     assetNames: "./assets/[name]-[hash]",
-    outdir: path.resolve(__dirname, "..", "build"),
+    outdir: path.resolve(__dirname, "..", "build/firefox"),
     minify: true,
     target: "es2020",
     format: "esm",
