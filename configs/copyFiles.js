@@ -13,9 +13,9 @@ module.exports = async function copyStaticFiles() {
     try {
       await copyFile(
         path.resolve(__dirname, "..", "public", file.name),
-        path.resolve(__dirname, "..", "build", file.name)
+        path.resolve(__dirname, "..", "build/chrome", file.name)
       );
-      console.log(`copy ${file.name} into build/${file.name}`);
+      console.log(`copy ${file.name} into build/chrome/${file.name}`);
     } catch (err) {
       console.error(err);
     }
