@@ -67,7 +67,21 @@ export interface NoteStore {
   //   deleteAll: (website: string) => Promise<void>;
   pin: (note: INote) => Promise<NotificationMessage>;
   updateLayout: (layout: Layout) => Promise<void>;
-  updateCollection: (website: string, newCollection: CollectionOptions) => Promise<void>;
+  updateCollection: (
+    website: string,
+    newCollection: CollectionOptions
+  ) => Promise<void>;
   updateTargetCollection: (url: string) => Promise<void>;
   setDraggedNote: (note: INote) => void;
 }
+
+export type OptionValues = {
+  name: string;
+  value: string;
+  font?: string;
+};
+
+export type MenuOptions = {
+  type: "text" | "color";
+  values: OptionValues[];
+};
