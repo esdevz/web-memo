@@ -846,6 +846,11 @@
     "@types/filesystem" "*"
     "@types/har-format" "*"
 
+"@types/dom-inputevent@^1.0.3":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@types/dom-inputevent/-/dom-inputevent-1.0.7.tgz#3776e2e76c1c926d33b78185dc660e53a1e95232"
+  integrity sha512-R0ILeMNwjxCwiF9FDlCl2pUlGZW+4OUqJe6DyOsyrdK1PEoZ1TxgkfQfEy7vniFUrKyAy+dP2BNAXcRqEyf9dQ==
+
 "@types/dompurify@^2.2.3":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@types/dompurify/-/dompurify-2.2.3.tgz#6e89677a07902ac1b6821c345f34bd85da239b08"
@@ -2695,6 +2700,36 @@ rimraf@^3.0.2:
   integrity sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
   dependencies:
     glob "^7.1.3"
+
+roosterjs-editor-api@^8.17.0:
+  version "8.17.0"
+  resolved "https://registry.yarnpkg.com/roosterjs-editor-api/-/roosterjs-editor-api-8.17.0.tgz#f00181f43ad8384ef91145569aec8cf20d2b5441"
+  integrity sha512-J405NuyCgMqyxTemztAtywaO+hZyRonoqsM6TO3haf8YGDiRpbFEuSm/V+W35MMLYSM60BiH5bjrbK9v/TSMnA==
+  dependencies:
+    roosterjs-editor-dom "8.17.0"
+    roosterjs-editor-types "8.17.0"
+
+roosterjs-editor-core@^8.17.0:
+  version "8.17.0"
+  resolved "https://registry.yarnpkg.com/roosterjs-editor-core/-/roosterjs-editor-core-8.17.0.tgz#7343ee00d1ed3c6c6f94218c2edcd03e6f33247c"
+  integrity sha512-66RONhUr3BjDy01KuocaqSap03LnwVJPW8fejl81T/398yfWzhRCqSjJYOJyn86tC49OGHyQ4sxbjNWr+2EQ2g==
+  dependencies:
+    roosterjs-editor-dom "8.17.0"
+    roosterjs-editor-types "8.17.0"
+
+roosterjs-editor-dom@8.17.0:
+  version "8.17.0"
+  resolved "https://registry.yarnpkg.com/roosterjs-editor-dom/-/roosterjs-editor-dom-8.17.0.tgz#8907aa5956be0ab0bd5680047cd61d5be8f60ece"
+  integrity sha512-YiWlqA8cdBoO+RCMUkD+hxcLt1rFMGD7fHUUCw9abF/0Nj0ICOqGlCibwfzZGyC7dZ00xxMLIAmzq9UVV9zyDA==
+  dependencies:
+    roosterjs-editor-types "8.17.0"
+
+roosterjs-editor-types@8.17.0:
+  version "8.17.0"
+  resolved "https://registry.yarnpkg.com/roosterjs-editor-types/-/roosterjs-editor-types-8.17.0.tgz#79b5b9671ff1c072bdf0b51039b7e92ec3b78d19"
+  integrity sha512-yvuSdD0261WA0qpKd8osQ1gBXYAu6Kuvvotx1N+h5IZ5uK2k7QixCzQRjNv6btX0M3w4yGcvw2ggG6giDAciHA==
+  dependencies:
+    "@types/dom-inputevent" "^1.0.3"
 
 run-parallel@^1.1.9:
   version "1.2.0"
