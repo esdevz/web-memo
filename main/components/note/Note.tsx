@@ -24,6 +24,8 @@ import { VscGrabber } from "react-icons/vsc";
 import NoteTools from "./NoteTools";
 import Colors from "./Colors";
 import shallow from "zustand/shallow";
+import { useEditor } from "../../../editor/useEditor";
+import Tools from "../../../editor/Tools";
 
 interface NoteProps {
   note: INote;
@@ -52,12 +54,15 @@ const Note = ({ note }: NoteProps) => {
   const TitleRef = useRef<HTMLHeadingElement>(null);
   const { colorMode } = useColorMode();
   const toast = useToast();
+  const { onRefChange, editor, onPasteCaptureHandler, onDropHandler } = useEditor(
+    note.content
+  );
 
   const saveNote = async () => {
     let editedNote = {
       ...note,
       createdAt: Date.now(),
-      content: sanitizeHtml(contentRef.current?.innerHTML),
+      content: sanitizeHtml(editor?.getContent()),
       title: TitleRef.current?.textContent ?? "",
     };
     setLoading.on();
@@ -180,10 +185,13 @@ const Note = ({ note }: NoteProps) => {
           </Text>
         </Tooltip>
       </GridItem>
+      {open && <Tools editor={editor} />}
       <Editable
         isOpen={open}
+        onPasteCapture={onPasteCaptureHandler}
+        onDrop={onDropHandler}
         sanitizedHtml={sanitizeHtml(note.content)}
-        ref={contentRef}
+        ref={onRefChange}
         onClick={openNoteHandler}
       />
       <GridItem
