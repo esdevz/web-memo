@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import {
   Box,
   VStack,
@@ -17,12 +17,16 @@ import { initialNoteState, useBackgroundNote } from "../hooks/useBackgroundNotes
 import { getHostName } from "../../utils/getHostName";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
 import { CustomIcon } from "../../main/store/types";
+import { useEditor } from "../../editor/useEditor";
+import Tools from "../../editor/Tools";
 
 const Sidebar = () => {
   const { note, setNote, saveNote, loading, collections } = useBackgroundNote();
   const [icon, setIcon] = useState<CustomIcon>("default");
 
-  const contentRef = useRef<HTMLDivElement>(null);
+  const { onRefChange, editor, onPasteCaptureHandler, onDropHandler } =
+    useEditor("");
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNote({
       ...note,
@@ -52,8 +56,8 @@ const Sidebar = () => {
   };
   const resetNote = () => {
     setNote(initialNoteState);
-    if (contentRef.current) {
-      contentRef.current.innerHTML = "";
+    if (editor) {
+      editor.setContent("<div> </div>");
     }
   };
 
@@ -65,7 +69,7 @@ const Sidebar = () => {
     e.preventDefault();
     const newNote = {
       ...note,
-      content: sanitizeHtml(contentRef.current?.innerHTML),
+      content: sanitizeHtml(editor?.getContent()),
       createdAt: Date.now(),
       website: note.website.trim() || "notes",
     };
@@ -93,7 +97,13 @@ const Sidebar = () => {
   return (
     <Box as="main" minH="300px" minW="320px" w="full">
       <VStack h="100%" w="100%" spacing="1.5">
-        <Button h="2.7em" w="full" colorScheme="bb" variant="outline" onClick={openNotes}>
+        <Button
+          h="2.7em"
+          w="full"
+          colorScheme="bb"
+          variant="outline"
+          onClick={openNotes}
+        >
           <Text as="h3">Open Notes </Text>
         </Button>
 
@@ -120,9 +130,11 @@ const Sidebar = () => {
           />
           <VStack spacing="1" align="flex-start" h="32rem" w="95%">
             <Text as="h3">Content :</Text>
+            <Tools size="md" editor={editor} />
             <Editable
-              contentRef={contentRef}
-              sanitizedHtml={sanitizeHtml(note.content)}
+              ref={onRefChange}
+              onPasteCapture={onPasteCaptureHandler}
+              onDrop={onDropHandler}
             />
           </VStack>
 
@@ -135,7 +147,11 @@ const Sidebar = () => {
               collections={collections}
               favicon={note.favicon}
             />
-            <Tooltip fontFamily="Raleway" fontSize="0.9em" label="set collection & icon">
+            <Tooltip
+              fontFamily="Raleway"
+              fontSize="0.9em"
+              label="set collection & icon"
+            >
               <Button
                 aria-label="set collection to current url"
                 onClick={setUrl}
