@@ -34,13 +34,7 @@ const theme = extendTheme({
       ]),
     },
   },
-  fontSizes: {
-    xs: "0.6em",
-    sm: "0.75em",
-    md: "1em",
-    lg: "1.1em",
-    xl: "1.2em",
-  },
+
   styles: {
     global: {
       h3: {
