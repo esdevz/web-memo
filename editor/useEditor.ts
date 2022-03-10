@@ -11,9 +11,10 @@ export function useEditor(content: string) {
 
   const editor = useMemo(() => {
     if (editorRef) {
-      const roosterEditor = new Editor(editorRef);
-      roosterEditor.setEditorDomAttribute("style", "");
-      roosterEditor.setContent(content ? content : "<div> </div>");
+      const roosterEditor = new Editor(editorRef, {
+        doNotAdjustEditorColor: true,
+      });
+      roosterEditor.setContent(content || "<div> </div>");
 
       return roosterEditor;
     }
