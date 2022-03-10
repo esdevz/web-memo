@@ -1,77 +1,68 @@
 import React, { ForwardedRef, forwardRef } from "react";
 import { GridItem, GridItemProps } from "@chakra-ui/react";
-import { sanitizeHtml } from "../../../utils/sanitizeHtml";
 
 const Editable = forwardRef(
   (
     { sanitizedHtml, isOpen, ...props }: EditableProps,
     ref: ForwardedRef<HTMLDivElement>
   ) => {
-    const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
-      const data = e.clipboardData.getData("text/html");
-      if (data.length !== 0) {
-        e.preventDefault();
+    if (!isOpen) {
+      return (
+        <GridItem
+          overflow="hidden"
+          noOfLines={6}
+          whiteSpace="break-spaces"
+          rowSpan={7}
+          cursor={"pointer"}
+          p="1"
+          maxW="95%"
+          fontWeight="normal"
+          fontSize="0.9rem"
+          lineHeight="1.55"
+          css={`
+            & ol,
+            & ul {
+              padding-inline: revert;
+            }
 
-        const selection = window.getSelection();
-        if (!selection?.rangeCount) return false;
-
-        selection.deleteFromDocument();
-        let node = document.createElement("div");
-        node.innerHTML = sanitizeHtml(data).trim();
-        selection.getRangeAt(0).insertNode(node);
-      }
-    };
-
-    const onDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
-      const data = e.dataTransfer.getData("text/html");
-      const selection = window.getSelection();
-
-      if (data.length !== 0 && selection?.type !== "Range") {
-        e.preventDefault();
-        e.stopPropagation();
-        let node = document.createElement("div");
-        node.innerHTML = sanitizeHtml(data).trim();
-        e.currentTarget.appendChild(node);
-      }
-    };
-
-    const onBlurHandler = () => {
-      const selection = window.getSelection();
-      if (selection?.rangeCount) {
-        selection.removeAllRanges();
-      }
-    };
-
+            &:focus-visible {
+              outline: 2px solid rgba(128, 128, 128, 0.34);
+              border-radius: 4px;
+            }
+          `}
+          dangerouslySetInnerHTML={{
+            __html: sanitizedHtml,
+          }}
+          {...props}
+        />
+      );
+    }
     return (
       <GridItem
-        onBlur={onBlurHandler}
-        onPaste={onPasteHandler}
-        onDrop={onDropHandler}
         ref={ref}
-        overflow={isOpen ? "auto" : "hidden"}
-        sx={{ scrollbarWidth: "thin" }}
-        noOfLines={isOpen ? undefined : 6}
+        overflow="auto"
         whiteSpace="break-spaces"
-        rowSpan={isOpen ? 8 : 7}
-        cursor={isOpen ? undefined : "pointer"}
-        p="1.5"
-        _focusVisible={{
-          outline: "2px solid rgba(128, 128, 128, 0.34)",
-          borderRadius: "4px",
-        }}
-        contentEditable={isOpen}
+        rowSpan={8}
+        p="1"
         spellCheck="false"
         maxW="95%"
         fontWeight="normal"
-        fontSize="0.88rem"
+        fontSize="0.9rem"
         lineHeight="1.55"
-        dangerouslySetInnerHTML={{
-          __html: sanitizedHtml,
-        }}
+        css={`
+          scrollbar-width: thin;
+          & ol,
+          & ul {
+            padding-inline: revert;
+          }
+
+          &:focus-visible {
+            outline: 2px solid rgba(128, 128, 128, 0.34);
+            border-radius: 4px;
+          }
+        `}
         {...props}
-      >
-        {props.children}
-      </GridItem>
+      />
     );
   }
 );
