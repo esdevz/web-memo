@@ -5,6 +5,9 @@ const sanitizeOptions: Config = {
     "img",
     "br",
     "em",
+    "b",
+    "u",
+    "i",
     "blockquote",
     "del",
     "ins",
@@ -13,6 +16,7 @@ const sanitizeOptions: Config = {
     "sup",
     "sub",
     "div",
+    "span",
     "pre",
     "code",
     "ul",
@@ -25,6 +29,14 @@ const sanitizeOptions: Config = {
   ALLOWED_ATTR: ["src"],
 };
 
-export function sanitizeHtml(html?: string): string {
+export function sanitizeHtml(html?: string, paste?: boolean): string {
+  if (!paste) {
+    const opts: Config = {
+      ...sanitizeOptions,
+      ALLOWED_ATTR: sanitizeOptions.ALLOWED_ATTR!.concat("style"),
+    };
+
+    return sanitize(html ?? "", opts) as string;
+  }
   return sanitize(html ?? "", sanitizeOptions) as string;
 }
