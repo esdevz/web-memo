@@ -13,9 +13,21 @@ export function useEditor(content: string) {
     if (editorRef) {
       const roosterEditor = new Editor(editorRef, {
         doNotAdjustEditorColor: true,
+        initialContent: content || "<div> </div>",
+        defaultFormat: {
+          backgroundColor: "inherit",
+          fontFamily: "inherit",
+          backgroundColors: {
+            lightModeColor: "inherit",
+            darkModeColor: "inherit",
+          },
+          textColor: "inherit",
+          textColors: {
+            darkModeColor: "inherit",
+            lightModeColor: "inherit",
+          },
+        },
       });
-      roosterEditor.setContent(content || "<div> </div>");
-
       return roosterEditor;
     }
   }, [editorRef, content]);
