@@ -130,7 +130,7 @@ const Sidebar = () => {
           />
           <VStack spacing="1" align="flex-start" h="32rem" w="95%">
             <Text as="h3">Content :</Text>
-            <Tools size="md" editor={editor} />
+            <Tools fontSize="1.1rem" size="md" editor={editor} />
             <Editable
               ref={onRefChange}
               onPasteCapture={onPasteCaptureHandler}
