@@ -19,7 +19,7 @@ const Editable = (props: BoxProps, ref: React.ForwardedRef<HTMLDivElement>) => {
         white-space: break-spaces;
         & ol,
         & ul {
-          padding-inline: revert;
+          padding-inline: 2ch;
         }
         & * {
           white-space: pre-wrap;

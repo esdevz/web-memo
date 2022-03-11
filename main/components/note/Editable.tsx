@@ -56,7 +56,7 @@ const Editable = (
         scrollbar-width: thin;
         & ol,
         & ul {
-          padding-inline: revert;
+          padding-inline: 2ch;
         }
         & pre {
           padding: 0.5em;
