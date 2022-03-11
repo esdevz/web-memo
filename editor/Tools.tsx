@@ -11,6 +11,7 @@ import {
   AiOutlineOrderedList,
   AiOutlineUnorderedList,
 } from "react-icons/ai";
+import { FaRemoveFormat } from "react-icons/fa";
 import {
   toggleBold,
   toggleItalic,
@@ -23,6 +24,7 @@ import {
   setFontSize,
   setFontName,
   setBackgroundColor,
+  clearFormat,
 } from "roosterjs-editor-api";
 import type { Editor } from "roosterjs-editor-core";
 import Option from "./Option";
@@ -34,7 +36,7 @@ interface ToolsProps extends ButtonGroupProps {
   fontSize?: CSSProperties["fontSize"];
 }
 
-type FontStyle = "B" | "I" | "U" | "S" | "UL" | "OL" | "RTL" | "LTR" | "CODE";
+type FontStyle = "B" | "I" | "U" | "S" | "UL" | "OL" | "RTL" | "LTR" | "CODE" | "RM";
 
 const headers: OptionValues[] = [
   { name: "X", value: "inherit", font: "inherit" },
@@ -84,7 +86,9 @@ const Tools = ({ editor, fontSize, ...props }: ToolsProps) => {
         case "CODE":
           toggleCodeBlock(editor);
           break;
-
+        case "RM":
+          clearFormat(editor, 2);
+          break;
         default:
           break;
       }
@@ -203,6 +207,13 @@ const Tools = ({ editor, fontSize, ...props }: ToolsProps) => {
         onClick={editTextStyle("RTL")}
       >
         <MdFormatTextdirectionRToL />
+      </ToolbarButton>
+      <ToolbarButton
+        fontSize={fontSize}
+        name="Clear format"
+        onClick={editTextStyle("RM")}
+      >
+        <FaRemoveFormat />
       </ToolbarButton>
     </ButtonGroup>
   );
