@@ -26,7 +26,7 @@ const Editable = (props: BoxProps, ref: React.ForwardedRef<HTMLDivElement>) => {
         }
         & pre {
           padding: 0.5em;
-          background-color: rgb(185, 185, 185, 0.15);
+          background-color: var(--bg-code);
           border-radius: 4px;
         }
         &:focus-visible {

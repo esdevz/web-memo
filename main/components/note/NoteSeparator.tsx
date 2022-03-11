@@ -8,13 +8,13 @@ const Separator = styled(GridItem)`
     content: "";
     width: 1%;
     margin-inline: 1ch;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.34);
+    border-bottom: 1px solid var(--border);
   }
   &:after {
     content: "";
     width: 90%;
     margin-left: 1ch;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.34);
+    border-bottom: 1px solid var(--border);
   }
 `;
 export default Separator;

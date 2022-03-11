@@ -172,7 +172,7 @@ const Note = ({ note }: NoteProps) => {
             contentEditable={open}
             spellCheck="false"
             _focusVisible={{
-              outline: "2px solid rgba(128, 128, 128, 0.34)",
+              outline: "2px solid var(--border)",
               borderRadius: "4px",
             }}
             ref={TitleRef}

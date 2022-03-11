@@ -42,6 +42,7 @@ const Colors = (props: ColorSwitchProps) => {
     <Menu placement="top-end">
       <MenuButton>
         <IconButton
+          borderColor="var(--border)"
           isLoading={loading}
           size="sm"
           variant="outline"
@@ -57,7 +58,7 @@ const Colors = (props: ColorSwitchProps) => {
             aria-label={clr}
             key={clr}
             bgColor={val}
-            border="1px solid rgba(128, 128, 128, 0.34)"
+            border="1px solid var(--border)"
             size="xs"
             isRound
             marginInline="1"

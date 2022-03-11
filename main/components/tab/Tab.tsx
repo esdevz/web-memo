@@ -79,7 +79,7 @@ const Tab = (props: SidebarProps) => {
               outlineColor: "transparent",
             }}
             _focusVisible={{
-              boxShadow: "0 0 0 3px rgba(66, 153, 225, 0.6)",
+              boxShadow: "0 0 0 3px var(--outline-clr)",
             }}
             role="tab"
             aria-label={props.displayName}

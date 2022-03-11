@@ -46,7 +46,7 @@ const Option = ({
             aria-label={op.name}
             key={op.name}
             bgColor={menuOptions.type === "color" ? op.value : undefined}
-            border="1px solid rgba(128, 128, 128, 0.34)"
+            border="1px solid var(--border)"
             size="xs"
             marginInline="1"
             borderRadius={4}

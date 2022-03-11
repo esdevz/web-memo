@@ -19,12 +19,12 @@ const NoteContainer = (props: NoteContainerProps) => {
       gap={2}
       borderRadius={7}
       m="1"
-      border="1px solid rgba(128, 128, 128, 0.34)"
+      border="1px solid var(--border)"
       transition="height 0.2s ease-in-out"
       zIndex={props.open ? 2 : undefined}
       bgColor={clrSwitch[props.colorMode][props.noteColor || "default"]}
       _focusVisible={{
-        boxShadow: "0 0 0 3px rgba(66, 153, 225, 0.6)",
+        boxShadow: "0 0 0 3px var(--outline-clr)",
       }}
     >
       {props.children}

@@ -28,11 +28,11 @@ const Editable = (
           }
           & pre {
             padding: 0.5em;
-            background-color: rgb(185, 185, 185, 0.15);
+            background-color: var(--bg-code);
             border-radius: 4px;
           }
           &:focus-visible {
-            outline: 2px solid rgba(128, 128, 128, 0.34);
+            outline: 2px solid var(--border);
             border-radius: 4px;
           }
         `}
@@ -62,7 +62,7 @@ const Editable = (
         }
         & pre {
           padding: 0.5em;
-          background-color: rgb(185, 185, 185, 0.15);
+          background-color: var(--bg-code);
           border-radius: 4px;
         }
         & * {
