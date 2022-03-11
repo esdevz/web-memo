@@ -13,7 +13,7 @@ export function useEditor(content: string) {
     if (editorRef) {
       const roosterEditor = new Editor(editorRef, {
         doNotAdjustEditorColor: true,
-        initialContent: content || "<div> </div>",
+        initialContent: content,
         defaultFormat: {
           backgroundColor: "inherit",
           fontFamily: "inherit",

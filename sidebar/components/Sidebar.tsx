@@ -57,7 +57,7 @@ const Sidebar = () => {
   const resetNote = () => {
     setNote(initialNoteState);
     if (editor) {
-      editor.setContent("<div> </div>");
+      editor.setContent("");
     }
   };
 
