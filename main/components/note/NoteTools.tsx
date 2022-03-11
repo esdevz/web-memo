@@ -26,8 +26,12 @@ type NoteToolsProps = {
 };
 
 const NoteTools = (props: NoteToolsProps) => {
+  const handleKeyBoardEvt = (e: React.KeyboardEvent) => {
+    e.stopPropagation();
+  };
+
   return (
-    <HStack spacing="1">
+    <HStack spacing="1" onKeyPress={handleKeyBoardEvt} onKeyDown={handleKeyBoardEvt}>
       <Colors
         setNoteColor={props.setNoteColor}
         noteId={props.id}
