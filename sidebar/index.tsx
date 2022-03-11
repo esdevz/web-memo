@@ -4,6 +4,7 @@ import ReactDom from "react-dom";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import Sidebar from "./components/Sidebar";
 import theme from "./SidebarTheme";
+import "./index.css";
 
 ReactDom.render(
   <ChakraProvider theme={theme} resetCSS>

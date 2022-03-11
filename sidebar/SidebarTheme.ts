@@ -45,6 +45,9 @@ const theme = extendTheme({
       em: {
         fontSize: "xs",
       },
+      "::selection": {
+        backgroundColor: "rgb(130,130,130,0.5)",
+      },
     },
   },
 });
