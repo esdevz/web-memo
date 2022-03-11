@@ -1,12 +1,16 @@
-import { Button, ButtonGroup, ButtonGroupProps } from "@chakra-ui/react";
-import React from "react";
+import { ButtonGroup, ButtonGroupProps } from "@chakra-ui/react";
+import React, { CSSProperties } from "react";
 import { BsCode } from "react-icons/bs";
-import { BiHeading, BiHighlight } from "react-icons/bi";
+import { BiHeading } from "react-icons/bi";
 import {
   MdFormatTextdirectionLToR,
   MdFormatTextdirectionRToL,
 } from "react-icons/md";
-import { AiOutlineOrderedList, AiOutlineUnorderedList } from "react-icons/ai";
+import {
+  AiOutlineHighlight,
+  AiOutlineOrderedList,
+  AiOutlineUnorderedList,
+} from "react-icons/ai";
 import {
   toggleBold,
   toggleItalic,
@@ -16,31 +20,40 @@ import {
   toggleNumbering,
   toggleCodeBlock,
   setDirection,
-  setBackgroundColor,
   setFontSize,
   setFontName,
+  setBackgroundColor,
 } from "roosterjs-editor-api";
 import type { Editor } from "roosterjs-editor-core";
 import Option from "./Option";
 import { OptionValues } from "../main/store/types";
-import { useHighLightColors } from "./useHLColors";
+import ToolbarButton from "./ToolbarButton";
 
 interface ToolsProps extends ButtonGroupProps {
   editor?: Editor;
+  fontSize?: CSSProperties["fontSize"];
 }
 
 type FontStyle = "B" | "I" | "U" | "S" | "UL" | "OL" | "RTL" | "LTR" | "CODE";
 
 const headers: OptionValues[] = [
   { name: "X", value: "inherit", font: "inherit" },
-  { name: "H1", value: "1.8rem", font: "Trebuchet MS,Roboto,sans-serif" },
-  { name: "H2", value: "1.6rem", font: "Trebuchet MS,Roboto,sans-serif" },
-  { name: "H3", value: "1.4rem", font: "Trebuchet MS,Roboto,sans-serif" },
+  { name: "H1", value: "1.8rem", font: "Trebuchet MS, Verdana, Roboto, sans-serif" },
+  { name: "H2", value: "1.6rem", font: "Trebuchet MS, Verdana, Roboto, sans-serif" },
+  { name: "H3", value: "1.4rem", font: "Trebuchet MS, Verdana, Roboto, sans-serif" },
 ];
 
-const Tools = ({ editor, ...props }: ToolsProps) => {
-  const colors = useHighLightColors();
+const colors: OptionValues[] = [
+  { name: "default", value: "inherit" },
+  { name: "teal", value: "var(--hl-teal)" },
+  { name: "blue", value: "var(--hl-blue)" },
+  { name: "pink", value: "var(--hl-pink)" },
+  { name: "yellow", value: "var(--hl-yellow)" },
+  { name: "green", value: "var(--hl-green)" },
+  { name: "gray", value: "var(--hl-gray)" },
+];
 
+const Tools = ({ editor, fontSize, ...props }: ToolsProps) => {
   const editTextStyle = (type: FontStyle) => () => {
     if (editor) {
       switch (type) {
@@ -78,16 +91,16 @@ const Tools = ({ editor, ...props }: ToolsProps) => {
     }
   };
 
-  const highlight = (opt: OptionValues) => {
-    if (editor) {
-      setBackgroundColor(editor, opt.value);
-    }
-  };
-
   const setHeader = (opt: OptionValues) => {
     if (editor) {
       setFontName(editor, opt.font || "inherit");
       setFontSize(editor, opt.value);
+    }
+  };
+
+  const highlight = (opt: OptionValues) => {
+    if (editor) {
+      setBackgroundColor(editor, opt.value);
     }
   };
 
@@ -100,34 +113,53 @@ const Tools = ({ editor, ...props }: ToolsProps) => {
       isAttached
       variant="outline"
     >
-      <Button onClick={editTextStyle("B")} fontWeight="bold">
+      <ToolbarButton
+        fontSize={fontSize}
+        name="Bold"
+        onClick={editTextStyle("B")}
+        fontWeight="bold"
+      >
         B
-      </Button>
-      <Button onClick={editTextStyle("I")} fontStyle="italic">
+      </ToolbarButton>
+      <ToolbarButton
+        fontSize={fontSize}
+        name="Italic"
+        onClick={editTextStyle("I")}
+        fontStyle="italic"
+      >
         I
-      </Button>
-      <Button onClick={editTextStyle("U")} textDecor="underline">
+      </ToolbarButton>
+      <ToolbarButton
+        fontSize={fontSize}
+        name="Underline"
+        onClick={editTextStyle("U")}
+        textDecor="underline"
+      >
         U
-      </Button>
-      <Button onClick={editTextStyle("S")} textDecor="line-through">
+      </ToolbarButton>
+      <ToolbarButton
+        fontSize={fontSize}
+        name="Line through"
+        onClick={editTextStyle("S")}
+        textDecor="line-through"
+      >
         S
-      </Button>
-      <Button onClick={editTextStyle("CODE")}>
-        <BsCode />
-      </Button>
-      <Button onClick={editTextStyle("UL")}>
-        <AiOutlineUnorderedList />
-      </Button>
-      <Button onClick={editTextStyle("OL")}>
-        <AiOutlineOrderedList />
-      </Button>
-      <Button onClick={editTextStyle("LTR")}>
-        <MdFormatTextdirectionLToR />
-      </Button>
-      <Button onClick={editTextStyle("RTL")}>
-        <MdFormatTextdirectionRToL />
-      </Button>
+      </ToolbarButton>
       <Option
+        tooltipFontSize={fontSize}
+        name="highlight"
+        size={props.size}
+        aria-label="hightlight color"
+        callback={highlight}
+        mainIcon={<AiOutlineHighlight />}
+        menuOptions={{
+          type: "color",
+          values: colors,
+        }}
+      />
+      <Option
+        tooltipFontSize={fontSize}
+        name="Headers"
         size={props.size}
         aria-label="headers"
         callback={setHeader}
@@ -137,16 +169,41 @@ const Tools = ({ editor, ...props }: ToolsProps) => {
           values: headers,
         }}
       />
-      <Option
-        size={props.size}
-        aria-label="highlight color"
-        callback={highlight}
-        mainIcon={<BiHighlight />}
-        menuOptions={{
-          type: "color",
-          values: colors,
-        }}
-      />
+      <ToolbarButton
+        fontSize={fontSize}
+        name="Code block"
+        onClick={editTextStyle("CODE")}
+      >
+        <BsCode />
+      </ToolbarButton>
+      <ToolbarButton
+        fontSize={fontSize}
+        name="Unordered list"
+        onClick={editTextStyle("UL")}
+      >
+        <AiOutlineUnorderedList />
+      </ToolbarButton>
+      <ToolbarButton
+        fontSize={fontSize}
+        name="Ordered list"
+        onClick={editTextStyle("OL")}
+      >
+        <AiOutlineOrderedList />
+      </ToolbarButton>
+      <ToolbarButton
+        fontSize={fontSize}
+        name="Left to Right"
+        onClick={editTextStyle("LTR")}
+      >
+        <MdFormatTextdirectionLToR />
+      </ToolbarButton>
+      <ToolbarButton
+        fontSize={fontSize}
+        name="Right to Left"
+        onClick={editTextStyle("RTL")}
+      >
+        <MdFormatTextdirectionRToL />
+      </ToolbarButton>
     </ButtonGroup>
   );
 };
