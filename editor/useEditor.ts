@@ -50,20 +50,17 @@ export function useEditor(content: string) {
 
       selection.deleteFromDocument();
       let node = document.createElement("div");
-      node.innerHTML = sanitizeHtml(data, true).trim();
+      node.innerHTML = sanitizeHtml(data).trim();
       selection.getRangeAt(0).insertNode(node);
     }
   };
 
   const onDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     const data = e.dataTransfer.getData("text/html");
-    const selection = window.getSelection();
-
-    if (data.length !== 0 && selection?.type !== "Range") {
-      e.preventDefault();
-      e.stopPropagation();
-      editor?.insertContent(sanitizeHtml(data, true).trim());
-    }
+    let content = sanitizeHtml(data);
+    editor?.insertContent(content);
   };
 
   return {
