@@ -28,8 +28,6 @@ const Editable = (
           }
           & pre {
             padding: 0.5em;
-            background-color: var(--bg-code);
-            border-radius: 4px;
           }
           &:focus-visible {
             outline: 2px solid var(--border);
@@ -62,8 +60,6 @@ const Editable = (
         }
         & pre {
           padding: 0.5em;
-          background-color: var(--bg-code);
-          border-radius: 4px;
         }
         & * {
           white-space: pre-wrap;
