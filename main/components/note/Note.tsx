@@ -49,6 +49,7 @@ const Note = ({ note }: NoteProps) => {
   );
   const [loading, setLoading] = useBoolean(false);
   const [drag, setDrag] = useBoolean(false);
+  const noteRef = useRef<HTMLDivElement>(null);
   const closeNoteRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const TitleRef = useRef<HTMLHeadingElement>(null);
@@ -105,12 +106,19 @@ const Note = ({ note }: NoteProps) => {
       setTimeout(() => closeNoteRef.current?.focus(), 0);
     }
   };
+
+  const closeNoteHandler = () => {
+    setOpen.off();
+    contentRef.current?.blur();
+    noteRef.current?.focus();
+  };
+
   const onKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (!open) {
       switch (e.code) {
         case "Space":
         case "Enter":
-          setOpen.on();
+          openNoteHandler();
           break;
         default:
           break;
@@ -119,8 +127,7 @@ const Note = ({ note }: NoteProps) => {
     if (open) {
       switch (e.key) {
         case "Escape":
-          setOpen.off();
-          contentRef.current?.blur();
+          closeNoteHandler();
           break;
         case e.ctrlKey && "s":
           e.preventDefault();
@@ -140,6 +147,7 @@ const Note = ({ note }: NoteProps) => {
   }
   return (
     <NoteContainer
+      ref={noteRef}
       onKeyDown={onKeyDownHandler}
       onDragStart={dragStartHandler}
       onDragEnd={setDrag.off}
@@ -154,17 +162,17 @@ const Note = ({ note }: NoteProps) => {
         justifyContent="flex-start"
         rowSpan={1}
       >
-        {open && (
-          <IconButton
-            ref={closeNoteRef}
-            colorScheme="messenger"
-            size="sm"
-            onClick={setOpen.off}
-            aria-label="back"
-            icon={<IoArrowBack />}
-            mr="1"
-          />
-        )}
+        <IconButton
+          display={open ? undefined : "none"}
+          ref={closeNoteRef}
+          colorScheme="messenger"
+          size="sm"
+          onClick={closeNoteHandler}
+          aria-label="back"
+          icon={<IoArrowBack />}
+          mr="1"
+        />
+
         <Tooltip label={note.title} fontSize="xs">
           <Text
             onClick={openNoteHandler}

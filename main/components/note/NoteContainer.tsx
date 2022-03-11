@@ -1,10 +1,14 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { GridProps, Grid } from "@chakra-ui/react";
 import { clrSwitch } from "../../theme";
 
-const NoteContainer = (props: NoteContainerProps) => {
+const NoteContainer = (
+  props: NoteContainerProps,
+  ref: React.ForwardedRef<HTMLDivElement>
+) => {
   return (
     <Grid
+      ref={ref}
       {...props}
       tabIndex={0}
       pos={props.open ? "fixed" : "static"}
@@ -26,13 +30,16 @@ const NoteContainer = (props: NoteContainerProps) => {
       _focusVisible={{
         boxShadow: "0 0 0 3px var(--outline-clr)",
       }}
+      _focus={{
+        boxShadow: "0 0 0 3px var(--outline-clr)",
+      }}
     >
       {props.children}
     </Grid>
   );
 };
 
-export default NoteContainer;
+export default forwardRef(NoteContainer);
 interface NoteContainerProps extends GridProps {
   open: boolean;
   colorMode: "light" | "dark";
