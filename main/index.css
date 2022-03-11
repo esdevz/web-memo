@@ -3,6 +3,23 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+:root {
+  --hl-teal: #81e6d9;
+  --hl-blue: #b9d0e5;
+  --hl-pink: #fbb6ce;
+  --hl-yellow: #faf089;
+  --hl-green: #90edb3;
+  --hl-gray: #e2e8f0;
+}
+
+.chakra-ui-dark {
+  --hl-teal: #285e61;
+  --hl-blue: #4a79a6;
+  --hl-pink: #97266d;
+  --hl-yellow: #975a16;
+  --hl-green: #0c6c33;
+  --hl-gray: #4a5568;
 }
