@@ -134,7 +134,7 @@ const Sidebar = () => {
               placeholder: "Title",
             }}
           />
-          <VStack spacing="1" align="flex-start" h="32rem" w="95%">
+          <VStack spacing="1" align="flex-start" h="35rem" w="95%">
             <Text as="h3">Content :</Text>
             <Tools fontSize="1.1rem" size="md" editor={editor} />
             <Editable
