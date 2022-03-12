@@ -55,9 +55,14 @@ const Note = ({ note }: NoteProps) => {
   const TitleRef = useRef<HTMLHeadingElement>(null);
   const { colorMode } = useColorMode();
   const toast = useToast();
-  const { onRefChange, editor, onPasteCaptureHandler, onDropHandler } = useEditor(
-    note.content
-  );
+  const {
+    onRefChange,
+    editor,
+    onPasteCaptureHandler,
+    onDropHandler,
+    onBlurHandler,
+    keyDownHandler,
+  } = useEditor(note.content);
 
   const saveNote = async () => {
     let editedNote = {
@@ -201,6 +206,8 @@ const Note = ({ note }: NoteProps) => {
         sanitizedHtml={sanitizeHtml(note.content)}
         ref={onRefChange}
         onClick={openNoteHandler}
+        onKeyDown={keyDownHandler}
+        onBlur={onBlurHandler}
       />
       <GridItem
         display="flex"

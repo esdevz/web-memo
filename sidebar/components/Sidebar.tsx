@@ -24,8 +24,14 @@ const Sidebar = () => {
   const { note, setNote, saveNote, loading, collections } = useBackgroundNote();
   const [icon, setIcon] = useState<CustomIcon>("default");
 
-  const { onRefChange, editor, onPasteCaptureHandler, onDropHandler } =
-    useEditor("");
+  const {
+    onRefChange,
+    editor,
+    onPasteCaptureHandler,
+    onDropHandler,
+    onBlurHandler,
+    keyDownHandler,
+  } = useEditor("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNote({
@@ -135,6 +141,8 @@ const Sidebar = () => {
               ref={onRefChange}
               onPasteCapture={onPasteCaptureHandler}
               onDrop={onDropHandler}
+              onBlur={onBlurHandler}
+              onKeyDown={keyDownHandler}
             />
           </VStack>
 

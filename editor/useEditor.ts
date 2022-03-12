@@ -1,4 +1,12 @@
-import { useState, useCallback, useMemo, useEffect } from "react";
+import {
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+  ClipboardEvent,
+  KeyboardEvent,
+  DragEvent,
+} from "react";
 import { Editor } from "roosterjs-editor-core";
 import { sanitizeHtml } from "../utils";
 
@@ -40,27 +48,55 @@ export function useEditor(content: string) {
     }
   }, [editor]);
 
-  const onPasteCaptureHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
+  const onPasteCaptureHandler = (e: ClipboardEvent<HTMLDivElement>) => {
     const data = e.clipboardData.getData("text/html");
     if (data.length !== 0) {
       e.preventDefault();
       e.stopPropagation();
-      const selection = window.getSelection();
-      if (!selection?.rangeCount) return false;
 
-      selection.deleteFromDocument();
-      let node = document.createElement("div");
-      node.innerHTML = sanitizeHtml(data).trim();
-      selection.getRangeAt(0).insertNode(node);
+      let content = sanitizeHtml(data).trim();
+      let range = editor?.getSelectionRange();
+      editor?.insertContent(content, {
+        position: 5,
+        range,
+      });
     }
   };
 
-  const onDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
+  const onDropHandler = (e: DragEvent<HTMLDivElement>) => {
+    const data = e.dataTransfer.getData("text/html");
+    const selection = window.getSelection();
+    if (selection && selection.toString().length > 0) {
+      return false;
+    }
     e.preventDefault();
     e.stopPropagation();
-    const data = e.dataTransfer.getData("text/html");
-    let content = sanitizeHtml(data);
-    editor?.insertContent(content);
+    let content = sanitizeHtml(data).trim();
+    editor?.insertContent(content, {
+      position: 1,
+    });
+  };
+
+  const onBlurHandler = () => {
+    const selection = window.getSelection();
+    if (selection?.rangeCount) {
+      selection.removeAllRanges();
+    }
+  };
+
+  const keyDownHandler = (e: KeyboardEvent) => {
+    switch (e.key) {
+      case e.ctrlKey && "z":
+      case e.ctrlKey && "Z":
+        editor?.undo();
+        break;
+      case e.ctrlKey && "y":
+      case e.ctrlKey && "Y":
+        editor?.redo();
+        break;
+      default:
+        break;
+    }
   };
 
   return {
@@ -69,5 +105,7 @@ export function useEditor(content: string) {
     editorRef,
     onPasteCaptureHandler,
     onDropHandler,
+    onBlurHandler,
+    keyDownHandler,
   };
 }
