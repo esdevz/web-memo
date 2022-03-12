@@ -1,10 +1,8 @@
 import { sanitize, Config } from "dompurify";
 
 const sanitizeOptions: Config = {
-  USE_PROFILES: {
-    html: true,
-    mathMl: true,
-  },
+  ALLOWED_ATTR: ["src", "alt", "style"],
+  ALLOW_DATA_ATTR: false,
 };
 
 export function sanitizeHtml(html?: string): string {
