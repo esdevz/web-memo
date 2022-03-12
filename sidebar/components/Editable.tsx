@@ -14,6 +14,7 @@ const Editable = (props: BoxProps, ref: React.ForwardedRef<HTMLDivElement>) => {
       spellCheck="false"
       overflow="auto"
       lineHeight="1.55"
+      contentEditable
       css={`
         scrollbar-width: thin;
         white-space: break-spaces;

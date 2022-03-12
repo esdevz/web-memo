@@ -52,6 +52,7 @@ const Editable = (
       fontWeight="normal"
       fontSize="0.9rem"
       lineHeight="1.55"
+      contentEditable
       css={`
         scrollbar-width: thin;
         & ol,
