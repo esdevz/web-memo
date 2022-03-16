@@ -72,6 +72,9 @@ const theme = extendTheme({
         fontFamily: `-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
         Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif`,
       },
+      "::selection": {
+        backgroundColor: "rgb(130,130,130,0.5)",
+      },
     },
   },
 });
@@ -79,7 +82,7 @@ const theme = extendTheme({
 export const clrSwitch: Record<"light" | "dark", Record<string, string>> = {
   light: {
     default: "white",
-    yellow: "yellow.200",
+    yellow: "#FFF9BB",
     gray: "gray.200",
     purple: "purple.100",
     teal: "teal.100",
