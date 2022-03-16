@@ -1,92 +1,81 @@
 import React, { ForwardedRef, forwardRef } from "react";
-import { GridItem, GridItemProps, useColorModeValue } from "@chakra-ui/react";
-import { sanitizeHtml } from "../../../utils/sanitizeHtml";
+import { GridItem, GridItemProps } from "@chakra-ui/react";
 
-const Editable = forwardRef(
-  (
-    { sanitizedHtml, isOpen, ...props }: EditableProps,
-    ref: ForwardedRef<HTMLDivElement>
-  ) => {
-    const thumbColor = useColorModeValue("rgba(0, 0, 0 , 0.2)", "rgba(255,255,255,0.3)");
-    const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
-      const data = e.clipboardData.getData("text/html");
-      if (data.length !== 0) {
-        e.preventDefault();
-
-        const selection = window.getSelection();
-        if (!selection?.rangeCount) return false;
-
-        selection.deleteFromDocument();
-        let node = document.createElement("div");
-        node.innerHTML = sanitizeHtml(data).trim();
-        selection.getRangeAt(0).insertNode(node);
-      }
-    };
-
-    const onDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
-      const data = e.dataTransfer.getData("text/html");
-      const selection = window.getSelection();
-
-      if (data.length !== 0 && selection?.type !== "Range") {
-        e.preventDefault();
-        e.stopPropagation();
-        let node = document.createElement("div");
-        node.innerHTML = sanitizeHtml(data).trim();
-        e.currentTarget.appendChild(node);
-      }
-    };
-
-    const onBlurHandler = () => {
-      const selection = window.getSelection();
-      if (selection?.rangeCount) {
-        selection.removeAllRanges();
-      }
-    };
-
+const Editable = (
+  { sanitizedHtml, isOpen, ...props }: EditableProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
+  if (!isOpen) {
     return (
       <GridItem
-        onBlur={onBlurHandler}
-        onPaste={onPasteHandler}
-        onDrop={onDropHandler}
-        ref={ref}
-        overflow={isOpen ? "auto" : "hidden"}
-        noOfLines={isOpen ? undefined : 6}
+        overflow="hidden"
+        noOfLines={6}
         whiteSpace="break-spaces"
-        rowSpan={isOpen ? 8 : 7}
-        cursor={isOpen ? undefined : "pointer"}
-        p="1.5"
-        _focusVisible={{
-          outline: "2px solid rgba(128, 128, 128, 0.34)",
-          borderRadius: "4px",
-        }}
-        sx={{
-          "::-webkit-scrollbar": {
-            width: "8px",
-            backgroundColor: "transparent",
-          },
-          "::-webkit-scrollbar-thumb": {
-            backgroundColor: thumbColor,
-            borderRadius: "8px",
-          },
-        }}
-        contentEditable={isOpen}
-        spellCheck="false"
+        rowSpan={7}
+        cursor={"pointer"}
+        p="1"
         maxW="95%"
         fontWeight="normal"
-        fontSize="0.88rem"
+        fontSize="0.9rem"
         lineHeight="1.55"
+        css={`
+          & ol,
+          & ul {
+            padding-inline: revert;
+          }
+          & * {
+            white-space: pre-wrap;
+          }
+          & pre {
+            padding: 0.5em;
+          }
+          &:focus-visible {
+            outline: 2px solid var(--border);
+            border-radius: 4px;
+          }
+        `}
         dangerouslySetInnerHTML={{
           __html: sanitizedHtml,
         }}
         {...props}
-      >
-        {props.children}
-      </GridItem>
+      />
     );
   }
-);
+  return (
+    <GridItem
+      ref={ref}
+      overflow="auto"
+      rowSpan={8}
+      p="1"
+      spellCheck="false"
+      maxW="95%"
+      fontWeight="normal"
+      fontSize="0.9rem"
+      lineHeight="1.55"
+      contentEditable
+      css={`
+        scrollbar-width: thin;
+        & ol,
+        & ul {
+          padding-inline: 2ch;
+        }
+        & pre {
+          padding: 0.5em;
+        }
+        & * {
+          white-space: pre-wrap;
+        }
+        &:focus-visible {
+          outline: 2px solid var(--border);
+          border-radius: 4px;
+        }
+      `}
+      {...props}
+    />
+  );
+};
 
-export default Editable;
+export default forwardRef(Editable);
 
 interface EditableProps extends GridItemProps {
   sanitizedHtml: string;
