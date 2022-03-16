@@ -71,3 +71,14 @@ export interface NoteStore {
   updateTargetCollection: (url: string) => Promise<void>;
   setDraggedNote: (note: INote) => void;
 }
+
+export type OptionValues = {
+  name: string;
+  value: string;
+  font?: string;
+};
+
+export type MenuOptions = {
+  type: "text" | "color";
+  values: OptionValues[];
+};
