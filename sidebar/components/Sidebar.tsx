@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import {
   Box,
   VStack,
@@ -18,6 +18,8 @@ import { initialNoteState, useBackgroundNote } from "../hooks/useBackgroundNotes
 import { getHostName } from "../../utils";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
 import { CustomIcon } from "../../main/store/types";
+import { useEditor } from "../../editor/useEditor";
+import Tools from "../../editor/Tools";
 
 const port = chrome.runtime.connect({ name: "popup" });
 
@@ -25,7 +27,9 @@ const Sidebar = () => {
   const { note, setNote, saveNote, loading, collections, draftNoteLoading } =
     useBackgroundNote();
   const [icon, setIcon] = useState<CustomIcon>("default");
-  const contentRef = useRef<HTMLDivElement>(null);
+  const { editor, onRefChange, keyDownHandler, onBlurHandler } = useEditor(
+    note.content
+  );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const changes = {
@@ -75,8 +79,8 @@ const Sidebar = () => {
   const resetNote = () => {
     setNote(initialNoteState);
     port.postMessage({ msg: "RESET" });
-    if (contentRef.current) {
-      contentRef.current.innerHTML = "";
+    if (editor) {
+      editor.setContent("");
     }
   };
 
@@ -88,7 +92,7 @@ const Sidebar = () => {
     e.preventDefault();
     const newNote = {
       ...note,
-      content: sanitizeHtml(contentRef.current?.innerHTML),
+      content: sanitizeHtml(editor?.getContent()),
       createdAt: Date.now(),
       website: note.website.trim() || "notes",
     };
@@ -116,7 +120,7 @@ const Sidebar = () => {
   };
 
   return (
-    <Box as="main" minH="50em" minW="33em" w="35em">
+    <Box as="main" minW="33em" w="35em">
       <VStack h="100%" w="100%" spacing="1.5">
         <Button
           h="2.7em"
@@ -124,8 +128,8 @@ const Sidebar = () => {
           borderRadius="0"
           colorScheme="bb"
           variant="outline"
+          size="sm"
           onClick={openNotes}
-          fontWeight="bold"
         >
           Open Notes
         </Button>
@@ -142,6 +146,7 @@ const Sidebar = () => {
           <FormInput
             w="95%"
             id="Title :"
+            fontSize="sm"
             inputProps={{
               w: "full",
               type: "text",
@@ -155,13 +160,19 @@ const Sidebar = () => {
             <Text as="h3">
               Content :
               <Box as="span" ml="2">
-                {draftNoteLoading && <CircularProgress size="0.85rem" isIndeterminate />}
+                {draftNoteLoading && (
+                  <CircularProgress size="0.85rem" isIndeterminate />
+                )}
               </Box>
             </Text>
+            <Tools editor={editor} fontSize="0.9rem" size="sm" />
             <Editable
               port={port}
-              contentRef={contentRef}
-              sanitizedHtml={sanitizeHtml(note.content)}
+              editor={editor}
+              ref={onRefChange}
+              sanitizer={sanitizeHtml}
+              onBlur={onBlurHandler}
+              onKeyDown={keyDownHandler}
             />
           </VStack>
 
@@ -174,7 +185,11 @@ const Sidebar = () => {
               collections={collections}
               favicon={note.favicon}
             />
-            <Tooltip fontFamily="Raleway" fontSize="md" label="set collection & icon">
+            <Tooltip
+              fontFamily="Raleway"
+              fontSize="sm"
+              label="set collection & icon"
+            >
               <Button
                 aria-label="set collection to current url"
                 onClick={setUrl}
@@ -182,7 +197,7 @@ const Sidebar = () => {
                 type="button"
                 w="8em"
                 variant="outline"
-                fontWeight="bold"
+                size="sm"
               >
                 Current URL
               </Button>
@@ -190,7 +205,9 @@ const Sidebar = () => {
           </HStack>
           <HStack mt="0.6rem !important" w="95%" justifyContent="space-between">
             <FormControl w="fit-content" display="flex" alignItems="center">
-              <FormLabel htmlFor="is-pinned">Pin :</FormLabel>
+              <FormLabel fontSize="sm" htmlFor="is-pinned">
+                Pin :
+              </FormLabel>
               <Switch
                 colorScheme="bb"
                 name="isPinned"
@@ -200,18 +217,19 @@ const Sidebar = () => {
               />
             </FormControl>
             <Button
+              size="sm"
               aria-label="reset note"
               onClick={resetNote}
               colorScheme="bb"
               type="button"
               w="8em"
               variant="outline"
-              fontWeight="bold"
             >
               Reset
             </Button>
           </HStack>
           <Button
+            size="sm"
             mt="0.6rem !important"
             isLoading={loading}
             isDisabled={loading}
@@ -220,7 +238,6 @@ const Sidebar = () => {
             w="full"
             h="2.5em"
             variant="outline"
-            fontWeight="bold"
           >
             Save
           </Button>
