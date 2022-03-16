@@ -1,28 +1,8 @@
 import { sanitize, Config } from "dompurify";
 
 const sanitizeOptions: Config = {
-  ALLOWED_TAGS: [
-    "img",
-    "br",
-    "em",
-    "blockquote",
-    "del",
-    "ins",
-    "s",
-    "strong",
-    "sup",
-    "sub",
-    "div",
-    "pre",
-    "code",
-    "ul",
-    "li",
-    "ol",
-    "h1",
-    "h2",
-    "h3",
-  ],
-  ALLOWED_ATTR: ["src"],
+  ALLOWED_ATTR: ["src", "alt", "style"],
+  ALLOW_DATA_ATTR: false,
 };
 
 export function sanitizeHtml(html?: string): string {
