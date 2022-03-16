@@ -8,6 +8,16 @@ const FormLabel = {
   },
 };
 
+const Button = {
+  sizes: {
+    xs: {
+      h: "4ch",
+      w: "4ch",
+      fontSize: "sm",
+    },
+  },
+};
+
 const config: ThemeConfig = {
   initialColorMode: "light",
   useSystemColorMode: false,
@@ -17,7 +27,7 @@ const theme = extendTheme({
   config,
   components: {
     FormLabel,
-    Button: FormLabel,
+    Button: Button,
   },
   colors: {
     bb: {
@@ -35,21 +45,24 @@ const theme = extendTheme({
     },
   },
   fontSizes: {
-    xs: "0.6em",
-    sm: "0.75em",
-    md: "1em",
-    lg: "1.1em",
-    xl: "1.2em",
+    xs: "0.7rem",
+    sm: "0.8rem",
+    md: "0.9rem",
+    lg: "1.1rem",
+    xl: "1.2rem",
   },
   styles: {
     global: {
       h3: {
-        fontSize: "md",
-        fontWeight: "500",
+        fontSize: "sm",
+        fontWeight: "400",
         fontFamily: "Raleway",
       },
       em: {
         fontSize: "xs",
+      },
+      "::selection": {
+        backgroundColor: "rgb(130,130,130,0.5)",
       },
     },
   },

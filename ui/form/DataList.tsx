@@ -6,7 +6,7 @@ import { CustomIcon } from "../../main/store/types";
 
 const DataList = (props: DataListProps) => {
   return (
-    <HStack fontFamily="Raleway" fontSize="1em" spacing="1" w="65%">
+    <HStack fontFamily="Raleway" fontSize="0.9rem" spacing="1" w="65%">
       <Select
         currentIcon={props.icon}
         favicon={props.favicon}
@@ -21,6 +21,7 @@ const DataList = (props: DataListProps) => {
         list="collections"
         id="collection-list"
         placeholder="collection name ..."
+        size="md"
       />
 
       <datalist id="collections">

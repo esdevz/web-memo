@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+:root {
+  --hl-teal: #81e6d9;
+  --hl-blue: #b9d0e5;
+  --hl-pink: #fbb6ce;
+  --hl-yellow: #faf089;
+  --hl-green: #90edb3;
+  --hl-gray: #e2e8f0;
+  --border: rgba(120, 120, 120, 0.34);
+  --bg-code: rgb(185, 185, 185, 0.15);
+  --outline-clr: rgb(66, 153, 225, 0.6);
+  --scrollbar-thumb: var(--chakra-colors-bb-500);
+}
+
+.chakra-ui-dark {
+  --hl-teal: #285e61;
+  --hl-blue: #4a79a6;
+  --hl-pink: #97266d;
+  --hl-yellow: #975a16;
+  --hl-green: #0c6c33;
+  --hl-gray: #4a5568;
+  --scrollbar-thumb: var(--chakra-colors-bb-200);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+::-webkit-scrollbar {
+  width: 8px;
+}

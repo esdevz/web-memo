@@ -25,18 +25,24 @@ const IconSelect = ({
           {currentIcon === "default" && favicon ? (
             <Image boxSize="6" borderRadius="50%" src={favicon} />
           ) : (
-            <CollectionIcon boxSize="6" marginInline="auto" customIcon={currentIcon} />
+            <CollectionIcon
+              boxSize="6"
+              marginInline="auto"
+              customIcon={currentIcon}
+            />
           )}
         </MenuButton>
         <MenuList justifyContent="center" minW="0" w="5rem">
-          <MenuItem onClick={() => changeMenuIcon("default")}>default</MenuItem>
+          <MenuItem fontSize="0.8rem" onClick={() => changeMenuIcon("default")}>
+            default
+          </MenuItem>
           {options.map((iconName) => (
             <MenuItem
               justifyContent="center"
               key={iconName}
               onClick={() => changeMenuIcon(iconName)}
             >
-              <CollectionIcon boxSize="6" customIcon={iconName} />
+              <CollectionIcon boxSize="5" customIcon={iconName} />
             </MenuItem>
           ))}
         </MenuList>
