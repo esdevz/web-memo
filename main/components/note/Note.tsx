@@ -51,7 +51,6 @@ const Note = ({ note }: NoteProps) => {
   const [drag, setDrag] = useBoolean(false);
   const noteRef = useRef<HTMLDivElement>(null);
   const closeNoteRef = useRef<HTMLButtonElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const TitleRef = useRef<HTMLHeadingElement>(null);
   const { colorMode } = useColorMode();
   const toast = useToast();
@@ -114,7 +113,6 @@ const Note = ({ note }: NoteProps) => {
 
   const closeNoteHandler = () => {
     setOpen.off();
-    contentRef.current?.blur();
     noteRef.current?.focus();
   };
 
