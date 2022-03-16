@@ -25,6 +25,7 @@ export function useEditor(content: string) {
         defaultFormat: {
           backgroundColor: "inherit",
           fontFamily: "inherit",
+          fontSize: "inherit",
           backgroundColors: {
             lightModeColor: "inherit",
             darkModeColor: "inherit",
