@@ -34,7 +34,20 @@ import ToolbarButton from "./ToolbarButton";
 interface ToolsProps extends ButtonGroupProps {
   editor?: Editor;
   fontSize?: CSSProperties["fontSize"];
+  port?: chrome.runtime.Port;
 }
+
+const syncChanges = (port?: chrome.runtime.Port, editor?: Editor) => {
+  if (editor) {
+    port?.postMessage({
+      msg: "EDITING",
+      changes: {
+        content: editor.getContent(),
+        createdAt: Date.now(),
+      },
+    });
+  }
+};
 
 type FontStyle = "B" | "I" | "U" | "S" | "UL" | "OL" | "RTL" | "LTR" | "CODE" | "RM";
 
@@ -55,7 +68,7 @@ const colors: OptionValues[] = [
   { name: "gray", value: "var(--hl-gray)" },
 ];
 
-const Tools = ({ editor, fontSize, ...props }: ToolsProps) => {
+const Tools = ({ editor, fontSize, port, ...props }: ToolsProps) => {
   const editTextStyle = (type: FontStyle) => () => {
     if (editor) {
       switch (type) {
@@ -92,6 +105,7 @@ const Tools = ({ editor, fontSize, ...props }: ToolsProps) => {
         default:
           break;
       }
+      syncChanges(port, editor);
     }
   };
 
@@ -99,12 +113,14 @@ const Tools = ({ editor, fontSize, ...props }: ToolsProps) => {
     if (editor) {
       setFontName(editor, opt.font || "inherit");
       setFontSize(editor, opt.value);
+      syncChanges(port, editor);
     }
   };
 
   const highlight = (opt: OptionValues) => {
     if (editor) {
       setBackgroundColor(editor, opt.value);
+      syncChanges(port, editor);
     }
   };
 

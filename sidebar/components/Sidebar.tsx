@@ -165,7 +165,7 @@ const Sidebar = () => {
                 )}
               </Box>
             </Text>
-            <Tools editor={editor} fontSize="0.9rem" size="sm" />
+            <Tools editor={editor} port={port} fontSize="0.9rem" size="sm" />
             <Editable
               port={port}
               editor={editor}

@@ -21,6 +21,7 @@ export function useEditor(content: string) {
     if (editorRef) {
       const roosterEditor = new Editor(editorRef, {
         doNotAdjustEditorColor: true,
+        allowKeyboardEventPropagation: true,
         initialContent: content,
         defaultFormat: {
           backgroundColor: "inherit",
