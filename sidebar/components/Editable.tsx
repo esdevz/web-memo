@@ -2,6 +2,7 @@ import React from "react";
 import { Box, BoxProps } from "@chakra-ui/react";
 import { setBadgeTempNote } from "../../utils/badgeColors";
 import { Editor } from "roosterjs-editor-core";
+import { replaceHtmlEntities } from "../../utils";
 
 interface Props extends BoxProps {
   sanitizer: (html?: string) => string;
@@ -14,8 +15,11 @@ const Editable = (
   ref: React.ForwardedRef<HTMLDivElement>
 ) => {
   const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
-    const data = e.clipboardData.getData("text/html");
-    if (data.length !== 0) {
+    const html = e.clipboardData.getData("text/html");
+    const text = e.clipboardData.getData("text/plain");
+    const data = html || replaceHtmlEntities(text);
+
+    if (data?.length > 0) {
       if (editor) {
         e.preventDefault();
         e.stopPropagation();
@@ -38,7 +42,10 @@ const Editable = (
   };
 
   const onDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    const data = e.dataTransfer.getData("text/html");
+    const html = e.dataTransfer.getData("text/html");
+    const text = e.dataTransfer.getData("text/plain");
+    const data = html || replaceHtmlEntities(text);
+
     const selection = window.getSelection();
     if (selection && selection.toString().length > 0) {
       return false;
@@ -61,11 +68,6 @@ const Editable = (
   };
 
   const onInputChange = (e: React.FormEvent<HTMLDivElement>) => {
-    /* 
-    this is not triggering
-    could interfere with editor instance
-    content wont save when the popup is closed 
-    */
     setBadgeTempNote();
     port.postMessage({
       msg: "EDITING",
