@@ -10,6 +10,7 @@ import {
   setBadgeTempNote,
 } from "../utils/badgeColors";
 import { sendMessage } from "../utils/chrome";
+import { replaceHtmlEntities } from "../utils";
 
 const SAVE_NOTE_ID = "save-as-note";
 
@@ -43,12 +44,15 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       website: getHostName(tab?.url || ""),
       fullUrl: tab?.url || "",
       favicon: tab?.favIconUrl || "",
-      content: data,
+      content: replaceHtmlEntities(data),
       isPinned: false,
       createdAt: Date.now(),
     };
 
-    const [configs, tempNote] = await Promise.all([db.getConfigs(), getTemporaryNote()]);
+    const [configs, tempNote] = await Promise.all([
+      db.getConfigs(),
+      getTemporaryNote(),
+    ]);
 
     const collections = Object.keys(configs.collections);
     const existingCollection = collections.includes(note.website);
