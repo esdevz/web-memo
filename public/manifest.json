@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Web Memo",
-  "version": "1.2.1",
+  "version": "1.3.1",
   "description": "Generate collections and notes from text selection / save copied images and screenshots",
   "icons": {
     "16": "favicon-16x16.png",
