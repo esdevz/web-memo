@@ -1,5 +1,3 @@
-console.log("loaded");
-
 const onMessageHandler = (
   request: string,
   _: any,
