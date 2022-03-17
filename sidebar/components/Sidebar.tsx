@@ -175,7 +175,6 @@ const Sidebar = () => {
               port={port}
               editor={editor}
               ref={onRefChange}
-              sanitizer={sanitizeHtml}
               onBlur={onBlurHandler}
               onKeyDown={keyDownHandler}
               onPasteCapture={onPasteCaptureHandler}

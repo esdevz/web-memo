@@ -4,13 +4,12 @@ import { setBadgeTempNote } from "../../utils/badgeColors";
 import { Editor } from "roosterjs-editor-core";
 
 interface Props extends BoxProps {
-  sanitizer: (html?: string) => string;
   port: chrome.runtime.Port;
   editor?: Editor;
 }
 
 const Editable = (
-  { editor, port, sanitizer, ...props }: Props,
+  { editor, port, ...props }: Props,
   ref: React.ForwardedRef<HTMLDivElement>
 ) => {
   const onInputChange = () => {
