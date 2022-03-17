@@ -3,6 +3,7 @@ import { Box, BoxProps } from "@chakra-ui/react";
 import { setBadgeTempNote } from "../../utils/badgeColors";
 import { Editor } from "roosterjs-editor-core";
 import { replaceHtmlEntities } from "../../utils";
+import readFile from "../../editor/readFile";
 
 interface Props extends BoxProps {
   sanitizer: (html?: string) => string;
@@ -14,30 +15,33 @@ const Editable = (
   { editor, port, sanitizer, ...props }: Props,
   ref: React.ForwardedRef<HTMLDivElement>
 ) => {
-  const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
+  const onPasteHandler = async (e: React.ClipboardEvent<HTMLDivElement>) => {
     const html = e.clipboardData.getData("text/html");
     const text = e.clipboardData.getData("text/plain");
-    const data = html || replaceHtmlEntities(text);
+    const file = e.clipboardData.files[0];
+    if (editor) {
+      e.preventDefault();
+      e.stopPropagation();
+      const dataUri = file ? await readFile(file) : null;
+      const content = sanitizer(html).trim();
 
-    if (data?.length > 0) {
-      if (editor) {
-        e.preventDefault();
-        e.stopPropagation();
-        let content = sanitizer(data).trim();
-        let range = editor?.getSelectionRange();
-        editor?.insertContent(content, {
-          position: 5,
-          range,
-        });
+      editor?.paste({
+        customValues: {},
+        image: e.clipboardData.files[0],
+        html: content,
+        text,
+        rawHtml: html,
+        types: e.clipboardData.types as string[],
+        imageDataUri: dataUri,
+      });
 
-        port.postMessage({
-          msg: "EDITING",
-          changes: {
-            content: editor?.getContent(),
-            createdAt: Date.now(),
-          },
-        });
-      }
+      port.postMessage({
+        msg: "EDITING",
+        changes: {
+          content: editor?.getContent(),
+          createdAt: Date.now(),
+        },
+      });
     }
   };
 
@@ -67,12 +71,14 @@ const Editable = (
     }
   };
 
-  const onInputChange = (e: React.FormEvent<HTMLDivElement>) => {
+  const onInputChange = () => {
     setBadgeTempNote();
-    port.postMessage({
-      msg: "EDITING",
-      changes: { content: e.currentTarget.innerHTML, createdAt: Date.now() },
-    });
+    if (editor) {
+      port.postMessage({
+        msg: "EDITING",
+        changes: { content: editor?.getContent(), createdAt: Date.now() },
+      });
+    }
   };
 
   return (
