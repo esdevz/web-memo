@@ -78,6 +78,10 @@ const Note = ({ note }: NoteProps) => {
       title: feedback.message,
       status: feedback.type,
       duration: 1500,
+      containerStyle: {
+        fontFamily: "Raleway",
+        fontSize: "1rem",
+      },
     });
   };
 
@@ -88,6 +92,10 @@ const Note = ({ note }: NoteProps) => {
         title: feedback.message,
         status: feedback.type,
         duration: 1500,
+        containerStyle: {
+          fontFamily: "Raleway",
+          fontSize: "1rem",
+        },
       });
   };
 
@@ -98,6 +106,10 @@ const Note = ({ note }: NoteProps) => {
         title: feedback.message,
         status: feedback.type,
         duration: 1500,
+        containerStyle: {
+          fontFamily: "Raleway",
+          fontSize: "1rem",
+        },
       });
   };
 
