@@ -8,9 +8,11 @@ import {
   DragEvent,
 } from "react";
 import { Editor } from "roosterjs-editor-core";
-import { sanitizeHtml } from "../utils";
+import { setBadgeTempNote } from "../utils";
+import { sanitizeHtml } from "../utils/sanitizeHtml";
+import readFile from "./readFile";
 
-export function useEditor(content: string) {
+export function useEditor(content: string, port?: chrome.runtime.Port) {
   const [editorRef, setEditorRef] = useState<HTMLDivElement | null>(null);
 
   const onRefChange = useCallback((node: HTMLDivElement) => {
@@ -50,33 +52,70 @@ export function useEditor(content: string) {
     }
   }, [editor]);
 
-  const onPasteCaptureHandler = (e: ClipboardEvent<HTMLDivElement>) => {
-    const data = e.clipboardData.getData("text/html");
-    if (data.length !== 0) {
+  const onPasteCaptureHandler = async (e: ClipboardEvent<HTMLDivElement>) => {
+    const html = e.clipboardData.getData("text/html");
+    const text = e.clipboardData.getData("text/plain");
+    const file = e.clipboardData.files[0];
+    if (editor) {
+      setBadgeTempNote();
       e.preventDefault();
       e.stopPropagation();
+      const dataUri = file ? await readFile(file) : null;
+      const content = sanitizeHtml(html).trim();
 
-      let content = sanitizeHtml(data).trim();
-      let range = editor?.getSelectionRange();
-      editor?.insertContent(content, {
-        position: 5,
-        range,
+      editor?.paste({
+        customValues: {},
+        image: e.clipboardData.files[0],
+        html: content,
+        text,
+        rawHtml: html,
+        types: e.clipboardData.types as string[],
+        imageDataUri: dataUri,
+      });
+
+      port?.postMessage({
+        msg: "EDITING",
+        changes: {
+          content: editor?.getContent(),
+          createdAt: Date.now(),
+        },
       });
     }
   };
 
-  const onDropHandler = (e: DragEvent<HTMLDivElement>) => {
-    const data = e.dataTransfer.getData("text/html");
+  const onDropHandler = async (e: DragEvent<HTMLDivElement>) => {
+    const html = e.dataTransfer.getData("text/html");
+    const text = e.dataTransfer.getData("text/plain");
+    const file = e.dataTransfer.files[0];
     const selection = window.getSelection();
     if (selection && selection.toString().length > 0) {
       return false;
     }
-    e.preventDefault();
-    e.stopPropagation();
-    let content = sanitizeHtml(data).trim();
-    editor?.insertContent(content, {
-      position: 1,
-    });
+    if (editor) {
+      setBadgeTempNote();
+      e.preventDefault();
+      e.stopPropagation();
+      const dataUri = file ? await readFile(file) : null;
+      const content = sanitizeHtml(html).trim();
+
+      editor?.paste({
+        customValues: {},
+        image: file,
+        html: content,
+        text,
+        rawHtml: html,
+        types: e.dataTransfer.types as string[],
+        imageDataUri: dataUri,
+      });
+
+      port?.postMessage({
+        msg: "EDITING",
+        changes: {
+          content: editor?.getContent(),
+          createdAt: Date.now(),
+        },
+      });
+    }
   };
 
   const onBlurHandler = () => {
