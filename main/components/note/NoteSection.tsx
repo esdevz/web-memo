@@ -1,7 +1,11 @@
-import React, { FC } from "react";
+import React from "react";
 import { GridItem } from "@chakra-ui/react";
 
-const NoteSection: FC = (props) => {
+interface NoteSectionProps {
+  children?: React.ReactNode;
+}
+
+const NoteSection = (props: NoteSectionProps) => {
   return (
     <GridItem
       as="section"
@@ -11,7 +15,7 @@ const NoteSection: FC = (props) => {
       gridTemplateColumns="repeat(auto-fill, 20.3rem)"
       gridTemplateRows="repeat(auto-fill, 16.3rem)"
     >
-      {props.children}
+      {props?.children}
     </GridItem>
   );
 };

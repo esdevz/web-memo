@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React from "react";
 import { GridItem } from "@chakra-ui/react";
 
-const NotesContainer: FC<NotesContainerProps> = (props) => {
+const NotesContainer = (props: NotesContainerProps) => {
   return (
     <GridItem
       pos="relative"
@@ -19,7 +19,7 @@ const NotesContainer: FC<NotesContainerProps> = (props) => {
         scrollbarWidth: "thin",
       }}
     >
-      {props.children}
+      {props?.children}
     </GridItem>
   );
 };
@@ -28,4 +28,5 @@ export default NotesContainer;
 
 interface NotesContainerProps {
   colSpan: number;
+  children?: React.ReactNode;
 }
