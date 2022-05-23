@@ -188,7 +188,7 @@ const Note = ({ note }: NoteProps) => {
             }}
             ref={TitleRef}
             as="h2"
-            isTruncated
+            noOfLines={1}
             maxW={open ? "80ch" : "18rem"}
             w={open ? "50ch" : undefined}
           >
@@ -229,7 +229,7 @@ const Note = ({ note }: NoteProps) => {
               maxW="sm"
               fontSize="xs"
               fontFamily="body"
-              isTruncated
+              noOfLines={1}
               referrerPolicy="no-referrer"
               isExternal
               href={note.fullUrl}
