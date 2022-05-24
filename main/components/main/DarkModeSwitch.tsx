@@ -1,6 +1,11 @@
 import React from "react";
-import { BsSun, BsMoon } from "react-icons/bs";
-import { useColorMode, IconButton, Tooltip, IconButtonProps } from "@chakra-ui/react";
+import { BsSun, BsMoonFill } from "react-icons/bs";
+import {
+  useColorMode,
+  IconButton,
+  Tooltip,
+  IconButtonProps,
+} from "@chakra-ui/react";
 import { motion, Variants } from "framer-motion";
 
 const option: Variants = {
@@ -43,7 +48,7 @@ export const DarkModeSwitch = () => {
         boxSize="2.85em"
         variants={option}
         borderRadius="33%"
-        icon={isDark ? <BsMoon size="1.3em" /> : <BsSun size="1.3em" />}
+        icon={isDark ? <BsMoonFill size="1.3em" /> : <BsSun size="1.3em" />}
         aria-label={isDark ? "dark mode" : "light mode"}
         onClick={toggleMode}
       />

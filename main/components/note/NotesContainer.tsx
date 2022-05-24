@@ -1,8 +1,11 @@
-import React, { FC } from "react";
+import React from "react";
 import { GridItem, useColorModeValue } from "@chakra-ui/react";
 
-const NotesContainer: FC<NotesContainerProps> = (props) => {
-  const thumbColor = useColorModeValue("rgba(0, 0, 0 , 0.2)", "rgba(255,255,255,0.3)");
+const NotesContainer = (props: NotesContainerProps) => {
+  const thumbColor = useColorModeValue(
+    "rgba(0, 0, 0 , 0.2)",
+    "rgba(255,255,255,0.3)"
+  );
   return (
     <GridItem
       pos="relative"
@@ -27,7 +30,7 @@ const NotesContainer: FC<NotesContainerProps> = (props) => {
         },
       }}
     >
-      {props.children}
+      {props?.children}
     </GridItem>
   );
 };
@@ -36,4 +39,5 @@ export default NotesContainer;
 
 interface NotesContainerProps {
   colSpan: number;
+  children?: React.ReactNode;
 }

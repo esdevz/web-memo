@@ -1,8 +1,12 @@
-import React, { useCallback, useEffect, useState, FC } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Grid, Progress } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
 
-const InitApp: FC = (props) => {
+interface AppProps {
+  children?: React.ReactNode;
+}
+
+const InitApp = (props: AppProps) => {
   const [loading, setLoading] = useState(true);
   const getNotes = useNoteStore(useCallback((state) => state.getNotes, []));
 
@@ -17,7 +21,7 @@ const InitApp: FC = (props) => {
       </Grid>
     );
   }
-  return <> {props.children} </>;
+  return <> {props?.children} </>;
 };
 
 export default InitApp;

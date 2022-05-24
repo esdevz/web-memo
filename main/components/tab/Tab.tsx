@@ -64,6 +64,7 @@ const Tab = (props: SidebarProps) => {
         value={props.value}
         onDragEnd={props.updateOrder}
         {...animationProps}
+        layout
       >
         <Tooltip placement="right" closeOnMouseDown label={props.displayName}>
           <IconButton
@@ -106,6 +107,7 @@ const Tab = (props: SidebarProps) => {
       value={props.value}
       onDragEnd={props.updateOrder}
       {...animationProps}
+      layout
     >
       <Button
         {...dragHandlers}
