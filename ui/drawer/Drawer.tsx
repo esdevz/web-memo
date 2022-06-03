@@ -9,6 +9,7 @@ import {
   DrawerBody,
   DrawerFooter,
 } from "@chakra-ui/modal";
+import { Text } from "@chakra-ui/react";
 
 const CustomDrawer = ({
   controls,
@@ -21,7 +22,9 @@ const CustomDrawer = ({
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader> {drawerTitle} </DrawerHeader>
+        <DrawerHeader>
+          <Text as="h2">{drawerTitle}</Text>
+        </DrawerHeader>
         <DrawerBody
           sx={{
             scrollbarWidth: "thin",
