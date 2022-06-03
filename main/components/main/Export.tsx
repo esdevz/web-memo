@@ -46,7 +46,10 @@ const Export = () => {
 
   const [fileName, setFileName] = useState("");
   const [dragOverState, setDragOverState] = useState(false);
-  const [progressState, dispatch] = useReducer(progressReducer, initialProgressState);
+  const [progressState, dispatch] = useReducer(
+    progressReducer,
+    initialProgressState
+  );
 
   const onFileNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFileName(e.target.value);
@@ -121,7 +124,7 @@ const Export = () => {
       <Box w="full" m="1.5rem 0" as="form" onSubmit={onFormSubmit}>
         <FormInput
           w="full"
-          id="Export :"
+          label="Export :"
           margin="1.2rem 0"
           inputProps={{
             w: "full",
@@ -133,7 +136,7 @@ const Export = () => {
           }}
         />
         <Button w="full" type="submit" variant="outline" colorScheme="bb">
-          Download
+          <Text as="h3">Download </Text>
         </Button>
       </Box>
       <VStack
@@ -175,7 +178,7 @@ const Export = () => {
         w="full"
         cursor="pointer"
       >
-        Import
+        <Text as="h3">Import </Text>
         <Input
           onChange={onFileChangeHandler}
           display="none"
