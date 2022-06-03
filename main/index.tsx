@@ -1,4 +1,7 @@
-import "@fontsource/raleway";
+import "@fontsource/raleway/variable.css";
+import "@fontsource/raleway/variable-italic.css";
+import "@fontsource/rubik/variable.css";
+import "@fontsource/rubik/variable-italic.css";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import InitApp from "./components/main/InitApp";
