@@ -9,6 +9,7 @@ import {
   Input,
   Button,
   useBoolean,
+  Text,
 } from "@chakra-ui/react";
 
 const EditCollectionForm = (props: EditCollectionFormProps) => {
@@ -36,7 +37,11 @@ const EditCollectionForm = (props: EditCollectionFormProps) => {
   return (
     <form onSubmit={submitCollection}>
       <FormControl id="collection-option">
-        <FormLabel> Collection :</FormLabel>
+        <FormLabel>
+          <Text color="var(--txt-clr-header)" as="h2">
+            Collection :
+          </Text>
+        </FormLabel>
         <HStack>
           <Select
             currentIcon={icon}
@@ -61,7 +66,7 @@ const EditCollectionForm = (props: EditCollectionFormProps) => {
         colorScheme="bb"
         type="submit"
       >
-        save
+        <Text as="h3">Save</Text>
       </Button>
     </form>
   );
@@ -74,5 +79,8 @@ interface EditCollectionFormProps {
   dispalyName: string;
   iconType: CustomIcon;
   favicon?: string;
-  editCollection: (website: string, newCollection: CollectionOptions) => Promise<void>;
+  editCollection: (
+    website: string,
+    newCollection: CollectionOptions
+  ) => Promise<void>;
 }
