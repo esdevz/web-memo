@@ -52,13 +52,13 @@ const theme = extendTheme({
         fontWeight: "normal",
       },
       h2: {
-        fontSize: "1rem",
-        fontWeight: "600",
-        fontFamily: "Georgia, sans-serif",
+        fontSize: "1.1rem",
+        fontWeight: "500",
+        fontFamily: "Rubik, sans-serif",
       },
       h3: {
         fontSize: "0.93rem",
-        fontWeight: "500",
+        fontWeight: "normal",
         fontFamily: "Raleway",
       },
       p: {
