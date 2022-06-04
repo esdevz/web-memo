@@ -44,11 +44,23 @@ export interface CollectionOptions {
 }
 export interface Configs {
   id: number;
+  fonts?: CustomFonts;
   tabLayout: Layout;
   collections: Record<string, CollectionOptions>;
 }
+
+export type CustomFonts = {
+  title: string;
+  body: string;
+  code: string;
+  h1: string;
+  h2: string;
+  h3: string;
+};
+
 export interface NoteStore {
   tabLayout: Layout;
+  customFonts?: CustomFonts;
   collections: Record<string, Collection>;
   activeTab: string;
   draggedNote: null | INote;
@@ -57,6 +69,7 @@ export interface NoteStore {
   setActiveTab: (url: string) => void;
   addNewNote: (collectionProps: CollectionOptions) => Promise<void>;
   getNotes: () => Promise<void>;
+  updateCustomFonts: (fonts: CustomFonts) => Promise<NotificationMessage>;
   edit: (note: INote) => Promise<NotificationMessage>;
   setNoteColor: (
     id: number,
