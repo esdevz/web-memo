@@ -1,7 +1,17 @@
 import React from "react";
 import { Box, BoxProps } from "@chakra-ui/layout";
 
-const Editable = (props: BoxProps, ref: React.ForwardedRef<HTMLDivElement>) => {
+interface SidebarEditableProps extends BoxProps {
+  customFonts?: {
+    body?: string;
+    code?: string;
+  };
+}
+
+const Editable = (
+  props: SidebarEditableProps,
+  ref: React.ForwardedRef<HTMLDivElement>
+) => {
   return (
     <Box
       ref={ref}
@@ -20,13 +30,14 @@ const Editable = (props: BoxProps, ref: React.ForwardedRef<HTMLDivElement>) => {
         white-space: break-spaces;
         & ol,
         & ul {
-          padding-inline: 2ch;
+          padding-inline: 2.6ch;
         }
         & * {
           white-space: pre-wrap;
         }
-        & pre {
-          padding: 0.5em;
+        & pre,
+        code {
+          font-family: ${props.customFonts?.code};
         }
         &:focus-visible {
           outline: 2px solid rgb(49, 130, 206);

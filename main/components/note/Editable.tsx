@@ -1,8 +1,17 @@
 import React, { ForwardedRef, forwardRef } from "react";
 import { GridItem, GridItemProps } from "@chakra-ui/react";
 
+interface EditableProps extends GridItemProps {
+  sanitizedHtml: string;
+  isOpen: boolean;
+  customFonts?: {
+    body?: string;
+    code?: string;
+  };
+}
+
 const Editable = (
-  { sanitizedHtml, isOpen, ...props }: EditableProps,
+  { sanitizedHtml, isOpen, customFonts, ...props }: EditableProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
   if (!isOpen) {
@@ -26,8 +35,9 @@ const Editable = (
           & * {
             white-space: pre-wrap;
           }
-          & pre {
-            padding: 0.5em;
+          & pre,
+          code {
+            font-family: ${customFonts?.code};
           }
           &:focus-visible {
             outline: 2px solid var(--border);
@@ -57,10 +67,11 @@ const Editable = (
         scrollbar-width: thin;
         & ol,
         & ul {
-          padding-inline: 2ch;
+          padding-inline: 2.6ch;
         }
-        & pre {
-          padding: 0.5em;
+        & pre,
+        code {
+          font-family: ${customFonts?.code ?? ""};
         }
         & * {
           white-space: pre-wrap;
@@ -77,8 +88,3 @@ const Editable = (
 };
 
 export default forwardRef(Editable);
-
-interface EditableProps extends GridItemProps {
-  sanitizedHtml: string;
-  isOpen: boolean;
-}
