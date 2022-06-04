@@ -16,6 +16,7 @@ code {
   --border: rgba(120, 120, 120, 0.34);
   --bg-code: rgb(185, 185, 185, 0.15);
   --outline-clr: rgb(66, 153, 225, 0.6);
+  --txt-clr-header: #1c5da2;
 }
 
 .chakra-ui-dark {
@@ -25,4 +26,6 @@ code {
   --hl-yellow: #975a16;
   --hl-green: #0c6c33;
   --hl-gray: #4a5568;
+  --txt-clr-header: #b9d0e5;
+  --bg-code: rgba(225, 225, 225, 0.271);
 }
