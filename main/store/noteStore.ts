@@ -11,6 +11,7 @@ const useNoteStore = create<NoteStore>((set, get) => ({
   collections: {},
   activeTab: "notes",
   draggedNote: null,
+  customFonts: undefined,
   tabs: [],
   setTabs(newOrder: string[]) {
     set((state) => ({
@@ -49,9 +50,29 @@ const useNoteStore = create<NoteStore>((set, get) => ({
     set((state) => ({
       ...state,
       tabLayout: cfg.tabLayout,
+      customFonts: cfg.fonts,
       collections: cols,
       tabs: Object.keys(cols),
     }));
+  },
+  async updateCustomFonts(customFonts) {
+    const updates = await db.updateConfigs(1, { fonts: customFonts });
+    if (updates) {
+      set((state) =>
+        produce(state, (draft) => {
+          draft.customFonts = customFonts;
+        })
+      );
+      return {
+        type: "success",
+        message: "saved",
+      };
+    } else {
+      return {
+        type: "error",
+        message: updatingError,
+      };
+    }
   },
 
   async edit(newNote) {
@@ -115,7 +136,10 @@ const useNoteStore = create<NoteStore>((set, get) => ({
             db.deleteCollection(note.website);
             browser.sidebarAction.isOpen({}).then((isOpen) => {
               if (isOpen)
-                browser.runtime.sendMessage({ msg: "DELETE", collection: note.website });
+                browser.runtime.sendMessage({
+                  msg: "DELETE",
+                  collection: note.website,
+                });
             });
           }
         }
@@ -203,7 +227,10 @@ const useNoteStore = create<NoteStore>((set, get) => ({
               delete draft.collections[originTab];
               browser.sidebarAction.isOpen({}).then((isOpen) => {
                 if (isOpen)
-                  browser.runtime.sendMessage({ msg: "DELETE", collection: originTab });
+                  browser.runtime.sendMessage({
+                    msg: "DELETE",
+                    collection: originTab,
+                  });
               });
             }
           }
