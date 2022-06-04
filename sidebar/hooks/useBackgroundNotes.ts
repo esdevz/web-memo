@@ -1,7 +1,7 @@
 import { NotesDB } from "../../idb/NotesDb";
 import { useCallback, useEffect, useState } from "react";
 import { useColorMode } from "@chakra-ui/react";
-import { CustomIcon, INote } from "../../main/store/types";
+import type { CustomFonts, CustomIcon, INote } from "../../main/store/types";
 
 const db = new NotesDB();
 
@@ -15,9 +15,19 @@ export const initialNoteState: INote = {
   isPinned: false,
 };
 
+const initialFontsState: CustomFonts = {
+  title: "",
+  body: "",
+  code: "",
+  h1: "",
+  h2: "",
+  h3: "",
+};
+
 export function useBackgroundNote() {
   const [note, setNote] = useState(initialNoteState);
   const [collections, setUserCollections] = useState(["notes"]);
+  const [customFonts, setCustomFonts] = useState(initialFontsState);
   const [loading, setLoading] = useState(false);
   const { toggleColorMode } = useColorMode();
 
@@ -56,9 +66,12 @@ export function useBackgroundNote() {
   }, [toggleColorMode]);
 
   useEffect(() => {
-    db.getConfigs().then((col) => {
-      const userCollections = Object.keys(col.collections);
+    db.getConfigs().then((cfg) => {
+      const userCollections = Object.keys(cfg.collections);
       setUserCollections(userCollections);
+      if (cfg.fonts) {
+        setCustomFonts(cfg.fonts);
+      }
     });
   }, []);
 
@@ -102,5 +115,5 @@ export function useBackgroundNote() {
     [collections]
   );
 
-  return { note, setNote, saveNote, loading, collections };
+  return { note, setNote, saveNote, loading, collections, customFonts };
 }
