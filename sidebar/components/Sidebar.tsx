@@ -21,7 +21,8 @@ import { useEditor } from "../../editor/useEditor";
 import Tools from "../../editor/Tools";
 
 const Sidebar = () => {
-  const { note, setNote, saveNote, loading, collections } = useBackgroundNote();
+  const { note, setNote, saveNote, loading, collections, customFonts } =
+    useBackgroundNote();
   const [icon, setIcon] = useState<CustomIcon>("default");
 
   const {
@@ -124,7 +125,7 @@ const Sidebar = () => {
         >
           <FormInput
             w="95%"
-            id="Title :"
+            label="Title :"
             inputProps={{
               w: "full",
               type: "text",
@@ -136,13 +137,16 @@ const Sidebar = () => {
           />
           <VStack spacing="1" align="flex-start" h="35rem" w="95%">
             <Text as="h3">Content :</Text>
-            <Tools fontSize="1.1rem" size="md" editor={editor} />
+            <Tools fontSize="1.1rem" size="md" editor={editor} fonts={customFonts} />
             <Editable
               ref={onRefChange}
               onPasteCapture={onPasteCaptureHandler}
               onDrop={onDropHandler}
               onBlur={onBlurHandler}
               onKeyDown={keyDownHandler}
+              customFonts={customFonts}
+              fontFamily={customFonts.body}
+              fontSize="1.1rem"
             />
           </VStack>
 
