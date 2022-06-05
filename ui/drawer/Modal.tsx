@@ -8,21 +8,45 @@ import {
   ModalBody,
   ModalFooter,
   ModalProps,
+  Text,
+  ModalBodyProps,
+  IconButton,
+  IconButtonProps,
 } from "@chakra-ui/react";
+import { MdReadMore } from "react-icons/Md";
+interface CustomModalProps extends ModalProps {
+  modalTitle: string;
+  controls?: ReactNode;
+  modalBodyProps?: ModalBodyProps;
+  disableCloseButton?: boolean;
+  altActionComponent?: JSX.Element;
+}
 
 const CustomModal = ({
   controls,
   modalTitle,
   children,
+  modalBodyProps,
+  altActionComponent,
+  disableCloseButton,
   ...rest
 }: CustomModalProps) => {
   return (
     <Modal {...rest} motionPreset="slideInBottom">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{modalTitle} </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>{children}</ModalBody>
+        <ModalHeader
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Text tabIndex={0} as="h2">
+            {modalTitle}
+          </Text>
+          {disableCloseButton && altActionComponent}
+        </ModalHeader>
+        {!disableCloseButton && <ModalCloseButton />}
+        <ModalBody {...modalBodyProps}>{children}</ModalBody>
         <ModalFooter> {controls} </ModalFooter>
       </ModalContent>
     </Modal>
@@ -31,7 +55,8 @@ const CustomModal = ({
 
 export default CustomModal;
 
-interface CustomModalProps extends ModalProps {
-  modalTitle: string;
-  controls?: ReactNode;
-}
+export const AltActionButton = React.forwardRef(
+  (props: IconButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) => (
+    <IconButton ref={ref} {...props} icon={<MdReadMore />} />
+  )
+);
