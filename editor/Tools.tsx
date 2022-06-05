@@ -34,16 +34,14 @@ import ToolbarButton from "./ToolbarButton";
 interface ToolsProps extends ButtonGroupProps {
   editor?: Editor;
   fontSize?: CSSProperties["fontSize"];
+  fonts?: {
+    h1: string;
+    h2: string;
+    h3: string;
+  };
 }
 
 type FontStyle = "B" | "I" | "U" | "S" | "UL" | "OL" | "RTL" | "LTR" | "CODE" | "RM";
-
-const headers: OptionValues[] = [
-  { name: "X", value: "inherit", font: "inherit" },
-  { name: "H1", value: "1.8rem", font: "Trebuchet MS, Verdana, Roboto, sans-serif" },
-  { name: "H2", value: "1.6rem", font: "Trebuchet MS, Verdana, Roboto, sans-serif" },
-  { name: "H3", value: "1.4rem", font: "Trebuchet MS, Verdana, Roboto, sans-serif" },
-];
 
 const colors: OptionValues[] = [
   { name: "default", value: "inherit" },
@@ -55,7 +53,26 @@ const colors: OptionValues[] = [
   { name: "gray", value: "var(--hl-gray)" },
 ];
 
-const Tools = ({ editor, fontSize, ...props }: ToolsProps) => {
+const Tools = ({ editor, fontSize, fonts, ...props }: ToolsProps) => {
+  const headers: OptionValues[] = [
+    { name: "X", value: "inherit", font: "inherit" },
+    {
+      name: "H1",
+      value: "1.8rem",
+      font: fonts?.h1 || "Rubik, Verdana, Roboto, sans-serif",
+    },
+    {
+      name: "H2",
+      value: "1.6rem",
+      font: fonts?.h2 || "Rubik, Verdana, Roboto, sans-serif",
+    },
+    {
+      name: "H3",
+      value: "1.4rem",
+      font: fonts?.h3 || "Rubik, Verdana, Roboto, sans-serif",
+    },
+  ];
+
   const editTextStyle = (type: FontStyle) => () => {
     if (editor) {
       switch (type) {
