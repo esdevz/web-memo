@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Button, Text, useBoolean, useToast, VStack } from "@chakra-ui/react";
+import { Button, Text, useBoolean, useToast, Box } from "@chakra-ui/react";
 import FormInput from "../../../ui/form/FormInput";
 import { CustomFonts } from "../../store/types";
 import useNoteStore from "../../store/noteStore";
@@ -7,10 +7,10 @@ import shallow from "zustand/shallow";
 
 const options = [
   "Note title",
-  "Note body",
-  "code",
   "Header 1",
+  "Note body",
   "Header 2",
+  "code",
   "Header 3",
 ];
 
@@ -22,10 +22,10 @@ export const Fonts = () => {
 
   const initialFontsState: CustomFonts = {
     title: customFonts?.title || "",
-    body: customFonts?.body || "",
-    code: customFonts?.code || "",
     h1: customFonts?.h1 || "",
+    body: customFonts?.body || "",
     h2: customFonts?.h2 || "",
+    code: customFonts?.code || "",
     h3: customFonts?.h3 || "",
   };
   const [fonts, setFonts] = useState(initialFontsState);
@@ -53,11 +53,21 @@ export const Fonts = () => {
   };
 
   return (
-    <VStack onSubmit={saveFonts} as="form" gridColumn="2" gridRow="1/6" w="full">
-      <Text color="var(--txt-clr-header)" alignSelf="start" as="h2">
+    <Box
+      display="grid"
+      gridTemplateColumns="1fr 1fr"
+      gridAutoRows="max-content"
+      gridGap="5px"
+      onSubmit={saveFonts}
+      as="form"
+      gridColumn="2"
+      gridRow="1/6"
+      w="full"
+    >
+      <Text gridColumn="1/3" color="var(--txt-clr-header)" alignSelf="start" as="h2">
         Custom fonts :
       </Text>
-      <Text alignSelf="start" as="em">
+      <Text gridColumn="1/3" alignSelf="start" as="em">
         choose fonts installed on your system
       </Text>
       {fontsArray.map((prop, idx) => (
@@ -81,9 +91,10 @@ export const Fonts = () => {
         type="submit"
         variant="outline"
         colorScheme="bb"
+        gridColumn="1/3"
       >
         <Text as="h3"> Save </Text>
       </Button>
-    </VStack>
+    </Box>
   );
 };
