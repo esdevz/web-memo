@@ -34,19 +34,21 @@ interface NoteProps {
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
   const [open, setOpen] = useBoolean(false);
-  const [editNote, pin, del, setDraggedNote, setNoteColor] = useNoteStore(
-    useCallback(
-      (state) => [
-        state.edit,
-        state.pin,
-        state.delete,
-        state.setDraggedNote,
-        state.setNoteColor,
-      ],
-      []
-    ),
-    shallow
-  );
+  const [editNote, pin, del, setDraggedNote, setNoteColor, customFonts] =
+    useNoteStore(
+      useCallback(
+        (state) => [
+          state.edit,
+          state.pin,
+          state.delete,
+          state.setDraggedNote,
+          state.setNoteColor,
+          state.customFonts,
+        ],
+        []
+      ),
+      shallow
+    );
   const [loading, setLoading] = useBoolean(false);
   const [drag, setDrag] = useBoolean(false);
   const noteRef = useRef<HTMLDivElement>(null);
@@ -74,7 +76,7 @@ const Note = ({ note }: NoteProps) => {
     const feedback = await editNote(editedNote);
     setLoading.off();
     toast({
-      title: feedback.message,
+      title: <Text as="h2">{feedback.message} </Text>,
       status: feedback.type,
       duration: 1500,
     });
@@ -84,7 +86,7 @@ const Note = ({ note }: NoteProps) => {
     const feedback = await pin(note);
     feedback.type === "error" &&
       toast({
-        title: feedback.message,
+        title: <Text as="h2">{feedback.message} </Text>,
         status: feedback.type,
         duration: 1500,
       });
@@ -94,7 +96,7 @@ const Note = ({ note }: NoteProps) => {
     const feedback = await del(note);
     feedback.type === "error" &&
       toast({
-        title: feedback.message,
+        title: <Text as="h2">{feedback.message} </Text>,
         status: feedback.type,
         duration: 1500,
       });
@@ -188,6 +190,7 @@ const Note = ({ note }: NoteProps) => {
             }}
             ref={TitleRef}
             as="h2"
+            fontFamily={customFonts?.title}
             noOfLines={1}
             maxW={open ? "80ch" : "18rem"}
             w={open ? "50ch" : undefined}
@@ -196,8 +199,12 @@ const Note = ({ note }: NoteProps) => {
           </Text>
         </Tooltip>
       </GridItem>
-      {open && <Tools editor={editor} />}
+      {open && <Tools editor={editor} fonts={customFonts} />}
       <Editable
+        customFonts={{
+          code: customFonts?.code ?? "",
+        }}
+        fontFamily={customFonts?.body ?? ""}
         isOpen={open}
         onPasteCapture={onPasteCaptureHandler}
         onDrop={onDropHandler}
