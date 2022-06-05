@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Box, Grid, useDisclosure } from "@chakra-ui/react";
+import { Box, Grid, Tooltip, useBoolean, useDisclosure } from "@chakra-ui/react";
 import EmptyCollection from "./components/main/EmptyCollection";
 import Note from "./components/note/Note";
 import NotesContainer from "./components/note/NotesContainer";
@@ -8,7 +8,7 @@ import Separator from "./components/note/NoteSeparator";
 import CollectionTabs from "./components/tab/CollectionTabs";
 import useNoteStore from "./store/noteStore";
 import Settings from "./components/main/Settings";
-import Modal from "../ui/drawer/Modal";
+import Modal, { AltActionButton } from "../ui/drawer/Modal";
 import Drawer from "../ui/drawer/Drawer";
 import EditCollectionForm from "../ui/shared/EditCollectionForm";
 import { CollectionOptions } from "./store/types";
@@ -16,21 +16,23 @@ import SearchNotes from "./components/main/SearchNotes";
 import Export from "./components/main/Export";
 
 import shallow from "zustand/shallow";
+import { Fonts } from "./components/main/Fonts";
 
 const App = () => {
-  const [collections, activeTab, addNewNote, layout, updateCollection] = useNoteStore(
-    useCallback(
-      (state) => [
-        state.collections,
-        state.activeTab,
-        state.addNewNote,
-        state.tabLayout,
-        state.updateCollection,
-      ],
-      []
-    ),
-    shallow
-  );
+  const [collections, activeTab, addNewNote, layout, updateCollection] =
+    useNoteStore(
+      useCallback(
+        (state) => [
+          state.collections,
+          state.activeTab,
+          state.addNewNote,
+          state.tabLayout,
+          state.updateCollection,
+        ],
+        []
+      ),
+      shallow
+    );
 
   useEffect(() => {
     browser.runtime.onMessage.addListener(
@@ -42,6 +44,7 @@ const App = () => {
     );
   }, [addNewNote]);
 
+  const [expandSettings, { toggle, off }] = useBoolean(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isDrawerOpen,
@@ -49,6 +52,10 @@ const App = () => {
     onClose: closeDrawer,
   } = useDisclosure();
 
+  const closeModal = () => {
+    onClose();
+    off();
+  };
   const pinnedNote = useMemo(() => {
     return collections[activeTab].notes.filter((note) => note.isPinned);
   }, [activeTab, collections]);
@@ -93,11 +100,22 @@ const App = () => {
       </Grid>
       <Settings openDrawer={openDrawer} openModal={onOpen} />
       <Modal
-        size="md"
+        size={`${expandSettings ? "4xl" : "md"}`}
         modalTitle={activeTab}
-        onClose={onClose}
+        onClose={closeModal}
         isOpen={isOpen}
         returnFocusOnClose={false}
+        disableCloseButton
+        altActionComponent={
+          <Tooltip label="more settings">
+            <AltActionButton aria-label="more settings" size="md" onClick={toggle} />
+          </Tooltip>
+        }
+        modalBodyProps={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${expandSettings ? 2 : 1},1fr)`,
+          gridColumnGap: "1.2rem",
+        }}
       >
         <EditCollectionForm
           editCollection={updateCollection}
@@ -108,6 +126,7 @@ const App = () => {
         />
 
         <Export />
+        {expandSettings && <Fonts />}
       </Modal>
       <Drawer
         size="xl"
