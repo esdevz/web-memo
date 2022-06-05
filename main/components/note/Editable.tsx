@@ -25,7 +25,7 @@ const Editable = (
         p="1"
         maxW="95%"
         fontWeight="normal"
-        fontSize="0.9rem"
+        fontSize="0.95rem"
         lineHeight="1.55"
         css={`
           & ol,
@@ -60,7 +60,7 @@ const Editable = (
       spellCheck="false"
       maxW="95%"
       fontWeight="normal"
-      fontSize="0.9rem"
+      fontSize="0.95rem"
       lineHeight="1.55"
       contentEditable
       css={`
