@@ -29,3 +29,7 @@ code {
   --txt-clr-header: #b9d0e5;
   --bg-code: rgba(225, 225, 225, 0.271);
 }
+
+[contenteditable]:empty:before {
+  content: "\feff";
+}
