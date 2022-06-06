@@ -83,7 +83,7 @@ export interface NoteStore {
   updateCollection: (
     website: string,
     newCollection: CollectionOptions
-  ) => Promise<void>;
+  ) => Promise<NotificationMessage>;
   updateTargetCollection: (url: string) => Promise<void>;
   setDraggedNote: (note: INote) => void;
 }
