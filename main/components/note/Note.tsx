@@ -76,7 +76,11 @@ const Note = ({ note }: NoteProps) => {
     const feedback = await editNote(editedNote);
     setLoading.off();
     toast({
-      title: <Text as="h2">{feedback.message} </Text>,
+      title: (
+        <Text as="h2" textTransform="capitalize">
+          {feedback.message}
+        </Text>
+      ),
       status: feedback.type,
       duration: 1500,
     });
@@ -86,7 +90,11 @@ const Note = ({ note }: NoteProps) => {
     const feedback = await pin(note);
     feedback.type === "error" &&
       toast({
-        title: <Text as="h2">{feedback.message} </Text>,
+        title: (
+          <Text as="h2" textTransform="capitalize">
+            {feedback.message}
+          </Text>
+        ),
         status: feedback.type,
         duration: 1500,
       });
@@ -96,7 +104,11 @@ const Note = ({ note }: NoteProps) => {
     const feedback = await del(note);
     feedback.type === "error" &&
       toast({
-        title: <Text as="h2">{feedback.message} </Text>,
+        title: (
+          <Text as="h2" textTransform="capitalize">
+            {feedback.message}
+          </Text>
+        ),
         status: feedback.type,
         duration: 1500,
       });
