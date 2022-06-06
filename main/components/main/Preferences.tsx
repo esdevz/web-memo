@@ -83,6 +83,7 @@ const Preferences = () => {
               value: fonts[prop],
               name: prop,
               onChange: onChangeHandler,
+              placeholder: "font family",
             }}
           />
         ))}
