@@ -37,7 +37,7 @@ const Editable = (
           }
           & pre,
           code {
-            font-family: ${customFonts?.code};
+            font-family: ${customFonts?.code ?? ""};
           }
           &:focus-visible {
             outline: 2px solid var(--border);
