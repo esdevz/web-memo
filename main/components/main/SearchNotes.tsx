@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { startTransition, useCallback, useMemo, useState } from "react";
 import { Box, Grid } from "@chakra-ui/layout";
 import { Input } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
@@ -8,6 +8,7 @@ import { dbNotes } from "../../../utils";
 const SearchNotes = () => {
   const collections = useNoteStore(useCallback((state) => state.collections, []));
   const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const results = useMemo(() => {
     let notes = dbNotes(collections);
     if (search.trim().length < 3) {
@@ -19,7 +20,11 @@ const SearchNotes = () => {
   }, [search, collections]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+    setSearchInput(e.target.value);
+
+    startTransition(() => {
+      setSearch(e.target.value);
+    });
   };
 
   const submitSearch = (e: React.FormEvent) => {
@@ -31,7 +36,7 @@ const SearchNotes = () => {
       <form onSubmit={submitSearch}>
         <Input
           name="search"
-          value={search}
+          value={searchInput}
           w="full"
           placeholder="type a minimum of 3 characters"
           type="text"
