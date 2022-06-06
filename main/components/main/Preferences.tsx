@@ -95,7 +95,7 @@ const Preferences = () => {
           colorScheme="bb"
           gridColumn="1/3"
         >
-          <Text as="h3"> Save </Text>
+          <Text as="h3"> Apply </Text>
         </Button>
       </Box>
     </Box>
