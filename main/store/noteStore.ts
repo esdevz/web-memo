@@ -195,7 +195,18 @@ const useNoteStore = create<NoteStore>((set, get) => ({
         draft.collections[website].favicon = newCollection.favicon;
       })
     );
-    db.updateCollection(website, newCollection);
+    const updates = await db.updateCollection(website, newCollection);
+    if (updates) {
+      return {
+        type: "success",
+        message: "saved",
+      };
+    } else {
+      return {
+        type: "error",
+        message: "an error happened while updating your collections",
+      };
+    }
   },
   setDraggedNote(note: INote) {
     set((state) =>
