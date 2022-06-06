@@ -21,12 +21,12 @@ const Preferences = () => {
   );
 
   const initialFontsState: CustomFonts = {
-    title: customFonts?.title || "",
-    h1: customFonts?.h1 || "",
-    body: customFonts?.body || "",
-    h2: customFonts?.h2 || "",
-    code: customFonts?.code || "",
-    h3: customFonts?.h3 || "",
+    title: customFonts?.title ?? "",
+    h1: customFonts?.h1 ?? "",
+    body: customFonts?.body ?? "",
+    h2: customFonts?.h2 ?? "",
+    code: customFonts?.code ?? "",
+    h3: customFonts?.h3 ?? "",
   };
   const [fonts, setFonts] = useState(initialFontsState);
   const [loading, setLoading] = useBoolean();
@@ -38,12 +38,17 @@ const Preferences = () => {
       [e.target.name]: e.target.value,
     });
   };
-  const fontsArray = Object.keys(fonts) as Array<keyof typeof fonts>;
+  const fontsArray = Object.keys(fonts) as Array<keyof CustomFonts>;
 
   const saveFonts = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading.on();
-    const feedback = await updateCustomFonts(fonts);
+    const userFonts = Object.entries(fonts).reduce(
+      (newFonts, [key, val]) => ({ ...newFonts, [key]: val.trim() }),
+      {} as CustomFonts
+    );
+
+    const feedback = await updateCustomFonts(userFonts);
     setLoading.off();
     toast({
       title: (
