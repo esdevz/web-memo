@@ -16,7 +16,7 @@ import SearchNotes from "./components/main/SearchNotes";
 import Export from "./components/main/Export";
 
 import shallow from "zustand/shallow";
-import { Fonts } from "./components/main/Fonts";
+import Preferences from "./components/main/Preferences";
 
 const App = () => {
   const [collections, activeTab, addNewNote, layout, updateCollection] =
@@ -126,7 +126,7 @@ const App = () => {
         />
 
         <Export />
-        {expandSettings && <Fonts />}
+        {expandSettings && <Preferences />}
       </Modal>
       <Drawer
         size="xl"
