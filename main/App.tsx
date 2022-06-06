@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { startTransition, useCallback, useEffect, useMemo } from "react";
 import { Box, Grid, Tooltip, useBoolean, useDisclosure } from "@chakra-ui/react";
 import EmptyCollection from "./components/main/EmptyCollection";
 import Note from "./components/note/Note";
@@ -54,7 +54,9 @@ const App = () => {
 
   const closeModal = () => {
     onClose();
-    off();
+    startTransition(() => {
+      off();
+    });
   };
   const pinnedNote = useMemo(() => {
     return collections[activeTab].notes.filter((note) => note.isPinned);
