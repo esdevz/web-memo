@@ -1,4 +1,10 @@
-import React, { startTransition, useCallback, useEffect, useMemo } from "react";
+import React, {
+  startTransition,
+  useCallback,
+  useDeferredValue,
+  useEffect,
+  useMemo,
+} from "react";
 import { Box, Grid, Tooltip, useBoolean, useDisclosure } from "@chakra-ui/react";
 import EmptyCollection from "./components/main/EmptyCollection";
 import Note from "./components/note/Note";
@@ -45,10 +51,11 @@ const App = () => {
       }
     };
     browser.runtime.onMessage.addListener(onMessageCb);
-    return browser.runtime.onMessage.removeListener(onMessageCb);
   }, [addNewNote]);
 
-  const notes = useLiveQuery(() => db.getNotesByWebsite(activeTab), [activeTab]);
+  const notes = useDeferredValue(
+    useLiveQuery(() => db.getNotesByWebsite(activeTab), [activeTab])
+  );
 
   const [expandSettings, { toggle, off }] = useBoolean(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -66,16 +73,20 @@ const App = () => {
   };
   const pinnedNote = useMemo(() => {
     if (!notes) {
-      return [];
+      return null;
     }
-    return notes.filter((note) => note.isPinned);
+    return notes
+      .filter((note) => note.isPinned)
+      .map((note) => <Note key={note.id} note={note} />);
   }, [notes]);
 
   const otherNotes = useMemo(() => {
     if (!notes) {
-      return [];
+      return null;
     }
-    return notes.filter((note) => !note.isPinned);
+    return notes
+      .filter((note) => !note.isPinned)
+      .map((note) => <Note key={note.id} note={note} />);
   }, [notes]);
 
   return (
@@ -95,20 +106,13 @@ const App = () => {
               <Separator as="h3" colSpan={1}>
                 Pinned
               </Separator>
-              <NoteSection>
-                {pinnedNote.map((note) => (
-                  <Note key={note.id} note={note} />
-                ))}
-              </NoteSection>
+              <NoteSection>{pinnedNote}</NoteSection>
               <Separator as="h3" colSpan={1}>
                 Other
               </Separator>
             </>
           )}
-          <NoteSection>
-            {otherNotes &&
-              otherNotes.map((note) => <Note key={note.id} note={note} />)}
-          </NoteSection>
+          <NoteSection>{otherNotes}</NoteSection>
         </NotesContainer>
       </Grid>
       <Settings openDrawer={openDrawer} openModal={onOpen} />
