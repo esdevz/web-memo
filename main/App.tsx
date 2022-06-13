@@ -65,11 +65,17 @@ const App = () => {
     });
   };
   const pinnedNote = useMemo(() => {
-    return notes?.filter((note) => note.isPinned);
+    if (!notes) {
+      return [];
+    }
+    return notes.filter((note) => note.isPinned);
   }, [notes]);
 
   const otherNotes = useMemo(() => {
-    return notes?.filter((note) => !note.isPinned);
+    if (!notes) {
+      return [];
+    }
+    return notes.filter((note) => !note.isPinned);
   }, [notes]);
 
   return (
