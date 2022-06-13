@@ -1,9 +1,17 @@
 import Dexie from "dexie";
-import { CollectionOptions, Configs, INote } from "../main/store/types";
+import {
+  CollectionOptions,
+  Configs,
+  INote,
+  NotificationMessage,
+} from "../main/store/types";
 import { defaultConfig, defaultNote } from "../utils/defaults";
 
 export const DATABASE = "web-notes";
 export const NOTES_TABLE = "notes";
+
+const updatingMsg = "an error occured while trying to save your note";
+const deletingMsg = "an error occured while trying to delete your note";
 
 const schema = "++id ,title ,website, fullUrl,createdAt",
   configsSchema = "id, tabLayout , collections",
@@ -46,11 +54,66 @@ export class NotesDB extends Dexie {
   getNotes() {
     return this.table<INote, number>(NOTES_TABLE).orderBy("createdAt").toArray();
   }
-  updateNote(id: number, newNote: Partial<INote>) {
-    return this.table<INote, number>(NOTES_TABLE).update(id, newNote);
+  getNotesByWebsite(collectionName: string) {
+    return this.table<INote, number>(NOTES_TABLE)
+      .where("website")
+      .equals(collectionName)
+      .reverse()
+      .sortBy("createdAt");
   }
-  deleteNote(id: number) {
-    return this.table<INote, number>(NOTES_TABLE).delete(id);
+  filterNotes(search: string) {
+    return this.table<INote, number>(NOTES_TABLE)
+      .filter((note) => {
+        if (search.length < 3) {
+          return false;
+        }
+        return (
+          note.content.toLowerCase().includes(search) ||
+          note.title.toLowerCase().includes(search)
+        );
+      })
+      .reverse()
+      .sortBy("createdAt");
+  }
+  async updateNote(
+    id: number,
+    newNote: Partial<INote>
+  ): Promise<NotificationMessage> {
+    let updates = await this.table<INote, number>(NOTES_TABLE).update(id, newNote);
+    if (updates) {
+      return {
+        type: "success",
+        message: "saved",
+      };
+    } else {
+      return {
+        type: "error",
+        message: updatingMsg,
+      };
+    }
+  }
+
+  noteCount(url: string) {
+    return this.table<INote, number>(NOTES_TABLE)
+      .where("website")
+      .equals(url)
+      .count();
+  }
+
+  async deleteNote(id: number): Promise<NotificationMessage> {
+    try {
+      await this.table<INote, number>(NOTES_TABLE).delete(id);
+      return {
+        type: "info",
+        message: "deleted",
+      };
+    } catch (err) {
+      console.error(err);
+      return {
+        type: "error",
+        message: deletingMsg,
+      };
+    }
   }
 
   async getConfigs() {
@@ -98,7 +161,10 @@ export class NotesDB extends Dexie {
     return this.table<Configs, number>(CONFIGS_TABLE)
       .toCollection()
       .modify((cfg) => {
-        cfg.collections[name] = { ...(cfg.collections[name] || {}), ...subCollection };
+        cfg.collections[name] = {
+          ...(cfg.collections[name] || {}),
+          ...subCollection,
+        };
       });
   }
 }
