@@ -1,4 +1,4 @@
-import React, { useState, useDeferredValue } from "react";
+import React, { useState, useDeferredValue, useMemo } from "react";
 import { Box, Grid, Input } from "@chakra-ui/react";
 import Note from "../note/Note";
 import { useLiveQuery } from "dexie-react-hooks";
@@ -17,6 +17,10 @@ const SearchNotes = () => {
   const submitSearch = (e: React.FormEvent) => {
     e.preventDefault();
   };
+
+  const renderResults = useMemo(() => {
+    return results?.map((note) => <Note key={note.id} note={note} />);
+  }, [results]);
 
   return (
     <Box w="100%" h="100%">
@@ -42,9 +46,7 @@ const SearchNotes = () => {
           scrollbarWidth: "thin",
         }}
       >
-        {results?.map((note) => (
-          <Note key={note.id} note={note} />
-        ))}
+        {renderResults}
       </Grid>
     </Box>
   );
