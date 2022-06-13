@@ -9,14 +9,9 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { IoColorPaletteSharp } from "react-icons/io5";
-import { NotificationMessage } from "../../store/types";
+import { db } from "../../store/db";
 import { clrSwitch } from "../../theme";
 interface ColorSwitchProps {
-  setNoteColor: (
-    id: number,
-    clr: string,
-    website: string
-  ) => Promise<NotificationMessage>;
   noteId: number;
   website: string;
 }
@@ -28,7 +23,7 @@ const Colors = (props: ColorSwitchProps) => {
 
   const setNoteColorHandler = async (clr: string) => {
     setLoading.on();
-    const feedback = await props.setNoteColor(props.noteId, clr, props.website);
+    const feedback = await db.updateNote(props.noteId, { colorScheme: clr });
     setLoading.off();
     feedback.type === "error" &&
       toast({

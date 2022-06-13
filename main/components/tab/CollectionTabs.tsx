@@ -43,10 +43,8 @@ const CollectionTabs = () => {
             updateOrder={updateCollectionOrder}
             value={url}
             key={url}
-            displayName={collections[url].displayName}
-            customIconType={collections[url].customIconType}
+            collectionProps={collections[url]}
             website={url}
-            favicon={collections[url].favicon}
           />
         ))}
       </AnimatePresence>

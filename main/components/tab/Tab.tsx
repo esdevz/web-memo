@@ -1,10 +1,17 @@
 import React, { DragEvent, useCallback } from "react";
 import { Text, Button, Tooltip, IconButton, useBoolean } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
-import { CustomIcon } from "../../store/types";
+import { CollectionOptions } from "../../store/types";
 import TabIcon from "./TabIcon";
 import { MotionProps, Reorder } from "framer-motion";
 import shallow from "zustand/shallow";
+
+interface SidebarProps {
+  website: string;
+  collectionProps: CollectionOptions;
+  value: string;
+  updateOrder: () => void;
+}
 
 const Tab = (props: SidebarProps) => {
   const [setActiveTab, activeTab, tabLayout, dropToCollection] = useNoteStore(
@@ -66,7 +73,11 @@ const Tab = (props: SidebarProps) => {
         {...animationProps}
         layout
       >
-        <Tooltip placement="right" closeOnMouseDown label={props.displayName}>
+        <Tooltip
+          placement="right"
+          closeOnMouseDown
+          label={props.collectionProps.displayName}
+        >
           <IconButton
             {...dragHandlers}
             w="3.2rem"
@@ -80,7 +91,7 @@ const Tab = (props: SidebarProps) => {
               boxShadow: "0 0 0 3px var(--outline-clr)",
             }}
             role="tab"
-            aria-label={props.displayName}
+            aria-label={props.collectionProps.displayName}
             css={`
               & > * {
                 pointer-events: none;
@@ -88,11 +99,11 @@ const Tab = (props: SidebarProps) => {
             `}
             icon={
               <TabIcon
-                icon={props.favicon}
+                icon={props.collectionProps.favicon}
                 layoutType={tabLayout}
-                customIcon={props.customIconType}
+                customIcon={props.collectionProps.customIconType}
                 collectionName={props.website}
-                collectionLabel={props.displayName}
+                collectionLabel={props.collectionProps.displayName}
               />
             }
           />
@@ -127,29 +138,20 @@ const Tab = (props: SidebarProps) => {
         `}
         leftIcon={
           <TabIcon
-            icon={props.favicon}
+            icon={props.collectionProps.favicon}
             layoutType={tabLayout}
-            customIcon={props.customIconType}
+            customIcon={props.collectionProps.customIconType}
             collectionName={props.website}
-            collectionLabel={props.displayName}
+            collectionLabel={props.collectionProps.displayName}
           />
         }
       >
-        <Text as="h3">{props.displayName}</Text>
+        <Text as="h3">{props.collectionProps.displayName}</Text>
       </Button>
     </Reorder.Item>
   );
 };
 export default Tab;
-
-interface SidebarProps {
-  website: string;
-  favicon?: string;
-  displayName: string;
-  customIconType: CustomIcon;
-  value: string;
-  updateOrder: () => void;
-}
 
 function setColorScheme(activeTab: string, url: string, dragOver: boolean) {
   if (dragOver) {

@@ -1,27 +1,15 @@
 import React from "react";
 import { GridItem, Text, useColorModeValue } from "@chakra-ui/react";
-import { Collection } from "../../store/types";
-import { NOTES_TABLE } from "../../../idb/NotesDb";
+import { INote } from "../../store/types";
 
 interface EmptyCollectionProps {
-  collections: Record<string, Collection>;
+  notes?: INote[];
   activeTab: string;
 }
 
-const defaultState = (
-  collection: Record<string, Collection>,
-  activeTab: string
-): boolean => {
-  const initialState =
-    Object.keys(collection).length === 1 && collection[NOTES_TABLE].notes.length === 1;
-  const emptyNotesCollection =
-    collection[NOTES_TABLE].notes.length === 1 && activeTab === NOTES_TABLE;
-  return initialState || emptyNotesCollection;
-};
-
 const EmptyCollection = (props: EmptyCollectionProps) => {
   const color = useColorModeValue("blue.400", "gray.200");
-  if (defaultState(props.collections, props.activeTab)) {
+  if (props.notes?.length === 0 && props.activeTab === "notes") {
     return (
       <GridItem
         display="grid"

@@ -10,17 +10,11 @@ import {
 import { RiPushpinLine } from "react-icons/ri";
 import { IoMdMore } from "react-icons/io";
 import Colors from "./Colors";
-import { NotificationMessage } from "../../store/types";
 
 type NoteToolsProps = {
   deleteNote: () => Promise<void>;
   isPinned: boolean;
   pinNote: () => Promise<void>;
-  setNoteColor: (
-    id: number,
-    clr: string,
-    website: string
-  ) => Promise<NotificationMessage>;
   id: number;
   website: string;
 };
@@ -32,11 +26,7 @@ const NoteTools = (props: NoteToolsProps) => {
 
   return (
     <HStack spacing="1" onKeyPress={handleKeyBoardEvt} onKeyDown={handleKeyBoardEvt}>
-      <Colors
-        setNoteColor={props.setNoteColor}
-        noteId={props.id}
-        website={props.website}
-      />
+      <Colors noteId={props.id} website={props.website} />
       <IconButton
         size="sm"
         colorScheme={props.isPinned ? "yellow" : "gray"}

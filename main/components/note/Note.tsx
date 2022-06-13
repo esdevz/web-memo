@@ -26,7 +26,7 @@ import Colors from "./Colors";
 import shallow from "zustand/shallow";
 import { useEditor } from "../../../editor/useEditor";
 import Tools from "../../../editor/Tools";
-
+import { db } from "../../store/db";
 interface NoteProps {
   note: INote;
 }
@@ -34,21 +34,14 @@ interface NoteProps {
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
   const [open, setOpen] = useBoolean(false);
-  const [editNote, pin, del, setDraggedNote, setNoteColor, customFonts] =
-    useNoteStore(
-      useCallback(
-        (state) => [
-          state.edit,
-          state.pin,
-          state.delete,
-          state.setDraggedNote,
-          state.setNoteColor,
-          state.customFonts,
-        ],
-        []
-      ),
-      shallow
-    );
+  const [setDraggedNote, customFonts, del] = useNoteStore(
+    useCallback(
+      (state) => [state.setDraggedNote, state.customFonts, state.deleteNote],
+      []
+    ),
+    shallow
+  );
+
   const [loading, setLoading] = useBoolean(false);
   const [drag, setDrag] = useBoolean(false);
   const noteRef = useRef<HTMLDivElement>(null);
@@ -73,7 +66,7 @@ const Note = ({ note }: NoteProps) => {
       title: TitleRef.current?.textContent ?? "",
     };
     setLoading.on();
-    const feedback = await editNote(editedNote);
+    const feedback = await db.updateNote(note.id!, editedNote);
     setLoading.off();
     toast({
       title: (
@@ -87,7 +80,7 @@ const Note = ({ note }: NoteProps) => {
   };
 
   const pinNote = async () => {
-    const feedback = await pin(note);
+    const feedback = await db.updateNote(note.id!, { isPinned: !note.isPinned });
     feedback.type === "error" &&
       toast({
         title: (
@@ -233,13 +226,7 @@ const Note = ({ note }: NoteProps) => {
         rowSpan={1}
       >
         <HStack spacing="3">
-          {open && (
-            <Colors
-              setNoteColor={setNoteColor}
-              noteId={note.id!}
-              website={note.website}
-            />
-          )}
+          {open && <Colors noteId={note.id!} website={note.website} />}
           <Text as="em" fontSize="xs" color={emColor}>
             {rTime(Date.now(), note.createdAt, open)}
           </Text>
@@ -262,7 +249,6 @@ const Note = ({ note }: NoteProps) => {
           <NoteOptions delete={deleteNote} savingState={loading} save={saveNote} />
         ) : (
           <NoteTools
-            setNoteColor={setNoteColor}
             id={note.id!}
             website={note.website}
             deleteNote={deleteNote}

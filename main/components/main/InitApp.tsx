@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Grid, Progress } from "@chakra-ui/react";
+import { Progress, Box } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
 
 interface AppProps {
@@ -8,7 +8,7 @@ interface AppProps {
 
 const InitApp = (props: AppProps) => {
   const [loading, setLoading] = useState(true);
-  const getNotes = useNoteStore(useCallback((state) => state.getNotes, []));
+  const getNotes = useNoteStore(useCallback((state) => state.getConfigs, []));
 
   useEffect(() => {
     getNotes().then(() => setLoading(false));
@@ -16,9 +16,9 @@ const InitApp = (props: AppProps) => {
 
   if (loading) {
     return (
-      <Grid w="100vw" h="100vh" placeItems="center">
+      <Box display="grid" w="100vw" h="100vh" placeItems="center">
         <Progress w="50%" size="xs" colorScheme="cyan" isIndeterminate />
-      </Grid>
+      </Box>
     );
   }
   return <> {props.children} </>;
