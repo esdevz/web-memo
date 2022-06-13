@@ -68,8 +68,8 @@ export class NotesDB extends Dexie {
           return false;
         }
         return (
-          note.content.toLowerCase().includes(search) ||
-          note.title.toLowerCase().includes(search)
+          note.content.toLowerCase().includes(search.toLowerCase()) ||
+          note.title.toLowerCase().includes(search.toLowerCase())
         );
       })
       .reverse()
