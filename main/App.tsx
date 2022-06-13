@@ -11,23 +11,24 @@ import Settings from "./components/main/Settings";
 import Modal, { AltActionButton } from "../ui/drawer/Modal";
 import Drawer from "../ui/drawer/Drawer";
 import EditCollectionForm from "../ui/shared/EditCollectionForm";
-import { CollectionOptions } from "./store/types";
 import SearchNotes from "./components/main/SearchNotes";
 import Export from "./components/main/Export";
-
 import shallow from "zustand/shallow";
 import Preferences from "./components/main/Preferences";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "./store/db";
+import { CollectionOptions } from "./store/types";
 
 const App = () => {
-  const [collections, activeTab, addNewNote, layout, updateCollection] =
+  const [collections, activeTab, layout, updateCollection, addNewNote] =
     useNoteStore(
       useCallback(
         (state) => [
           state.collections,
           state.activeTab,
-          state.addNewNote,
           state.tabLayout,
           state.updateCollection,
+          state.addNewNote,
         ],
         []
       ),
@@ -35,14 +36,19 @@ const App = () => {
     );
 
   useEffect(() => {
-    browser.runtime.onMessage.addListener(
-      (request: { msg: string; collectionProps: CollectionOptions }) => {
-        if (request.msg === "NEW_NOTE") {
-          addNewNote(request.collectionProps);
-        }
+    const onMessageCb = (request: {
+      msg: string;
+      collectionProps: CollectionOptions;
+    }) => {
+      if (request.msg === "NEW_NOTE") {
+        addNewNote(request.collectionProps);
       }
-    );
+    };
+    browser.runtime.onMessage.addListener(onMessageCb);
+    return browser.runtime.onMessage.removeListener(onMessageCb);
   }, [addNewNote]);
+
+  const notes = useLiveQuery(() => db.getNotesByWebsite(activeTab), [activeTab]);
 
   const [expandSettings, { toggle, off }] = useBoolean(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -59,12 +65,12 @@ const App = () => {
     });
   };
   const pinnedNote = useMemo(() => {
-    return collections[activeTab].notes.filter((note) => note.isPinned);
-  }, [activeTab, collections]);
+    return notes?.filter((note) => note.isPinned);
+  }, [notes]);
 
   const otherNotes = useMemo(() => {
-    return collections[activeTab].notes.filter((note) => !note.isPinned);
-  }, [activeTab, collections]);
+    return notes?.filter((note) => !note.isPinned);
+  }, [notes]);
 
   return (
     <Box as="main" w="100vw" h="100vh">
@@ -77,8 +83,8 @@ const App = () => {
       >
         <CollectionTabs />
         <NotesContainer colSpan={layout === "default" ? 8 : 13}>
-          <EmptyCollection collections={collections} activeTab={activeTab} />
-          {pinnedNote.length > 0 && (
+          <EmptyCollection notes={notes} activeTab={activeTab} />
+          {pinnedNote && pinnedNote.length > 0 && (
             <>
               <Separator as="h3" colSpan={1}>
                 Pinned
@@ -94,9 +100,8 @@ const App = () => {
             </>
           )}
           <NoteSection>
-            {otherNotes.map((note) => (
-              <Note key={note.id} note={note} />
-            ))}
+            {otherNotes &&
+              otherNotes.map((note) => <Note key={note.id} note={note} />)}
           </NoteSection>
         </NotesContainer>
       </Grid>
