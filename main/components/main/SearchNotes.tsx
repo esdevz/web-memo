@@ -1,30 +1,17 @@
-import React, { startTransition, useCallback, useMemo, useState } from "react";
-import { Box, Grid } from "@chakra-ui/layout";
-import { Input } from "@chakra-ui/react";
-import useNoteStore from "../../store/noteStore";
+import React, { useState, useDeferredValue } from "react";
+import { Box, Grid, Input } from "@chakra-ui/react";
 import Note from "../note/Note";
-import { dbNotes } from "../../../utils";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "../../store/db";
 
 const SearchNotes = () => {
-  const collections = useNoteStore(useCallback((state) => state.collections, []));
   const [search, setSearch] = useState("");
-  const [searchInput, setSearchInput] = useState("");
-  const results = useMemo(() => {
-    let notes = dbNotes(collections);
-    if (search.trim().length < 3) {
-      return [];
-    }
-    return notes.filter(
-      (note) => note.content.includes(search) || note.title.includes(search)
-    );
-  }, [search, collections]);
+  const results = useDeferredValue(
+    useLiveQuery(() => db.filterNotes(search), [search])
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
-
-    startTransition(() => {
-      setSearch(e.target.value);
-    });
+    setSearch(e.target.value);
   };
 
   const submitSearch = (e: React.FormEvent) => {
@@ -36,7 +23,7 @@ const SearchNotes = () => {
       <form onSubmit={submitSearch}>
         <Input
           name="search"
-          value={searchInput}
+          value={search}
           w="full"
           placeholder="type a minimum of 3 characters"
           type="text"
@@ -55,7 +42,7 @@ const SearchNotes = () => {
           scrollbarWidth: "thin",
         }}
       >
-        {results.map((note) => (
+        {results?.map((note) => (
           <Note key={note.id} note={note} />
         ))}
       </Grid>
