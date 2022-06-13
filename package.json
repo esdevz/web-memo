@@ -19,6 +19,7 @@
     "@fontsource/rubik": "^4.5.9",
     "dexie": "^3.2.2",
     "dexie-export-import": "^1.0.3",
+    "dexie-react-hooks": "^1.1.1",
     "dompurify": "^2.3.8",
     "framer-motion": "^6.3.3",
     "immer": "^9.0.14",
