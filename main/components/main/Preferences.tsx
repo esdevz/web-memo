@@ -79,6 +79,7 @@ const Preferences = () => {
         </Text>
         {fontsArray.map((prop, idx) => (
           <FormInput
+            key={prop}
             w="full"
             label={options[idx]}
             inputProps={{
