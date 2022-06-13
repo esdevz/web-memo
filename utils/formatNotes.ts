@@ -1,5 +1,4 @@
-import { INote, Collection, Configs } from "../main/store/types";
-import { defaultNote } from "./defaults";
+import { INote, Collection, Configs, CollectionOptions } from "../main/store/types";
 
 export function dbNotes(collection: Record<string, Collection>) {
   let notes: INote[] = [];
@@ -9,22 +8,13 @@ export function dbNotes(collection: Record<string, Collection>) {
   return notes;
 }
 
-export const formatNotes = (noteArray: INote[], cfg: Configs) => {
-  const collections: Record<string, Collection> = {};
-  const collectionOptions = Object.entries(cfg.collections).sort(
-    (col, colNext) => (col[1]?.order || 0) - (colNext[1]?.order || 0)
+export const formatCollections = (
+  cfg: Configs
+): Record<string, CollectionOptions> => {
+  const sortedCollections = Object.entries(cfg.collections).sort(
+    ([, col], [, colNext]) => (col.order || 0) - (colNext.order || 0)
   );
-  for (let [name, options] of collectionOptions) {
-    collections[name] = { ...options, notes: [] };
-  }
-  for (let note of noteArray.concat(defaultNote)) {
-    collections[note.website] = {
-      displayName: cfg.collections[note.website]?.displayName || note.website,
-      customIconType: cfg.collections[note.website]?.customIconType || "default",
-      favicon: cfg?.collections[note.website]?.favicon ?? "",
-      notes: collections[note.website].notes,
-    };
-    collections[note.website].notes.unshift(note);
-  }
+  const collections = Object.fromEntries(sortedCollections);
+
   return collections;
 };
