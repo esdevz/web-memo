@@ -61,24 +61,16 @@ export type CustomFonts = {
 export interface NoteStore {
   tabLayout: Layout;
   customFonts?: CustomFonts;
-  collections: Record<string, Collection>;
+  collections: Record<string, CollectionOptions>;
   activeTab: string;
   draggedNote: null | INote;
   tabs: string[];
   setTabs: (next: string[]) => void;
   setActiveTab: (url: string) => void;
   addNewNote: (collectionProps: CollectionOptions) => Promise<void>;
-  getNotes: () => Promise<void>;
+  deleteNote: (note: INote) => Promise<NotificationMessage>;
+  getConfigs: () => Promise<void>;
   updateCustomFonts: (fonts: CustomFonts) => Promise<NotificationMessage>;
-  edit: (note: INote) => Promise<NotificationMessage>;
-  setNoteColor: (
-    id: number,
-    clr: string,
-    website: string
-  ) => Promise<NotificationMessage>;
-  delete: (note: INote) => Promise<NotificationMessage>;
-  //   deleteAll: (website: string) => Promise<void>;
-  pin: (note: INote) => Promise<NotificationMessage>;
   updateLayout: (layout: Layout) => Promise<void>;
   updateCollection: (
     website: string,
