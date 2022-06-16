@@ -4,7 +4,7 @@ import "@fontsource/rubik/variable.css";
 import "@fontsource/rubik/variable-italic.css";
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import Sidebar from "./components/Sidebar";
 import theme from "./SidebarTheme";
 import "./index.css";
@@ -14,7 +14,6 @@ const root = createRoot(container!);
 
 root.render(
   <ChakraProvider theme={theme} resetCSS>
-    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <Sidebar />
   </ChakraProvider>
 );

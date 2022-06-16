@@ -13,6 +13,14 @@ const buildPaths = [
     src: path.resolve(__dirname, "..", "sidebar/index.html"),
     dest: path.resolve(__dirname, "..", "build/firefox/sidebar/index.html"),
   },
+  {
+    src: path.resolve(__dirname, "..", "utils/colorMode.js"),
+    dest: path.resolve(__dirname, "..", "build/firefox/main/colorMode.js"),
+  },
+  {
+    src: path.resolve(__dirname, "..", "utils/colorMode.js"),
+    dest: path.resolve(__dirname, "..", "build/firefox/sidebar/colorMode.js"),
+  },
 ];
 
 require("esbuild")
@@ -39,8 +47,11 @@ require("esbuild")
     try {
       for (const buildPath of buildPaths) {
         await copyFile(buildPath.src, buildPath.dest);
+        console.log(
+          `copy ${buildPath.src.split("\\").splice(-1).join()} to ${buildPath.dest} `
+        );
       }
-      console.log("main and sidebar html files copied into the build folder");
+
       await copyStaticFiles();
       if (isWatchMode) {
         console.log("watching...");
