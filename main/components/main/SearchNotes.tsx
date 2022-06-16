@@ -1,4 +1,4 @@
-import React, { startTransition, useCallback, useMemo, useState } from "react";
+import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
 import { Box, Grid } from "@chakra-ui/layout";
 import { Input } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
@@ -8,23 +8,29 @@ import { dbNotes } from "../../../utils";
 const SearchNotes = () => {
   const collections = useNoteStore(useCallback((state) => state.collections, []));
   const [search, setSearch] = useState("");
-  const [searchInput, setSearchInput] = useState("");
+
   const results = useMemo(() => {
     let notes = dbNotes(collections);
     if (search.trim().length < 3) {
       return [];
     }
+    let lowercaseSearch = search.toLowerCase();
+
     return notes.filter(
-      (note) => note.content.includes(search) || note.title.includes(search)
+      (note) =>
+        note.content.toLowerCase().includes(lowercaseSearch) ||
+        note.title.toLowerCase().includes(lowercaseSearch)
     );
   }, [search, collections]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
+  const deferredResults = useDeferredValue(results);
 
-    startTransition(() => {
-      setSearch(e.target.value);
-    });
+  const searchResults = useMemo(() => {
+    return deferredResults.map((note) => <Note key={note.id} note={note} />);
+  }, [deferredResults]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
   };
 
   const submitSearch = (e: React.FormEvent) => {
@@ -36,7 +42,7 @@ const SearchNotes = () => {
       <form onSubmit={submitSearch}>
         <Input
           name="search"
-          value={searchInput}
+          value={search}
           w="full"
           placeholder="type a minimum of 3 characters"
           type="text"
@@ -55,9 +61,7 @@ const SearchNotes = () => {
           scrollbarWidth: "thin",
         }}
       >
-        {results.map((note) => (
-          <Note key={note.id} note={note} />
-        ))}
+        {searchResults}
       </Grid>
     </Box>
   );
