@@ -47,9 +47,7 @@ require("esbuild")
     try {
       for (const buildPath of buildPaths) {
         await copyFile(buildPath.src, buildPath.dest);
-        console.log(
-          `copy ${buildPath.src.split("\\").splice(-1).join()} to ${buildPath.dest} `
-        );
+        console.log(`copy ${path.basename(buildPath.src)} to ${buildPath.dest} `);
       }
 
       await copyStaticFiles();
