@@ -1,4 +1,4 @@
-import { GridItem } from "@chakra-ui/layout";
+import { GridItem } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 
 const Separator = styled(GridItem)`

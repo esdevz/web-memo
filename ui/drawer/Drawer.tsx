@@ -8,8 +8,8 @@ import {
   DrawerProps,
   DrawerBody,
   DrawerFooter,
-} from "@chakra-ui/modal";
-import { Text } from "@chakra-ui/react";
+  Text,
+} from "@chakra-ui/react";
 
 const CustomDrawer = ({
   controls,

@@ -13,7 +13,7 @@ import {
   IconButton,
   IconButtonProps,
 } from "@chakra-ui/react";
-import { MdReadMore } from "react-icons/Md";
+import { MdReadMore } from "react-icons/md";
 interface CustomModalProps extends ModalProps {
   modalTitle: string;
   controls?: ReactNode;

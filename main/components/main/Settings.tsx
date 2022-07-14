@@ -1,13 +1,18 @@
 import React, { useCallback, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { Box } from "@chakra-ui/layout";
-import { Tooltip, IconButton, BoxProps, IconButtonProps } from "@chakra-ui/react";
+import {
+  Tooltip,
+  IconButton,
+  BoxProps,
+  IconButtonProps,
+  useColorMode,
+  Box,
+} from "@chakra-ui/react";
 import { BiCog } from "react-icons/bi";
 import { GoSettings } from "react-icons/go";
 import { BsLayoutSidebar } from "react-icons/bs";
 import { AiOutlineFileSearch } from "react-icons/ai";
 import { DarkModeSwitch } from "./DarkModeSwitch";
-import { useColorMode } from "@chakra-ui/color-mode";
 import useNoteStore from "../../store/noteStore";
 
 const optionList: Variants = {

@@ -1,6 +1,5 @@
 import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
-import { Box, Grid } from "@chakra-ui/layout";
-import { Input } from "@chakra-ui/react";
+import { Input , Box ,Grid } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
 import Note from "../note/Note";
 import { dbNotes } from "../../../utils";

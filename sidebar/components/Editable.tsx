@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, BoxProps } from "@chakra-ui/layout";
+import { Box, BoxProps } from "@chakra-ui/react";
 
 interface SidebarEditableProps extends BoxProps {
   customFonts?: {
