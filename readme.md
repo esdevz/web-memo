@@ -5,7 +5,7 @@
 
 ## About
 
-This is a web extension that helps you create notes from selected text and save copied images and screenshots.
+This is a web extension that helps you create notes and collections from websites you visit.
 
 ## How it works
 
@@ -25,16 +25,16 @@ or copy paste / drag into the sidebar, this will let you save copied images and 
 
 ## Install
 
-you need yarn and NodeJs 14+
+you need pnpm and NodeJs 14+
 
 ```
-yarn install
+pnpm install
 ```
 
 then
 
 ```
-yarn build
+pnpm run build
 ```
 
 go to "about:debugging#/runtime/this-firefox"  
