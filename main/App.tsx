@@ -1,5 +1,12 @@
 import React, { startTransition, useCallback, useEffect, useMemo } from "react";
-import { Box, Grid, Tooltip, useBoolean, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  Tooltip,
+  useBoolean,
+  useDisclosure,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import EmptyCollection from "./components/main/EmptyCollection";
 import Note from "./components/note/Note";
 import NotesContainer from "./components/note/NotesContainer";
@@ -44,6 +51,7 @@ const App = () => {
     );
   }, [addNewNote]);
 
+  const [smallScreen] = useMediaQuery("(max-width: 55em)");
   const [expandSettings, { toggle, off }] = useBoolean(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -71,12 +79,12 @@ const App = () => {
       <Grid
         h="full"
         templateRows="1fr"
-        templateColumns={`repeat(${layout === "default" ? "10" : "14"} , 1fr)`}
+        templateColumns="repeat( 16 , 1fr)"
         gap={3}
         overflow="auto"
       >
         <CollectionTabs />
-        <NotesContainer colSpan={layout === "default" ? 8 : 13}>
+        <NotesContainer smallScreen={smallScreen} layout={layout}>
           <EmptyCollection collections={collections} activeTab={activeTab} />
           {pinnedNote.length > 0 && (
             <>
