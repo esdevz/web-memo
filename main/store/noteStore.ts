@@ -1,6 +1,6 @@
 import { db } from "./db";
 import create from "zustand";
-import { NoteStore, Layout, CollectionOptions, INote } from "./types";
+import type { NoteStore, Layout, CollectionOptions, INote } from "./types";
 import { formatNotes } from "../../utils";
 import produce from "immer";
 
