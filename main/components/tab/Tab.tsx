@@ -1,20 +1,15 @@
 import React, { DragEvent, useCallback } from "react";
 import { Text, Button, Tooltip, IconButton, useBoolean } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
-import { CustomIcon } from "../../store/types";
+import type { CustomIcon, Layout } from "../../store/types";
 import TabIcon from "./TabIcon";
 import { MotionProps, Reorder } from "framer-motion";
 import shallow from "zustand/shallow";
 
 const Tab = (props: SidebarProps) => {
-  const [setActiveTab, activeTab, tabLayout, dropToCollection] = useNoteStore(
+  const [setActiveTab, activeTab, dropToCollection] = useNoteStore(
     useCallback(
-      (state) => [
-        state.setActiveTab,
-        state.activeTab,
-        state.tabLayout,
-        state.updateTargetCollection,
-      ],
+      (state) => [state.setActiveTab, state.activeTab, state.updateTargetCollection],
       []
     ),
     shallow
@@ -54,7 +49,7 @@ const Tab = (props: SidebarProps) => {
     exit: { opacity: 0 },
   };
 
-  if (tabLayout === "minimized") {
+  if (props.tabLayout === "minimized") {
     return (
       <Reorder.Item
         style={{
@@ -89,7 +84,7 @@ const Tab = (props: SidebarProps) => {
             icon={
               <TabIcon
                 icon={props.favicon}
-                layoutType={tabLayout}
+                layoutType={props.tabLayout}
                 customIcon={props.customIconType}
                 collectionName={props.website}
                 collectionLabel={props.displayName}
@@ -128,7 +123,7 @@ const Tab = (props: SidebarProps) => {
         leftIcon={
           <TabIcon
             icon={props.favicon}
-            layoutType={tabLayout}
+            layoutType={props.tabLayout}
             customIcon={props.customIconType}
             collectionName={props.website}
             collectionLabel={props.displayName}
@@ -148,6 +143,7 @@ interface SidebarProps {
   displayName: string;
   customIconType: CustomIcon;
   value: string;
+  tabLayout: Layout;
   updateOrder: () => void;
 }
 
