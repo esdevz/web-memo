@@ -71,15 +71,17 @@ const CollectionTabs = () => {
           colorScheme="bb"
           boxSize="2.85rem"
           position="fixed"
-          bottom="1rem"
-          left="1rem"
-          zIndex={10}
+          bottom="1em"
+          left="0"
+          margin="0.7em"
+          borderRadius="30%"
+          zIndex={2}
           icon={<RiMenuUnfoldFill />}
           onClick={onOpen}
         />
         <Drawer
           size="sm"
-          drawerTitle="tabs"
+          drawerTitle="Tabs"
           onClose={onClose}
           isOpen={isOpen}
           returnFocusOnClose={false}
