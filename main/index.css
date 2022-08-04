@@ -23,6 +23,11 @@ code {
   --bg-code: rgb(185, 185, 185, 0.15);
   --outline-clr: rgb(66, 153, 225, 0.6);
   --txt-clr-header: #1c5da2;
+  --note-width: 20rem;
+  --note-width-open: 75%;
+  --note-title-width: 18rem;
+  --note-title-width-open: 80ch;
+  --note-section-column: 20.3rem;
 }
 
 .chakra-ui-dark {
@@ -38,4 +43,14 @@ code {
 
 [contenteditable]:empty:before {
   content: "\feff";
+}
+
+@media (max-width: 55em) {
+  :root {
+    --note-section-column: 48vw;
+    --note-width-open: 100%;
+    --note-width: 47vw;
+    --note-title-width: 43vw;
+    --note-title-width-open: 75vw;
+  }
 }
