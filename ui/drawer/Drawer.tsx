@@ -29,6 +29,7 @@ const CustomDrawer = ({
           sx={{
             scrollbarWidth: "thin",
           }}
+          padding={{ base: "0", md: "0.7rem" }}
         >
           {children}
         </DrawerBody>
