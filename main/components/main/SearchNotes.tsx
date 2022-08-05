@@ -1,5 +1,5 @@
 import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
-import { Input , Box ,Grid } from "@chakra-ui/react";
+import { Input, Box, Grid } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
 import Note from "../note/Note";
 import { dbNotes } from "../../../utils";
@@ -54,7 +54,7 @@ const SearchNotes = () => {
         as="section"
         display="grid"
         gridGap="1.5"
-        gridTemplateColumns="repeat(auto-fill, 20.3rem)"
+        gridTemplateColumns="repeat(auto-fill, var(--note-section-column))"
         gridTemplateRows="repeat(auto-fill, 16.3rem)"
         sx={{
           scrollbarWidth: "thin",
