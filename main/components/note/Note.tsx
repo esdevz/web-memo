@@ -34,6 +34,7 @@ interface NoteProps {
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
   const [open, setOpen] = useBoolean(false);
+
   const [editNote, pin, del, setDraggedNote, setNoteColor, customFonts] =
     useNoteStore(
       useCallback(
@@ -204,8 +205,7 @@ const Note = ({ note }: NoteProps) => {
             as="h2"
             fontFamily={customFonts?.title}
             noOfLines={1}
-            maxW={open ? "80ch" : "18rem"}
-            w={open ? "50ch" : undefined}
+            maxW={open ? "var(--note-title-width-open)" : "var( --note-title-width)"}
           >
             {note.title}
           </Text>

@@ -12,7 +12,7 @@ const NoteSection = (props: NoteSectionProps) => {
       colSpan={1}
       display="grid"
       gridGap="4px"
-      gridTemplateColumns="repeat(auto-fill, 20.3rem)"
+      gridTemplateColumns="repeat(auto-fill, var(--note-section-column))"
       gridTemplateRows="repeat(auto-fill, 16.3rem)"
     >
       {props?.children}

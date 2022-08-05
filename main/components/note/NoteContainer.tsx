@@ -12,8 +12,8 @@ const NoteContainer = (
       {...props}
       tabIndex={0}
       pos={props.open ? "fixed" : "static"}
-      w={props.open ? "75%" : "20rem"}
-      h={props.open ? "95%" : "16rem"}
+      w={props.open ? "var(--note-width-open)" : "var(--note-width)"}
+      h={props.open ? "100%" : "16rem"}
       top={props.open ? 0 : undefined}
       p="2.5"
       as="article"
@@ -25,7 +25,7 @@ const NoteContainer = (
       m="1"
       border="1px solid var(--border)"
       transition="height 0.2s ease-in-out"
-      zIndex={props.open ? 2 : undefined}
+      zIndex={props.open ? 3 : undefined}
       bgColor={clrSwitch[props.colorMode][props.noteColor || "default"]}
       _focusVisible={{
         boxShadow: "0 0 0 3px var(--outline-clr)",

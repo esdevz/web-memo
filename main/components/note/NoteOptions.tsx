@@ -1,9 +1,10 @@
 import React from "react";
-import { HStack, Button } from "@chakra-ui/react";
+import { HStack, Button, useMediaQuery } from "@chakra-ui/react";
 import { FiSave } from "react-icons/fi";
 import { TiDocumentDelete } from "react-icons/ti";
 
 const NoteOptions = (props: NoteOptionProps) => {
+  const [smallScreen] = useMediaQuery("(max-width: 41em)");
   return (
     <HStack spacing="1">
       <Button
@@ -11,17 +12,12 @@ const NoteOptions = (props: NoteOptionProps) => {
         colorScheme="teal"
         size="sm"
         onClick={props.save}
-        leftIcon={<FiSave />}
+        gap="3px"
       >
-        Save
+        <FiSave /> {!smallScreen && "Save"}
       </Button>
-      <Button
-        onClick={props.delete}
-        colorScheme="darkpink"
-        size="sm"
-        leftIcon={<TiDocumentDelete />}
-      >
-        Delete
+      <Button onClick={props.delete} colorScheme="darkpink" size="sm" gap="3px">
+        <TiDocumentDelete /> {!smallScreen && "Delete"}
       </Button>
     </HStack>
   );
