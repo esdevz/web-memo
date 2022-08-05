@@ -206,6 +206,7 @@ const Note = ({ note }: NoteProps) => {
             fontFamily={customFonts?.title}
             noOfLines={1}
             maxW={open ? "var(--note-title-width-open)" : "var( --note-title-width)"}
+            minW="70%"
           >
             {note.title}
           </Text>
