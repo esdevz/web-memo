@@ -145,6 +145,7 @@ const Note = ({ note }: NoteProps) => {
     if (open) {
       switch (e.key) {
         case "Escape":
+          e.stopPropagation();
           closeNoteHandler();
           break;
         case e.ctrlKey && "s":
