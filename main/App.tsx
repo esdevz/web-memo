@@ -115,10 +115,14 @@ const App = () => {
         onClose={closeModal}
         isOpen={isOpen}
         returnFocusOnClose={false}
-        disableCloseButton
         altActionComponent={
           <Tooltip label="more settings">
-            <AltActionButton aria-label="more settings" size="md" onClick={toggle} />
+            <AltActionButton
+              ml="auto"
+              aria-label="more settings"
+              size="md"
+              onClick={toggle}
+            />
           </Tooltip>
         }
         modalBodyProps={{

@@ -43,9 +43,16 @@ const CustomModal = ({
           <Text tabIndex={0} as="h2">
             {modalTitle}
           </Text>
-          {disableCloseButton && altActionComponent}
+          {altActionComponent ? altActionComponent : null}
+          <ModalCloseButton
+            marginInlineStart="1ch"
+            pos="initial"
+            borderRadius="md"
+            minW={10}
+            h={10}
+          />
         </ModalHeader>
-        {!disableCloseButton && <ModalCloseButton />}
+
         <ModalBody {...modalBodyProps}>{children}</ModalBody>
         <ModalFooter> {controls} </ModalFooter>
       </ModalContent>
