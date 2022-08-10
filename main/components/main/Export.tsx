@@ -121,7 +121,7 @@ const Export = () => {
 
   return (
     <>
-      <Box w="full" m="1.5rem 0" as="form" onSubmit={onFormSubmit}>
+      <Box gridArea="exp" w="full" m="1.5rem 0" as="form" onSubmit={onFormSubmit}>
         <FormInput
           w="full"
           label="Export :"
@@ -140,6 +140,7 @@ const Export = () => {
         </Button>
       </Box>
       <VStack
+        gridArea="desc"
         borderRadius="md"
         onDragEnter={dragEnterHandler}
         onDragLeave={dragLeaveHandler}
@@ -167,10 +168,11 @@ const Export = () => {
           )}
         </Text>
       </VStack>
-      <Text as="h3" m="6px 0 0 0" fontSize="0.9rem" textAlign="center">
+      <Text gridArea="or" as="h3" m="6px 0 0 0" fontSize="0.9rem" textAlign="center">
         OR
       </Text>
       <Button
+        gridArea="imp"
         mt="6px"
         leftIcon={<AiOutlineUpload />}
         as="label"

@@ -62,7 +62,7 @@ const Preferences = () => {
   };
 
   return (
-    <Box gridRow="1/6" gridColumn="2" w="full">
+    <Box gridArea="pref" w="full">
       <Box
         display="grid"
         gridTemplateColumns="1fr 1fr"

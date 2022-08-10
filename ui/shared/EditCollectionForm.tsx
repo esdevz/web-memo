@@ -47,7 +47,7 @@ const EditCollectionForm = (props: EditCollectionFormProps) => {
       });
   };
   return (
-    <form onSubmit={submitCollection}>
+    <form style={{ gridArea: "coll" }} onSubmit={submitCollection}>
       <FormControl id="collection-option">
         <FormLabel>
           <Text color="var(--txt-clr-header)" as="h2">
