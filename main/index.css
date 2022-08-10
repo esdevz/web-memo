@@ -45,6 +45,28 @@ code {
   content: "\feff";
 }
 
+.collection-expanded {
+  grid-template-areas:
+    "coll coll"
+    "exp exp"
+    "desc desc"
+    "or or"
+    "imp imp"
+    "pref pref";
+}
+.collection-default {
+  grid-template-areas:
+    "coll pref"
+    "exp pref"
+    "desc pref"
+    "or pref"
+    "imp pref";
+}
+
+.collection-expanded h2 {
+  padding-top: 0.7rem;
+}
+
 @media (max-width: 55em) {
   :root {
     --note-section-column: 48vw;
