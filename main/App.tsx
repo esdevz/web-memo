@@ -110,7 +110,7 @@ const App = () => {
       </Grid>
       <Settings openDrawer={openDrawer} openModal={onOpen} />
       <Modal
-        size={`${expandSettings ? "4xl" : "md"}`}
+        size={`${expandSettings ? "4xl" : "lg"}`}
         modalTitle={activeTab}
         onClose={closeModal}
         isOpen={isOpen}
@@ -128,7 +128,13 @@ const App = () => {
         modalBodyProps={{
           display: "grid",
           gridTemplateColumns: `repeat(${expandSettings ? 2 : 1},1fr)`,
+          gridAutoRows: "auto",
+          className:
+            expandSettings && smallScreen
+              ? "collection-expanded"
+              : "collection-default",
           gridColumnGap: "1.2rem",
+          gridRowGap: "0.3rem",
         }}
       >
         <EditCollectionForm
