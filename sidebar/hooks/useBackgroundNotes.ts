@@ -2,18 +2,9 @@ import { NotesDB } from "../../idb/NotesDb";
 import { useCallback, useEffect, useState } from "react";
 import { useColorMode } from "@chakra-ui/react";
 import type { CustomFonts, CustomIcon, INote } from "../../main/store/types";
+import { defaultNote as initialNoteState } from "../../consts";
 
 const db = new NotesDB();
-
-export const initialNoteState: INote = {
-  title: "",
-  website: "notes",
-  fullUrl: "",
-  favicon: "",
-  content: "",
-  createdAt: 0,
-  isPinned: false,
-};
 
 const initialFontsState: CustomFonts = {
   title: "",

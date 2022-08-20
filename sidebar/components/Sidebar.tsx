@@ -13,7 +13,8 @@ import {
 import FormInput from "../../ui/form/FormInput";
 import DataList from "../../ui/form/DataList";
 import Editable from "./Editable";
-import { initialNoteState, useBackgroundNote } from "../hooks/useBackgroundNotes";
+import { useBackgroundNote } from "../hooks/useBackgroundNotes";
+import { defaultNote as initialNoteState } from "../../consts";
 import { getHostName } from "../../utils/getHostName";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
 import { CustomIcon } from "../../main/store/types";

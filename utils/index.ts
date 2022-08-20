@@ -1,4 +1,3 @@
-export * from "./defaults";
 export * from "./formatNotes";
 export { sanitizeHtml } from "./sanitizeHtml";
 export * from "./Date";

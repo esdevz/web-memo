@@ -1,6 +1,6 @@
 import Dexie from "dexie";
 import { CollectionOptions, Configs, INote } from "../main/store/types";
-import { defaultConfig, defaultNote } from "../utils/defaults";
+import { defaultConfig, defaultNote } from "../consts";
 
 export const DATABASE = "web-notes";
 export const NOTES_TABLE = "notes";
@@ -98,7 +98,10 @@ export class NotesDB extends Dexie {
     return this.table<Configs, number>(CONFIGS_TABLE)
       .toCollection()
       .modify((cfg) => {
-        cfg.collections[name] = { ...(cfg.collections[name] || {}), ...subCollection };
+        cfg.collections[name] = {
+          ...(cfg.collections[name] || {}),
+          ...subCollection,
+        };
       });
   }
 }

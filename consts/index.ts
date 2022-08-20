@@ -1,8 +1,8 @@
-import { Configs } from "../main/store/types";
+import type { Configs, INote } from "../main/store/types";
 
 export const DB_NAME = "notes";
 
-export const defaultNote = {
+export const defaultNote: INote = {
   title: "",
   content: "",
   fullUrl: "",

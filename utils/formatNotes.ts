@@ -1,5 +1,5 @@
 import { INote, Collection, Configs } from "../main/store/types";
-import { defaultNote } from "./defaults";
+import { defaultNote } from "../consts";
 
 export function dbNotes(collection: Record<string, Collection>) {
   let notes: INote[] = [];
