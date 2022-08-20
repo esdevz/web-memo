@@ -1,6 +1,7 @@
 import React from "react";
 import { GridItem } from "@chakra-ui/react";
 import type { Layout } from "../../store/types";
+import { LayoutGroup } from "framer-motion";
 
 const NotesContainer = (props: NotesContainerProps) => {
   const colSpan = props.layout === "default" ? 13 : 15;
@@ -22,7 +23,7 @@ const NotesContainer = (props: NotesContainerProps) => {
         scrollbarWidth: "thin",
       }}
     >
-      {props?.children}
+      <LayoutGroup>{props?.children}</LayoutGroup>
     </GridItem>
   );
 };

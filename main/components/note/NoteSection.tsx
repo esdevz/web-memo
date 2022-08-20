@@ -1,8 +1,10 @@
 import React from "react";
 import { GridItem } from "@chakra-ui/react";
+import { LayoutGroup } from "framer-motion";
 
 interface NoteSectionProps {
   children?: React.ReactNode;
+  groupLayoutId?: string;
 }
 
 const NoteSection = (props: NoteSectionProps) => {
@@ -15,7 +17,7 @@ const NoteSection = (props: NoteSectionProps) => {
       gridTemplateColumns="repeat(auto-fill, var(--note-section-column))"
       gridTemplateRows="repeat(auto-fill, 16.3rem)"
     >
-      {props?.children}
+      <LayoutGroup id={props.groupLayoutId}>{props?.children}</LayoutGroup>
     </GridItem>
   );
 };

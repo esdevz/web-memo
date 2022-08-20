@@ -91,7 +91,7 @@ const App = () => {
               <Separator as="h3" colSpan={1}>
                 Pinned
               </Separator>
-              <NoteSection>
+              <NoteSection groupLayoutId="pinned">
                 {pinnedNote.map((note) => (
                   <Note key={note.id} note={note} />
                 ))}
@@ -101,7 +101,7 @@ const App = () => {
               </Separator>
             </>
           )}
-          <NoteSection>
+          <NoteSection groupLayoutId="other">
             {otherNotes.map((note) => (
               <Note key={note.id} note={note} />
             ))}
