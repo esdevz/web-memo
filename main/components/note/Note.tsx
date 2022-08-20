@@ -166,7 +166,10 @@ const Note = ({ note }: NoteProps) => {
   }
   return (
     <NoteContainer
+      layout
       layoutId={note.id?.toString()}
+      //@ts-ignore
+      transition={{ layout: { duration: 0.25 } }}
       ref={noteRef}
       onKeyDown={onKeyDownHandler}
       onDragStart={dragStartHandler}

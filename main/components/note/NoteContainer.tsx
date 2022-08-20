@@ -4,13 +4,11 @@ import { clrSwitch } from "../../theme";
 import { motion } from "framer-motion";
 
 const NoteContainer = (
-  { layoutId, ...props }: NoteContainerProps,
+  props: NoteContainerProps,
   ref: React.ForwardedRef<HTMLDivElement>
 ) => {
   return (
     <Grid
-      layout
-      layoutId={layoutId}
       ref={ref}
       {...props}
       tabIndex={0}
@@ -19,7 +17,7 @@ const NoteContainer = (
       h={props.open ? "100%" : "16rem"}
       top={props.open ? 0 : undefined}
       p="2.5"
-      as={motion.article}
+      as="article"
       shadow="md"
       templateRows="repeat(10,1fr)"
       templateColumns="1fr"
@@ -41,7 +39,9 @@ const NoteContainer = (
   );
 };
 
-export default forwardRef(NoteContainer);
+const MotionContainer = motion(forwardRef(NoteContainer));
+
+export default MotionContainer;
 interface NoteContainerProps extends GridProps {
   open: boolean;
   colorMode: "light" | "dark";
