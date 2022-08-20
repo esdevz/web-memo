@@ -166,6 +166,7 @@ const Note = ({ note }: NoteProps) => {
   }
   return (
     <NoteContainer
+      layoutId={note.id?.toString()}
       ref={noteRef}
       onKeyDown={onKeyDownHandler}
       onDragStart={dragStartHandler}

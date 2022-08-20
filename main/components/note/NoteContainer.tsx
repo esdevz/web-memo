@@ -1,13 +1,16 @@
 import React, { forwardRef } from "react";
 import { GridProps, Grid } from "@chakra-ui/react";
 import { clrSwitch } from "../../theme";
+import { motion } from "framer-motion";
 
 const NoteContainer = (
-  props: NoteContainerProps,
+  { layoutId, ...props }: NoteContainerProps,
   ref: React.ForwardedRef<HTMLDivElement>
 ) => {
   return (
     <Grid
+      layout
+      layoutId={layoutId}
       ref={ref}
       {...props}
       tabIndex={0}
@@ -16,7 +19,7 @@ const NoteContainer = (
       h={props.open ? "100%" : "16rem"}
       top={props.open ? 0 : undefined}
       p="2.5"
-      as="article"
+      as={motion.article}
       shadow="md"
       templateRows="repeat(10,1fr)"
       templateColumns="1fr"
@@ -24,7 +27,6 @@ const NoteContainer = (
       borderRadius={7}
       m="1"
       border="1px solid var(--border)"
-      transition="height 0.2s ease-in-out"
       zIndex={props.open ? 3 : undefined}
       bgColor={clrSwitch[props.colorMode][props.noteColor || "default"]}
       _focusVisible={{
@@ -44,4 +46,5 @@ interface NoteContainerProps extends GridProps {
   open: boolean;
   colorMode: "light" | "dark";
   noteColor?: string;
+  layoutId?: string;
 }
