@@ -14,6 +14,7 @@ import { BsLayoutSidebar } from "react-icons/bs";
 import { AiOutlineFileSearch } from "react-icons/ai";
 import { DarkModeSwitch } from "./DarkModeSwitch";
 import useNoteStore from "../../store/noteStore";
+import { useKeyboard } from "../../hooks/useKeyboard";
 
 const optionList: Variants = {
   idle: {
@@ -77,15 +78,18 @@ const Settings = (props: SettingsProps) => {
     useCallback((state) => [state.tabLayout, state.updateLayout], [])
   );
 
-  const [showMenu, setShowMenu] = useState(false);
+  useKeyboard({
+    collection: props.openModal,
+    search: props.openDrawer,
+  });
 
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
+  const [showMenu, setShowMenu] = useState(false);
 
   const showSettings = () => {
     setShowMenu((current) => !current);
   };
-
   const updateLayout = () => {
     setLayout(layout === "default" ? "minimized" : "default");
   };
@@ -104,7 +108,7 @@ const Settings = (props: SettingsProps) => {
             animate="animate"
             variants={optionList}
           >
-            <Tooltip label="Edit collection" placement="left">
+            <Tooltip label="Edit collection | ctrl + alt + c" placement="left">
               <MotionButton
                 onClick={props.openModal}
                 variants={option}
@@ -114,7 +118,7 @@ const Settings = (props: SettingsProps) => {
                 aria-label="edit collection"
               />
             </Tooltip>
-            <Tooltip label="Search Notes" placement="left">
+            <Tooltip label="Search Notes | ctrl + alt + f" placement="left">
               <MotionButton
                 onClick={props.openDrawer}
                 variants={option}
