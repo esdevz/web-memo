@@ -168,8 +168,9 @@ const Note = ({ note }: NoteProps) => {
     <NoteContainer
       layout
       layoutId={note.id?.toString()}
+      layoutScroll
       //@ts-ignore
-      transition={{ layout: { duration: 0.25 } }}
+      transition={{ layout: { type: "spring", duration: 0.4, bounce: 0.15 } }}
       ref={noteRef}
       onKeyDown={onKeyDownHandler}
       onDragStart={dragStartHandler}
