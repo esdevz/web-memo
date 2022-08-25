@@ -27,17 +27,22 @@ const option: Variants = {
   },
 };
 
+export const toggleColorScheme = async (cb: () => void) => {
+  cb();
+  let sidebarOpenState = await browser.sidebarAction.isOpen({});
+  if (sidebarOpenState) browser.runtime.sendMessage({ msg: "TOGGLE_COLOR_MODE" });
+};
+
 const MotionButton = motion<IconButtonProps>(IconButton);
 
 export const DarkModeSwitch = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
 
-  const toggleMode = async () => {
-    toggleColorMode();
-    let sidebarOpenState = await browser.sidebarAction.isOpen({});
-    if (sidebarOpenState) browser.runtime.sendMessage({ msg: "TOGGLE_COLOR_MODE" });
+  const toggleMode = () => {
+    toggleColorScheme(toggleColorMode);
   };
+
   return (
     <Tooltip label="Dark/Light Mode" placement="left">
       <MotionButton
