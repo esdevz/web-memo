@@ -78,11 +78,6 @@ const Settings = (props: SettingsProps) => {
     useCallback((state) => [state.tabLayout, state.updateLayout], [])
   );
 
-  useKeyboard({
-    collection: props.openModal,
-    search: props.openDrawer,
-  });
-
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const [showMenu, setShowMenu] = useState(false);
@@ -93,6 +88,12 @@ const Settings = (props: SettingsProps) => {
   const updateLayout = () => {
     setLayout(layout === "default" ? "minimized" : "default");
   };
+
+  useKeyboard({
+    collection: props.openModal,
+    search: props.openDrawer,
+    toggleLayout: updateLayout,
+  });
 
   return (
     <Box pos="fixed" bottom="1em" right="0">
