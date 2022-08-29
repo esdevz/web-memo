@@ -1,35 +1,15 @@
-import { extendTheme, ThemeConfig, theme as baseTheme } from "@chakra-ui/react";
+import { ColorMode, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { themeColorPalette } from "../utils/theme";
 
-const FormLabel = {
-  baseStyle: {
-    fontWeight: "500",
-    fontFamily: "Raleway",
-  },
-};
-
-const Button = {
-  sizes: {
-    xs: {
-      h: "4ch",
-      w: "4ch",
-      fontSize: "md",
-    },
-  },
-};
-
 const config: ThemeConfig = {
-  initialColorMode: "light",
+  initialColorMode:
+    (localStorage.getItem("chakra-ui-color-mode") as ColorMode) ?? "light",
   useSystemColorMode: false,
 };
 
 const theme = extendTheme({
-  baseTheme,
   config,
-  components: {
-    FormLabel,
-    Button,
-  },
+
   colors: {
     bb: {
       ...themeColorPalette([
