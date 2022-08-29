@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import {
   Tooltip,
@@ -12,9 +12,8 @@ import { BiCog } from "react-icons/bi";
 import { GoSettings } from "react-icons/go";
 import { BsLayoutSidebar } from "react-icons/bs";
 import { AiOutlineFileSearch } from "react-icons/ai";
-import { DarkModeSwitch } from "./DarkModeSwitch";
+import { DarkModeSwitch, sidebarToggleTheme } from "./DarkModeSwitch";
 import useNoteStore from "../../store/noteStore";
-import { useKeyboard } from "../../hooks/useKeyboard";
 
 const optionList: Variants = {
   idle: {
@@ -78,22 +77,45 @@ const Settings = (props: SettingsProps) => {
     useCallback((state) => [state.tabLayout, state.updateLayout], [])
   );
 
-  const { colorMode } = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const [showMenu, setShowMenu] = useState(false);
 
   const showSettings = () => {
     setShowMenu((current) => !current);
   };
-  const updateLayout = () => {
+  const updateLayout = useCallback(() => {
     setLayout(layout === "default" ? "minimized" : "default");
-  };
+  }, [layout, setLayout]);
 
-  useKeyboard({
-    collection: props.openModal,
-    search: props.openDrawer,
-    toggleLayout: updateLayout,
-  });
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case e.ctrlKey && e.altKey && "f":
+        case e.ctrlKey && e.altKey && "F":
+          props.openDrawer();
+          break;
+        case e.ctrlKey && e.altKey && "c":
+        case e.ctrlKey && e.altKey && "C":
+          props.openModal();
+          break;
+        case e.ctrlKey && e.altKey && "l":
+        case e.ctrlKey && e.altKey && "L":
+          updateLayout();
+          break;
+        case e.ctrlKey && e.altKey && "d":
+        case e.ctrlKey && e.altKey && "D":
+          toggleColorMode();
+          sidebarToggleTheme();
+          break;
+        default:
+          break;
+      }
+    };
+    window.addEventListener("keydown", handler);
+
+    return () => window.removeEventListener("keydown", handler);
+  }, [props, toggleColorMode, updateLayout]);
 
   return (
     <Box pos="fixed" bottom="1em" right="0">
@@ -109,7 +131,7 @@ const Settings = (props: SettingsProps) => {
             animate="animate"
             variants={optionList}
           >
-            <Tooltip label="Edit collection | ctrl + alt + c" placement="left">
+            <Tooltip label="Edit collection | Ctrl alt c" placement="left">
               <MotionButton
                 onClick={props.openModal}
                 variants={option}
@@ -119,7 +141,7 @@ const Settings = (props: SettingsProps) => {
                 aria-label="edit collection"
               />
             </Tooltip>
-            <Tooltip label="Search Notes | ctrl + alt + f" placement="left">
+            <Tooltip label="Search Notes | Ctrl alt f" placement="left">
               <MotionButton
                 onClick={props.openDrawer}
                 variants={option}
@@ -129,7 +151,7 @@ const Settings = (props: SettingsProps) => {
                 aria-label="layout type"
               />
             </Tooltip>
-            <Tooltip label="Toggle Tabs" placement="left">
+            <Tooltip label="Toggle Tabs Layout | Ctrl alt l" placement="left">
               <MotionButton
                 onClick={updateLayout}
                 variants={option}

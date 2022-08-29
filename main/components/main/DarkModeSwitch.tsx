@@ -43,7 +43,7 @@ export const DarkModeSwitch = () => {
   };
 
   return (
-    <Tooltip label="Dark/Light Mode" placement="left">
+    <Tooltip label="Dark/Light Mode | Ctrl alt d" placement="left">
       <MotionButton
         colorScheme="bb"
         m="0.7em"
