@@ -27,8 +27,7 @@ const option: Variants = {
   },
 };
 
-export const toggleColorScheme = async (cb: () => void) => {
-  cb();
+export const sidebarToggleTheme = async () => {
   let sidebarOpenState = await browser.sidebarAction.isOpen({});
   if (sidebarOpenState) browser.runtime.sendMessage({ msg: "TOGGLE_COLOR_MODE" });
 };
@@ -40,7 +39,8 @@ export const DarkModeSwitch = () => {
   const isDark = colorMode === "dark";
 
   const toggleMode = () => {
-    toggleColorScheme(toggleColorMode);
+    toggleColorMode();
+    sidebarToggleTheme();
   };
 
   return (
