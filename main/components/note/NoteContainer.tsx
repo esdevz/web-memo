@@ -1,12 +1,13 @@
 import React, { forwardRef } from "react";
 import { GridProps, Grid } from "@chakra-ui/react";
 import { clrSwitch } from "../../theme";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 const NoteContainer = (
   props: NoteContainerProps,
   ref: React.ForwardedRef<HTMLDivElement>
 ) => {
+  const shouldReduceMotion = useReducedMotion();
   return (
     <Grid
       ref={ref}
@@ -23,6 +24,7 @@ const NoteContainer = (
       templateColumns="1fr"
       gap={2}
       borderRadius={7}
+      transition={shouldReduceMotion ? `height 0.2s ease-in-out` : undefined}
       m="1"
       border="1px solid var(--border)"
       zIndex={props.open ? 3 : undefined}

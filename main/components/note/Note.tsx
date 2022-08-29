@@ -26,6 +26,7 @@ import Colors from "./Colors";
 import shallow from "zustand/shallow";
 import { useEditor } from "../../../editor/useEditor";
 import Tools from "../../../editor/Tools";
+import { useReducedMotion } from "framer-motion";
 
 interface NoteProps {
   note: INote;
@@ -34,6 +35,7 @@ interface NoteProps {
 const Note = ({ note }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
   const [open, setOpen] = useBoolean(false);
+  const shouldReduceMotion = useReducedMotion();
 
   const [editNote, pin, del, setDraggedNote, setNoteColor, customFonts] =
     useNoteStore(
@@ -166,11 +168,15 @@ const Note = ({ note }: NoteProps) => {
   }
   return (
     <NoteContainer
-      layout
-      layoutId={note.id?.toString()}
+      layout={!shouldReduceMotion || undefined}
+      layoutId={shouldReduceMotion ? undefined : note.id?.toString()}
       layoutScroll
       //@ts-ignore
-      transition={{ layout: { type: "spring", duration: 0.4, bounce: 0.15 } }}
+      transition={
+        shouldReduceMotion
+          ? undefined
+          : { layout: { type: "spring", duration: 0.3, bounce: 0.15 } }
+      }
       ref={noteRef}
       onKeyDown={onKeyDownHandler}
       onDragStart={dragStartHandler}
