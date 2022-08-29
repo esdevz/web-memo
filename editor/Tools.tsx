@@ -1,5 +1,5 @@
 import { ButtonGroup, ButtonGroupProps } from "@chakra-ui/react";
-import React, { CSSProperties } from "react";
+import { CSSProperties } from "react";
 import { BsCode } from "react-icons/bs";
 import { BiHeading } from "react-icons/bi";
 import {

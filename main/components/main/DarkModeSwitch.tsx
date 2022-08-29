@@ -1,4 +1,3 @@
-import React from "react";
 import { BsSun, BsMoonFill } from "react-icons/bs";
 import {
   useColorMode,

@@ -1,4 +1,4 @@
-import React, { DragEvent, useCallback } from "react";
+import { DragEvent, useCallback } from "react";
 import { Text, Button, Tooltip, IconButton, useBoolean } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
 import type { CustomIcon, Layout } from "../../store/types";

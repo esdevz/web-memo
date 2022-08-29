@@ -1,7 +1,11 @@
-import React from "react";
 import { CustomIcon } from "../../main/store/types";
 import { IconProps, Icon } from "@chakra-ui/react";
-import { BsClipboard, BsFileEarmarkCode, BsListCheck, BsPaperclip } from "react-icons/bs";
+import {
+  BsClipboard,
+  BsFileEarmarkCode,
+  BsListCheck,
+  BsPaperclip,
+} from "react-icons/bs";
 import { BiFoodMenu, BiScreenshot, BiShoppingBag } from "react-icons/bi";
 import { RiMovieLine, RiStickyNoteFill } from "react-icons/ri";
 import { AiOutlineQrcode } from "react-icons/ai";

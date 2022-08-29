@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback, useState, ChangeEvent } from "react";
+import { useReducer, useCallback, useState, ChangeEvent } from "react";
 import { exportDB, importInto, peakImportFile } from "dexie-export-import";
 import {
   Box,

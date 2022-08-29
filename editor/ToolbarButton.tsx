@@ -1,5 +1,4 @@
 import { Button, ButtonProps, ComponentWithAs, Tooltip } from "@chakra-ui/react";
-import React from "react";
 
 const ToolbarButton: ComponentWithAs<"button", ButtonProps> = (props) => {
   return (

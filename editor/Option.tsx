@@ -7,7 +7,7 @@ import {
   MenuList,
   Tooltip,
 } from "@chakra-ui/react";
-import React, { CSSProperties } from "react";
+import { CSSProperties } from "react";
 import { MenuOptions, OptionValues } from "../main/store/types";
 
 interface Props extends IconButtonProps {

@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import { HStack, Input } from "@chakra-ui/react";
 import Select from "../shared/Select";
 import { IconList } from "../icons";

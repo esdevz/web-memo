@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { forwardRef, ReactNode } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -62,7 +62,7 @@ const CustomModal = ({
 
 export default CustomModal;
 
-export const AltActionButton = React.forwardRef(
+export const AltActionButton = forwardRef(
   (props: IconButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) => (
     <IconButton ref={ref} {...props} icon={<MdReadMore />} />
   )

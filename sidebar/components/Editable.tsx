@@ -1,4 +1,4 @@
-import React from "react";
+import { forwardRef } from "react";
 import { Box, BoxProps } from "@chakra-ui/react";
 
 interface SidebarEditableProps extends BoxProps {
@@ -49,4 +49,4 @@ const Editable = (
   );
 };
 
-export default React.forwardRef(Editable);
+export default forwardRef(Editable);

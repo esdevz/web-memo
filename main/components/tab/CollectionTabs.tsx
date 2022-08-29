@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { AnimatePresence, Reorder } from "framer-motion";
 import useNoteStore from "../../store/noteStore";
 import Tab from "./Tab";

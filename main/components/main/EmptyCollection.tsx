@@ -1,4 +1,3 @@
-import React from "react";
 import { GridItem, Text, useColorModeValue } from "@chakra-ui/react";
 import { Collection } from "../../store/types";
 import { NOTES_TABLE } from "../../../idb/NotesDb";
@@ -13,7 +12,8 @@ const defaultState = (
   activeTab: string
 ): boolean => {
   const initialState =
-    Object.keys(collection).length === 1 && collection[NOTES_TABLE].notes.length === 1;
+    Object.keys(collection).length === 1 &&
+    collection[NOTES_TABLE].notes.length === 1;
   const emptyNotesCollection =
     collection[NOTES_TABLE].notes.length === 1 && activeTab === NOTES_TABLE;
   return initialState || emptyNotesCollection;

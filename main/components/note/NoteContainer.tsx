@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import { GridProps, Grid } from "@chakra-ui/react";
 import { clrSwitch } from "../../theme";
 import { motion, useReducedMotion } from "framer-motion";

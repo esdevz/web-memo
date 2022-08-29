@@ -1,4 +1,3 @@
-import React from "react";
 import { Image, Avatar, IconProps } from "@chakra-ui/react";
 import { CustomIcon, Layout } from "../../store/types";
 import { CollectionIcon } from "../../../ui/icons";
@@ -24,7 +23,11 @@ const TabIcon = (props: TabIconProps) => {
     return <Image borderRadius="50%" w="2rem" src={props.icon} />;
   }
 
-  if (props.layoutType === "minimized" && props.customIcon === "default" && !props.icon) {
+  if (
+    props.layoutType === "minimized" &&
+    props.customIcon === "default" &&
+    !props.icon
+  ) {
     return <Avatar size="sm" name={props.collectionLabel} />;
   }
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { Button, Text, useBoolean, useToast, Box } from "@chakra-ui/react";
 import FormInput from "../../../ui/form/FormInput";
 import { CustomFonts } from "../../store/types";

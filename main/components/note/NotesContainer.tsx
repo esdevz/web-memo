@@ -1,4 +1,3 @@
-import React from "react";
 import { GridItem } from "@chakra-ui/react";
 import type { Layout } from "../../store/types";
 import { LayoutGroup } from "framer-motion";
