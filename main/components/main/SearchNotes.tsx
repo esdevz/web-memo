@@ -1,4 +1,11 @@
-import React, { useCallback, useDeferredValue, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Input, Box, Grid } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
 import Note from "../note/Note";
@@ -7,6 +14,11 @@ import { dbNotes } from "../../../utils";
 const SearchNotes = () => {
   const collections = useNoteStore(useCallback((state) => state.collections, []));
   const [search, setSearch] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const results = useMemo(() => {
     let notes = dbNotes(collections);
@@ -40,6 +52,7 @@ const SearchNotes = () => {
     <Box w="100%" h="100%">
       <form onSubmit={submitSearch}>
         <Input
+          ref={inputRef}
           name="search"
           value={search}
           w="full"
