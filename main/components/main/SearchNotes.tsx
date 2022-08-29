@@ -10,6 +10,7 @@ import { Input, Box, Grid } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
 import Note from "../note/Note";
 import { dbNotes } from "../../../utils";
+import { LayoutGroup } from "framer-motion";
 
 const SearchNotes = () => {
   const collections = useNoteStore(useCallback((state) => state.collections, []));
@@ -73,7 +74,7 @@ const SearchNotes = () => {
           scrollbarWidth: "thin",
         }}
       >
-        {searchResults}
+        <LayoutGroup id="search-notes">{searchResults}</LayoutGroup>
       </Grid>
     </Box>
   );
