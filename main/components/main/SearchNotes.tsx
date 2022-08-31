@@ -38,7 +38,9 @@ const SearchNotes = () => {
   const deferredResults = useDeferredValue(results);
 
   const searchResults = useMemo(() => {
-    return deferredResults.map((note) => <Note key={note.id} note={note} />);
+    return deferredResults.map((note) => (
+      <Note doNotAnimateBetweenLayouts key={note.id} note={note} />
+    ));
   }, [deferredResults]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

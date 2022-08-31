@@ -30,9 +30,10 @@ import { useReducedMotion } from "framer-motion";
 
 interface NoteProps {
   note: INote;
+  doNotAnimateBetweenLayouts?: boolean;
 }
 
-const Note = ({ note }: NoteProps) => {
+const Note = ({ note, doNotAnimateBetweenLayouts }: NoteProps) => {
   const emColor = useColorModeValue("mediumblue", "lightskyblue");
   const [open, setOpen] = useBoolean(false);
   const shouldReduceMotion = useReducedMotion();
@@ -169,7 +170,11 @@ const Note = ({ note }: NoteProps) => {
   return (
     <NoteContainer
       layout={!shouldReduceMotion || undefined}
-      layoutId={shouldReduceMotion ? undefined : note.id?.toString()}
+      layoutId={
+        shouldReduceMotion || doNotAnimateBetweenLayouts
+          ? undefined
+          : note.id?.toString()
+      }
       layoutScroll
       //@ts-ignore
       transition={
