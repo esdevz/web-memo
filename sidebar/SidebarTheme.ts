@@ -31,7 +31,7 @@ const theme = extendTheme({
       h3: {
         fontSize: "md",
         fontWeight: "normal",
-        fontFamily: "Raleway",
+        fontFamily: "Raleway Variable",
       },
       em: {
         fontSize: "xs",

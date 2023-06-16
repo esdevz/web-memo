@@ -49,18 +49,18 @@ const theme = extendTheme({
     global: {
       h1: {
         fontSize: "1.4rem",
-        fontFamily: "Raleway",
+        fontFamily: "Raleway Variable",
         fontWeight: "normal",
       },
       h2: {
         fontSize: "1.1rem",
         fontWeight: "500",
-        fontFamily: "Rubik, sans-serif",
+        fontFamily: "Rubik Variable, sans-serif",
       },
       h3: {
         fontSize: "0.93rem",
         fontWeight: "normal",
-        fontFamily: "Raleway",
+        fontFamily: "Raleway Variable",
       },
       p: {
         fontSize: "0.88rem",
