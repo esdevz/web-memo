@@ -1,4 +1,4 @@
-import { startTransition, useCallback, useEffect, useMemo } from "react";
+import { startTransition, useEffect, useMemo } from "react";
 import {
   Box,
   Grid,
@@ -22,22 +22,20 @@ import { CollectionOptions } from "./store/types";
 import SearchNotes from "./components/main/SearchNotes";
 import Export from "./components/main/Export";
 
-import shallow from "zustand/shallow";
+import { shallow } from "zustand/shallow";
 import Preferences from "./components/main/Preferences";
 
 const App = () => {
-  const [collections, activeTab, addNewNote, layout, updateCollection] =
+  const { collections, activeTab, addNewNote, layout, updateCollection } =
     useNoteStore(
-      useCallback(
-        (state) => [
-          state.collections,
-          state.activeTab,
-          state.addNewNote,
-          state.tabLayout,
-          state.updateCollection,
-        ],
-        []
-      ),
+      (state) => ({
+        collections: state.collections,
+        activeTab: state.activeTab,
+        addNewNote: state.addNewNote,
+        layout: state.tabLayout,
+        updateCollection: state.updateCollection,
+      }),
+
       shallow
     );
 

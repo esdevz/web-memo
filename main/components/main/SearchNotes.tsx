@@ -1,11 +1,4 @@
-import {
-  useCallback,
-  useDeferredValue,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Input, Box, Grid } from "@chakra-ui/react";
 import useNoteStore from "../../store/noteStore";
 import Note from "../note/Note";
@@ -13,7 +6,7 @@ import { dbNotes } from "../../../utils";
 import { LayoutGroup } from "framer-motion";
 
 const SearchNotes = () => {
-  const collections = useNoteStore(useCallback((state) => state.collections, []));
+  const collections = useNoteStore((state) => state.collections);
   const [search, setSearch] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 

@@ -31,8 +31,8 @@ const FormInput = ({
 
 export default FormInput;
 interface FormInputProps extends FormControlProps {
-  inputProps?: InputProps;
+  inputProps?: Omit<InputProps, "as">;
   textField?: boolean;
-  textAreaProps?: TextareaProps;
+  textAreaProps?: Omit<TextareaProps, "as">;
   helperText?: string;
 }

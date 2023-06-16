@@ -161,7 +161,7 @@ const Sidebar = () => {
               favicon={note.favicon}
             />
             <Tooltip
-              fontFamily="Raleway"
+              fontFamily="Raleway Variable"
               fontSize="0.9em"
               label="set collection & icon"
             >

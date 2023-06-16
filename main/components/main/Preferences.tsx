@@ -1,9 +1,9 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { Button, Text, useBoolean, useToast, Box } from "@chakra-ui/react";
 import FormInput from "../../../ui/form/FormInput";
 import { CustomFonts } from "../../store/types";
 import useNoteStore from "../../store/noteStore";
-import shallow from "zustand/shallow";
+import { shallow } from "zustand/shallow";
 
 const options = [
   "Note title",
@@ -15,8 +15,11 @@ const options = [
 ];
 
 const Preferences = () => {
-  const [customFonts, updateCustomFonts] = useNoteStore(
-    useCallback((state) => [state.customFonts, state.updateCustomFonts], []),
+  const { customFonts, updateCustomFonts } = useNoteStore(
+    (state) => ({
+      customFonts: state.customFonts,
+      updateCustomFonts: state.updateCustomFonts,
+    }),
     shallow
   );
 

@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useRef } from "react";
 import {
   Text,
   GridItem,
@@ -23,7 +23,7 @@ import NoteContainer from "./NoteContainer";
 import { VscGrabber } from "react-icons/vsc";
 import NoteTools from "./NoteTools";
 import Colors from "./Colors";
-import shallow from "zustand/shallow";
+import { shallow } from "zustand/shallow";
 import { useEditor } from "../../../editor/useEditor";
 import Tools from "../../../editor/Tools";
 import { useReducedMotion } from "framer-motion";
@@ -38,19 +38,16 @@ const Note = ({ note, doNotAnimateBetweenLayouts }: NoteProps) => {
   const [open, setOpen] = useBoolean(false);
   const shouldReduceMotion = useReducedMotion();
 
-  const [editNote, pin, del, setDraggedNote, setNoteColor, customFonts] =
+  const { editNote, pin, del, setDraggedNote, setNoteColor, customFonts } =
     useNoteStore(
-      useCallback(
-        (state) => [
-          state.edit,
-          state.pin,
-          state.delete,
-          state.setDraggedNote,
-          state.setNoteColor,
-          state.customFonts,
-        ],
-        []
-      ),
+      (state) => ({
+        editNote: state.edit,
+        pin: state.pin,
+        del: state.delete,
+        setDraggedNote: state.setDraggedNote,
+        setNoteColor: state.setNoteColor,
+        customFonts: state.customFonts,
+      }),
       shallow
     );
   const [loading, setLoading] = useBoolean(false);

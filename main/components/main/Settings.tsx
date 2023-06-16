@@ -1,13 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import {
-  Tooltip,
-  IconButton,
-  BoxProps,
-  IconButtonProps,
-  useColorMode,
-  Box,
-} from "@chakra-ui/react";
+import { Tooltip, IconButton, useColorMode, Box } from "@chakra-ui/react";
 import { BiCog } from "react-icons/bi";
 import { GoSettings } from "react-icons/go";
 import { BsLayoutSidebar } from "react-icons/bs";
@@ -63,9 +56,6 @@ const option: Variants = {
   },
 };
 
-const MotionBox = motion<BoxProps>(Box);
-const MotionButton = motion<IconButtonProps>(IconButton);
-
 const styleProps = {
   m: "0.7em",
   boxSize: "2.85em",
@@ -73,9 +63,10 @@ const styleProps = {
 };
 
 const Settings = (props: SettingsProps) => {
-  const [layout, setLayout] = useNoteStore(
-    useCallback((state) => [state.tabLayout, state.updateLayout], [])
-  );
+  const { layout, setLayout } = useNoteStore((state) => ({
+    layout: state.tabLayout,
+    setLayout: state.updateLayout,
+  }));
 
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
@@ -121,7 +112,8 @@ const Settings = (props: SettingsProps) => {
     <Box pos="fixed" bottom="1em" right="0">
       <AnimatePresence>
         {showMenu && (
-          <MotionBox
+          <Box
+            as={motion.div}
             display="flex"
             flexDirection="column-reverse"
             alignItems="center"
@@ -132,7 +124,8 @@ const Settings = (props: SettingsProps) => {
             variants={optionList}
           >
             <Tooltip label="Edit collection | Ctrl alt c" placement="left">
-              <MotionButton
+              <IconButton
+                as={motion.button}
                 onClick={props.openModal}
                 variants={option}
                 {...styleProps}
@@ -142,7 +135,8 @@ const Settings = (props: SettingsProps) => {
               />
             </Tooltip>
             <Tooltip label="Search Notes | Ctrl alt f" placement="left">
-              <MotionButton
+              <IconButton
+                as={motion.button}
                 onClick={props.openDrawer}
                 variants={option}
                 {...styleProps}
@@ -152,7 +146,8 @@ const Settings = (props: SettingsProps) => {
               />
             </Tooltip>
             <Tooltip label="Toggle Tabs Layout | Ctrl alt l" placement="left">
-              <MotionButton
+              <IconButton
+                as={motion.button}
                 onClick={updateLayout}
                 variants={option}
                 {...styleProps}
@@ -162,7 +157,7 @@ const Settings = (props: SettingsProps) => {
               />
             </Tooltip>
             <DarkModeSwitch />
-          </MotionBox>
+          </Box>
         )}
       </AnimatePresence>
 

@@ -1,10 +1,5 @@
 import { BsSun, BsMoonFill } from "react-icons/bs";
-import {
-  useColorMode,
-  IconButton,
-  Tooltip,
-  IconButtonProps,
-} from "@chakra-ui/react";
+import { useColorMode, IconButton, Tooltip } from "@chakra-ui/react";
 import { motion, Variants } from "framer-motion";
 
 const option: Variants = {
@@ -31,8 +26,6 @@ export const sidebarToggleTheme = async () => {
   if (sidebarOpenState) browser.runtime.sendMessage({ msg: "TOGGLE_COLOR_MODE" });
 };
 
-const MotionButton = motion<IconButtonProps>(IconButton);
-
 export const DarkModeSwitch = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
@@ -44,7 +37,8 @@ export const DarkModeSwitch = () => {
 
   return (
     <Tooltip label="Dark/Light Mode | Ctrl alt d" placement="left">
-      <MotionButton
+      <IconButton
+        as={motion.button}
         colorScheme="bb"
         m="0.7em"
         boxSize="2.85em"

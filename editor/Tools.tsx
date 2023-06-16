@@ -59,17 +59,17 @@ const Tools = ({ editor, fontSize, fonts, ...props }: ToolsProps) => {
     {
       name: "H1",
       value: "1.8rem",
-      font: fonts?.h1 || "Rubik, Verdana, Roboto, sans-serif",
+      font: fonts?.h1 || "Rubik Variable, Verdana, Roboto, sans-serif",
     },
     {
       name: "H2",
       value: "1.6rem",
-      font: fonts?.h2 || "Rubik, Verdana, Roboto, sans-serif",
+      font: fonts?.h2 || "Rubik Variable, Verdana, Roboto, sans-serif",
     },
     {
       name: "H3",
       value: "1.4rem",
-      font: fonts?.h3 || "Rubik, Verdana, Roboto, sans-serif",
+      font: fonts?.h3 || "Rubik Variable, Verdana, Roboto, sans-serif",
     },
   ];
 

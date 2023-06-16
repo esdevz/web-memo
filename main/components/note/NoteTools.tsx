@@ -30,7 +30,7 @@ const NoteTools = (props: NoteToolsProps) => {
   };
 
   return (
-    <HStack spacing="1" onKeyPress={handleKeyBoardEvt} onKeyDown={handleKeyBoardEvt}>
+    <HStack spacing="1" onKeyDown={handleKeyBoardEvt}>
       <Colors
         setNoteColor={props.setNoteColor}
         noteId={props.id}
