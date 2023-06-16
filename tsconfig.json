@@ -16,7 +16,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES6"
+    "target": "ES2022"
   },
   "exclude": ["node_modules"],
   "include": ["**/*.ts", "**/*.tsx"]
