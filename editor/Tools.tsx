@@ -1,5 +1,5 @@
 import { ButtonGroup, ButtonGroupProps } from "@chakra-ui/react";
-import { CSSProperties } from "react";
+import { CSSProperties, useCallback } from "react";
 import { BsCode } from "react-icons/bs";
 import { BiHeading } from "react-icons/bi";
 import {
@@ -73,64 +73,72 @@ const Tools = ({ editor, fontSize, fonts, ...props }: ToolsProps) => {
     },
   ];
 
-  const editTextStyle = (type: FontStyle) => () => {
-    if (editor) {
-      switch (type) {
-        case "B":
-          toggleBold(editor);
-          break;
-        case "I":
-          toggleItalic(editor);
-          break;
-        case "U":
-          toggleUnderline(editor);
-          break;
-        case "S":
-          toggleStrikethrough(editor);
-          break;
-        case "UL":
-          toggleBullet(editor);
-          break;
-        case "OL":
-          toggleNumbering(editor);
-          break;
-        case "RTL":
-          setDirection(editor, 1);
-          break;
-        case "LTR":
-          setDirection(editor, 0);
-          break;
-        case "CODE":
-          toggleCodeBlock(editor);
-          break;
-        case "RM":
-          clearFormat(editor, 2);
-          break;
-        default:
-          break;
+  const editTextStyle = useCallback(
+    (type: FontStyle) => () => {
+      if (editor) {
+        switch (type) {
+          case "B":
+            toggleBold(editor);
+            break;
+          case "I":
+            toggleItalic(editor);
+            break;
+          case "U":
+            toggleUnderline(editor);
+            break;
+          case "S":
+            toggleStrikethrough(editor);
+            break;
+          case "UL":
+            toggleBullet(editor);
+            break;
+          case "OL":
+            toggleNumbering(editor);
+            break;
+          case "RTL":
+            setDirection(editor, 1);
+            break;
+          case "LTR":
+            setDirection(editor, 0);
+            break;
+          case "CODE":
+            toggleCodeBlock(editor);
+            break;
+          case "RM":
+            clearFormat(editor, 2);
+            break;
+          default:
+            break;
+        }
       }
-    }
-  };
+    },
+    [editor]
+  );
 
-  const setHeader = (opt: OptionValues) => {
-    if (editor) {
-      setFontName(editor, opt.font || "inherit");
-      setFontSize(editor, opt.value);
-    }
-  };
+  const setHeader = useCallback(
+    (opt: OptionValues) => {
+      if (editor) {
+        setFontName(editor, opt.font || "inherit");
+        setFontSize(editor, opt.value);
+      }
+    },
+    [editor]
+  );
 
-  const highlight = (opt: OptionValues) => {
-    if (editor) {
-      setBackgroundColor(editor, opt.value);
-    }
-  };
+  const highlight = useCallback(
+    (opt: OptionValues) => {
+      if (editor) {
+        setBackgroundColor(editor, opt.value);
+      }
+    },
+    [editor]
+  );
 
   return (
     <ButtonGroup
       {...props}
       gridRow={"span 1 / span 1"}
       flexWrap="wrap"
-      spacing="2px"
       isAttached
       variant="outline"
     >
