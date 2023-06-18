@@ -26,14 +26,7 @@ const Sidebar = () => {
     useBackgroundNote();
   const [icon, setIcon] = useState<CustomIcon>("default");
 
-  const {
-    onRefChange,
-    editor,
-    onPasteCaptureHandler,
-    onDropHandler,
-    onBlurHandler,
-    keyDownHandler,
-  } = useEditor("");
+  const { onRefChange, editor, onBlurHandler, keyDownHandler } = useEditor("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNote({
@@ -141,8 +134,6 @@ const Sidebar = () => {
             <Tools fontSize="1.1rem" size="md" editor={editor} fonts={customFonts} />
             <Editable
               ref={onRefChange}
-              onPasteCapture={onPasteCaptureHandler}
-              onDrop={onDropHandler}
               onBlur={onBlurHandler}
               onKeyDown={keyDownHandler}
               customFonts={customFonts}

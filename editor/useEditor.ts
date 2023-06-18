@@ -1,14 +1,5 @@
-import {
-  useState,
-  useCallback,
-  useMemo,
-  useEffect,
-  ClipboardEvent,
-  KeyboardEvent,
-  DragEvent,
-} from "react";
+import { useState, useCallback, useMemo, useEffect, KeyboardEvent } from "react";
 import { Editor } from "roosterjs-editor-core";
-import { sanitizeHtml } from "../utils";
 
 export function useEditor(content: string) {
   const [editorRef, setEditorRef] = useState<HTMLDivElement | null>(null);
@@ -49,35 +40,6 @@ export function useEditor(content: string) {
     }
   }, [editor]);
 
-  const onPasteCaptureHandler = (e: ClipboardEvent<HTMLDivElement>) => {
-    const data = e.clipboardData.getData("text/html");
-    if (data.length !== 0) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      let content = sanitizeHtml(data).trim();
-      let range = editor?.getSelectionRange();
-      editor?.insertContent(content, {
-        position: 5,
-        range,
-      });
-    }
-  };
-
-  const onDropHandler = (e: DragEvent<HTMLDivElement>) => {
-    const data = e.dataTransfer.getData("text/html");
-    const selection = window.getSelection();
-    if (selection && selection.toString().length > 0) {
-      return false;
-    }
-    e.preventDefault();
-    e.stopPropagation();
-    let content = sanitizeHtml(data).trim();
-    editor?.insertContent(content, {
-      position: 1,
-    });
-  };
-
   const onBlurHandler = () => {
     const selection = window.getSelection();
     if (selection?.rangeCount) {
@@ -104,8 +66,6 @@ export function useEditor(content: string) {
     onRefChange,
     editor,
     editorRef,
-    onPasteCaptureHandler,
-    onDropHandler,
     onBlurHandler,
     keyDownHandler,
   };
