@@ -13,14 +13,16 @@ const SAVE_NOTE_ID = "save-as-note";
 
 const db = new NotesDB();
 
-browser.menus.create({
-  id: SAVE_NOTE_ID,
-  title: "Save",
-  contexts: ["selection"],
-  documentUrlPatterns: ["*://*/*"],
+browser.runtime.onInstalled.addListener(() => {
+  browser.menus.create({
+    id: SAVE_NOTE_ID,
+    title: "Save",
+    contexts: ["selection"],
+    documentUrlPatterns: ["*://*/*"],
+  });
 });
 
-browser.menus.onClicked.addListener(async (info, tab) => {
+browser.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === SAVE_NOTE_ID) {
     setBadgeSaving();
     let note = {
@@ -62,7 +64,8 @@ browser.menus.onClicked.addListener(async (info, tab) => {
 
     if (Object.keys(collectionProps).length > 0) {
       browser.sidebarAction.isOpen({}).then((isOpen) => {
-        if (isOpen) browser.runtime.sendMessage({ msg: "ADD", collection: note.website });
+        if (isOpen)
+          browser.runtime.sendMessage({ msg: "ADD", collection: note.website });
       });
     }
 
@@ -76,6 +79,6 @@ browser.menus.onClicked.addListener(async (info, tab) => {
   }
 });
 
-browser.browserAction.onClicked.addListener(() => {
+browser.action.onClicked.addListener(() => {
   browser.sidebarAction.toggle();
 });
