@@ -27,7 +27,7 @@
     "immer": "^10.0.2",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-icons": "^4.3.1",
+    "react-icons": "^4.10.1",
     "roosterjs-editor-api": "^8.22.1",
     "roosterjs-editor-core": "^8.22.1",
     "zustand": "^4.3.8"
