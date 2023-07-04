@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Tooltip, IconButton, useColorMode, Box } from "@chakra-ui/react";
 import { BiCog } from "react-icons/bi";
-import { GoSettings } from "react-icons/go";
+
 import { BsLayoutSidebar } from "react-icons/bs";
-import { AiOutlineFileSearch } from "react-icons/ai";
+import { AiOutlineFileSearch, AiFillSetting } from "react-icons/ai";
 import { DarkModeSwitch, sidebarToggleTheme } from "./DarkModeSwitch";
 import useNoteStore from "../../store/noteStore";
 
@@ -130,7 +130,7 @@ const Settings = (props: SettingsProps) => {
                 variants={option}
                 {...styleProps}
                 colorScheme="bb"
-                icon={<GoSettings />}
+                icon={<AiFillSetting />}
                 aria-label="edit collection"
               />
             </Tooltip>
