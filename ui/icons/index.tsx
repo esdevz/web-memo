@@ -5,7 +5,7 @@ import {
   Tooltip,
   IconButton,
   CircularProgress,
-  IconButtonProps,
+  IconButtonProps as iconButtonStyleProps,
 } from "@chakra-ui/react";
 import {
   BsClipboard,
@@ -31,7 +31,7 @@ interface SaveButtonProps extends SidebarButtonProps {
   loading: boolean;
 }
 
-const IconButtonProps: Omit<IconButtonProps, "aria-label"> = {
+const iconButtonStyleProps: Omit<iconButtonStyleProps, "aria-label"> = {
   borderRadius: "50%",
   w: "4em",
   h: "4em",
@@ -81,7 +81,7 @@ export const Save = (props: SaveButtonProps) => {
   return (
     <Tooltip fontFamily="Raleway Variable" fontSize="1rem" label="Save note">
       <IconButton
-        {...IconButtonProps}
+        {...iconButtonStyleProps}
         type="submit"
         form="note-form"
         onClick={props.cb}
@@ -101,7 +101,7 @@ export const OpenInNewTab = (props: SidebarButtonProps) => {
   return (
     <Tooltip fontFamily="Raleway Variable" fontSize="1rem" label="Open notes tab">
       <IconButton
-        {...IconButtonProps}
+        {...iconButtonStyleProps}
         onClick={props.cb}
         icon={<ImNewTab size={20} />}
         aria-label="open notes tab"
@@ -113,17 +113,18 @@ export const SaveTabs = () => {
   return (
     <Tooltip fontFamily="Raleway Variable" fontSize="1rem" label="Save current tabs">
       <IconButton
-        {...IconButtonProps}
+        {...iconButtonStyleProps}
         icon={<PiTabsDuotone size={20} />}
         aria-label="save current tabs"
       />
     </Tooltip>
   );
 };
-export const Clear = (props: IconButtonProps) => {
+export const Clear = (props: iconButtonStyleProps) => {
   return (
     <Tooltip fontFamily="Raleway Variable" fontSize="1rem" label="Clear note">
       <IconButton
+        {...iconButtonStyleProps}
         {...props}
         icon={<AiOutlineClear size={20} />}
         aria-label="clear note"
