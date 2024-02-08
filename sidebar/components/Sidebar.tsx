@@ -20,6 +20,7 @@ import { sanitizeHtml } from "../../utils/sanitizeHtml";
 import { CustomIcon } from "../../main/store/types";
 import { useEditor } from "../../editor/useEditor";
 import Tools from "../../editor/Tools";
+import { Clear, OpenInNewTab, Save, SaveTabs } from "../../ui/icons";
 
 const Sidebar = () => {
   const { note, setNote, saveNote, loading, collections, customFonts } =
@@ -95,23 +96,31 @@ const Sidebar = () => {
     });
   };
 
+  //add ctrl + s -> save note
+  //add ctrt + r -> reset
+  //add ctrl + o -> open notes tab
+  //
+
   return (
     <Box as="main" minH="300px" minW="320px" w="full">
       <VStack h="100%" w="100%" spacing="1.5">
-        <Button
-          h="2.7em"
+        <HStack
+          p="1.5"
           w="full"
-          colorScheme="bb"
-          variant="outline"
-          onClick={openNotes}
+          borderBottom="var(--bg-border)"
+          alignItems="center"
+          gap="1"
         >
-          <Text as="h3">Open Notes </Text>
-        </Button>
+          <OpenInNewTab cb={openNotes} />
+          <Save loading={loading} />
+          <Clear aria-label="reset form" onClick={resetNote} />
+          <SaveTabs />
+        </HStack>
 
         <VStack
           as="form"
+          id="note-form"
           onSubmit={handleSubmit}
-          mt="8px"
           w="full"
           h="full"
           spacing="1.5"
@@ -179,29 +188,7 @@ const Sidebar = () => {
                 id="is-pinned"
               />
             </FormControl>
-            <Button
-              aria-label="reset note"
-              onClick={resetNote}
-              colorScheme="bb"
-              variant="outline"
-              type="button"
-              w="13ch"
-            >
-              <Text as="h3"> Reset </Text>
-            </Button>
           </HStack>
-          <Button
-            mt="0.6rem !important"
-            isLoading={loading}
-            isDisabled={loading}
-            type="submit"
-            colorScheme="bb"
-            variant="outline"
-            w="full"
-            h="2.5em"
-          >
-            <Text as="h3"> Save</Text>
-          </Button>
         </VStack>
       </VStack>
     </Box>
