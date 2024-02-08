@@ -79,7 +79,7 @@ export const CollectionIcon = ({ customIcon, ...rest }: CollectionIconProps) => 
 
 export const Save = (props: SaveButtonProps) => {
   return (
-    <Tooltip fontFamily="Raleway Variable" fontSize="1rem" label="save note">
+    <Tooltip fontFamily="Raleway Variable" fontSize="1rem" label="Save note">
       <IconButton
         {...IconButtonProps}
         type="submit"
@@ -99,7 +99,7 @@ export const Save = (props: SaveButtonProps) => {
 };
 export const OpenInNewTab = (props: SidebarButtonProps) => {
   return (
-    <Tooltip fontFamily="Raleway Variable" fontSize="1rem" label="Open Notes Tab">
+    <Tooltip fontFamily="Raleway Variable" fontSize="1rem" label="Open notes tab">
       <IconButton
         {...IconButtonProps}
         onClick={props.cb}
@@ -111,7 +111,7 @@ export const OpenInNewTab = (props: SidebarButtonProps) => {
 };
 export const SaveTabs = () => {
   return (
-    <Tooltip fontFamily="Raleway Variable" fontSize="1rem" label="Save current Tabs">
+    <Tooltip fontFamily="Raleway Variable" fontSize="1rem" label="Save current tabs">
       <IconButton
         {...IconButtonProps}
         icon={<PiTabsDuotone size={20} />}
@@ -120,11 +120,11 @@ export const SaveTabs = () => {
     </Tooltip>
   );
 };
-export const Clear = () => {
+export const Clear = (props: IconButtonProps) => {
   return (
-    <Tooltip fontFamily="Raleway Variable" fontSize="1rem" label="Clear Note">
+    <Tooltip fontFamily="Raleway Variable" fontSize="1rem" label="Clear note">
       <IconButton
-        {...IconButtonProps}
+        {...props}
         icon={<AiOutlineClear size={20} />}
         aria-label="clear note"
       />
