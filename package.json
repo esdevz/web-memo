@@ -5,10 +5,11 @@
   "description": "web extension to create and manage notes",
   "license": "MPL 2.0",
   "scripts": {
-    "build": "tsc && node configs/main.js",
+    "build": "tsc && node configs/main.js && web-ext build -s ./build/firefox -o -a ./build/firefox/release",
     "watch": "node configs/main.js -watch",
     "lint": "eslint . --ext .ts",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "run:firefox": "web-ext run -s ./build/firefox"
   },
   "author": "wael H",
   "dependencies": {
@@ -47,7 +48,8 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.30.0",
     "eslint-plugin-react-hooks": "^4.5.0",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.3",
+    "web-ext": "^7.11.0"
   },
   "pnpm": {
     "peerDependencyRules": {
